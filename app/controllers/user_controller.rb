@@ -16,13 +16,29 @@ class UserController < ApplicationController
     #データベースに検索をかけて趣味が共通したユーザのデータを格納する↓
     #インスタンス配列@search_resultsの用意
     @search_results = []
+    @results_seikei = []
     #検索クエリを格納した配列の中身を用いて順に検索
     @queries.each do |q|
       #選択ユーザのidを主キーに持つデータを除外しつつ、同じ趣味をどこかに持つユーザのデータを
       #@search_resultsに格納
-      @search_results.push(User.where(hobby1: q).select("name","hobby1"))
-      @search_results.push(User.where(hobby2: q).select("name","hobby2"))
-      @search_results.push(User.where(hobby3: q).select("name","hobby3"))
+      User.where.not(id: @id).where(hobby1: q).each do |object|
+        if object.id == @id
+        else
+          @results_seikei.push(object.hobby1 + "を", + object.name + "さんと共有しています")
+        end
+      end
+      User.where.not(id: @id).where(hobby2: q).each do |object|
+        if object.id == @id
+        else
+          @results_seikei.push(object.hobby2 + "を", + object.name + "さんと共有しています")
+        end
+      end
+      User.where.not(id: @id).where(hobby3: q).each do |object|
+        if object.id == @id
+        else
+          @results_seikei.push(object.hobby3 + "を", + object.name + "さんと共有しています")
+        end
+      end
     end
     #配列内で重複したデータを削除
     #(2種類以上が共通した場合の処理を考えるとあとあと変えたほうが良いのかも)
