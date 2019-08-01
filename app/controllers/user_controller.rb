@@ -4,5 +4,6 @@ class UserController < ApplicationController
   end
 
   def show
+    @id = params[:select_user_id]
   end
 end
