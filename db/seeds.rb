@@ -14,3 +14,5 @@ User.create(name: 'Asan', hobby1: '映画鑑賞', hobby2: 'ドラゴンクエス
 User.create(name: 'Bkun', hobby1: '音楽', hobby2: 'アイドル', hobby3: '野球観戦')
 User.create(name: 'Csan', hobby1: 'サイクリング', hobby2: 'プラモ', hobby3: 'まどマギ')
 User.create(name: 'Dsan', hobby1: '酒', hobby2: 'パチスロ', hobby3: 'サイクリング')
+User.create(name: 'Esan', hobby1: 'アイドル', hobby2: 'パチスロ', hobby3: '野球観戦')
+User.create(name: 'Fsan', hobby1: 'アイドル', hobby2: 'ドラゴンクエスト', hobby3: 'プラモ')
