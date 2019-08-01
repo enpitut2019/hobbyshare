@@ -1,10 +1,15 @@
-    <h1>メンバー選択</h1>
-    <p>メンバーを下の中から選んでください</p>
-    <select name="example"required>
-      <option value="">ユーザを選択してください</option>
-      <option value="ユーザ1">サンプル1</option>
-      <option value="ユーザ2">サンプル2</option>
-      <option value="ユーザ3">サンプル3</option>
-      <option value="ユーザ4">サンプル4</option>
-      <option value="ユーザ5">サンプル5</option>
-    </select>
+<h1>メンバー選択</h1>
+<p>メンバーを下の中から選んでください</p>
+<ol>
+  <% @users.each do |user| %>
+  <li>
+    <%= user.name + ":" + user.hobby1 + "," + user.hobby2 + "," + user.hobby3 %>
+  </li>
+  <% end %>
+</ol>
+<select name="example"required>
+  <option value="">ユーザを選択してください</option>
+  <% @users.each do |user| %>
+    <option value="<% user.id %>"><%= user.name %></option>
+  <% end %>
+</select>
