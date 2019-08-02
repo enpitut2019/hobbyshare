@@ -1,12 +1,21 @@
 <h1>ここはユーザのマイページです</h1>
 <p>あなたのユーザ名は<%= @user_name %>です</p>
-<p>あなたの所属してるグループは</p>
+<h3>あなたが登録している趣味</h3>
+<!-- ここにユーザが登録してある趣味を全て表示する -->
+<ol>
+  <% @users_hobbies.each do |hname| %>
+  <li>
+    <%= "#{hname.hobby_name}" %>
+  </li>
+  <% end %>
+</ol>
+<br>
+<h3>あなたの所属してるグループ</h3>
 <!-- 所属しているグループ名の一覧を表示 -->
 <ol>
   <% @belong_group_name.each do |gname| %>
   <li>
     <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
-    <!-- ここにグループに所属してるメンバーを全て表示する -->
   </li>
   <% end %>
 </ol>

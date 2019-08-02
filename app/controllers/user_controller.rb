@@ -24,6 +24,19 @@ class UserController < ApplicationController
     end
     #ユーザ名を変数に入れる
     @user_name = User.find_by(id: @user_id).name
+
+    #ユーザの趣味を取得して変数に入れる
+    @uhobby_record = UserHobby.where(user_id: @user_id)
+    #uhobby_recordからhobbyIDだけを取り出して配列にする
+    @hobbies_id = []
+    @uhobby_record.each do |record|
+      @hobbies_id.push(record.hobby_id)
+    end
+    #HobbyIDに対応するレコードを取ってくる
+    @users_hobbies = []
+    @hobbies_id.each do |hid|
+      @users_hobbies.push(Hobby.find_by(id: hid))
+    end
   end
 
   def show
