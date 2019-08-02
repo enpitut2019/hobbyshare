@@ -48,6 +48,10 @@ class UserController < ApplicationController
       @query_guser_id.push(u.user_id)
       end
     end
+    @group_user_all = []
+    @query_guser_id.each do |qgi|
+      @group_user_all.push(User.find(qgi).name)
+    end
 
     #趣味が共通したユーザのデータを格納するインスタンス配列@results_seikeiの用意
     @results_seikei = []
