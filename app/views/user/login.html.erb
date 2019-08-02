@@ -1,17 +1,7 @@
-<h1>ログイン、して</h1>
+<h1>ユーザを選択してください</h1>
 
-<table id="LoginFormSlim">
-  <tr>
-    <td>ユーザー名</td>
-    <td><input type="text" name="userName" title="ユーザー名" size="20" maxlength="20" autocomplete="off" value="" tabindex="1" style="width: 111px" required/></td>
-    <td>パスワード</td>
-    <td><input type="password" name="password" title="パスワード" size="20" maxlength="20" autocomplete="off" value="" tabindex="2" style="width: 111px" required/></td>
-
-
-
-    <td>
-      <input type="hidden" name="locale" value="ja_JP">
-      <button type="submit" tabindex="3">ログイン</button>
-    </td>
-  </tr>
-</table>
+<ol>
+  <% @users.each do |user| %>
+  <li> <%= link_to "#{user.name}","/user/mypage/#{user.id}" %></li>
+  <% end %>
+</ol>

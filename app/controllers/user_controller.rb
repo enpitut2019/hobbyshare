@@ -4,6 +4,7 @@ class UserController < ApplicationController
   end
 
   def login
+    @users = User.all
   end
 
   def mypage
@@ -21,6 +22,8 @@ class UserController < ApplicationController
     @belong.each do |gid|
       @belong_group_name.push(Group.find_by(id: gid))
     end
+    #ユーザ名を変数に入れる
+    @user_name = User.find_by(id: @user_id).name
   end
 
   def show
