@@ -1,8 +1,9 @@
 <h1>ここはユーザのマイページです</h1>
 <p>あなたのユーザIDは<%= @user_id %>です</p>
 <p>あなたの所属してるグループは</p>
+<!-- 所属しているグループ名の一覧を表示 -->
 <ol>
-  <% @belong.each do |e| %>
-  <li>e</li>
+  <% @belong_group_name.each do |gname| %>
+  <li> <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
   <% end %>
 </ol>
