@@ -10,18 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_01_015037) do
+ActiveRecord::Schema.define(version: 2019_08_02_014712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "hobby1"
-    t.string "hobby2"
-    t.string "hobby3"
+  create_table "group_belongs", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_belongs_on_group_id"
+    t.index ["user_id"], name: "index_group_belongs_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "group_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "hobbies", force: :cascade do |t|
+    t.string "hobby_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_hobbies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "hobby_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hobby_id"], name: "index_user_hobbies_on_hobby_id"
+    t.index ["user_id"], name: "index_user_hobbies_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "group_belongs", "groups"
+  add_foreign_key "group_belongs", "users"
+  add_foreign_key "user_hobbies", "hobbies"
+  add_foreign_key "user_hobbies", "users"
 end
