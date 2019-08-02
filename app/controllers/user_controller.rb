@@ -3,6 +3,29 @@ class UserController < ApplicationController
     @users = User.all
   end
 
+  def login
+    @users = User.all
+  end
+
+  def mypage
+    #ユーザIDを変数に入れました
+    @user_id = params[:user_id]
+    #Group_belongの表からuser_idが変数@user_idに一致するレコードを全て配列に入れる
+    @belong_record = GroupBelong.where(user_id: @user_id)
+    #belong_recordからgroupIDだけを取り出して配列にする
+    @belong = []
+    @belong_record.each do |record|
+      @belong.push(record.group_id)
+    end
+    #グループIDに対応するレコードを取ってくる
+    @belong_group_name = []
+    @belong.each do |gid|
+      @belong_group_name.push(Group.find_by(id: gid))
+    end
+    #ユーザ名を変数に入れる
+    @user_name = User.find_by(id: @user_id).name
+  end
+
   def show
     #select.htmlで選択された人のidを@idに数字として格納
     #gidにグループidを格納する
