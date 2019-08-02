@@ -14,12 +14,12 @@ class UserController < ApplicationController
     @queries.push(@selected_data.hobby1).push(@selected_data.hobby2).push(@selected_data.hobby3)
 
     #データベースに検索をかけて趣味が共通したユーザのデータを格納する↓
-    #インスタンス配列@search_resultsの用意
+    #インスタンス配列@results_seikeiの用意
     @results_seikei = []
     #検索クエリを格納した配列の中身を用いて順に検索
     @queries.each do |q|
       #選択ユーザのidを主キーに持つデータを除外しつつ、同じ趣味をどこかに持つユーザのデータを
-      #@search_resultsに格納
+      #@results_seikeiに格納
       User.where.not(id: @id).where(hobby1: q).each do |object|
         if object.id == @id
         else
