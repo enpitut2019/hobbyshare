@@ -1,18 +1,86 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+GroupBelong.delete_all
+UserHobby.delete_all
+Hobby.delete_all
+Group.delete_all
+User.delete_all
 
-#テスト用仮データ置き場
-#rake db:seedし直すとdelete_allはかかるものの通しidはリセットされないので注意
 
-#User.delete_all
-#User.create(name: 'Asan', hobby1: '映画鑑賞', hobby2: 'ドラゴンクエスト', hobby3: 'アイドル')
-#User.create(name: 'Bkun', hobby1: '音楽', hobby2: 'アイドル', hobby3: '野球観戦')
-#User.create(name: 'Csan', hobby1: 'サイクリング', hobby2: 'プラモ', hobby3: 'まどマギ')
-#User.create(name: 'Dsan', hobby1: '酒', hobby2: 'パチスロ', hobby3: 'サイクリング')
-#User.create(name: 'Esan', hobby1: 'アイドル', hobby2: 'パチスロ', hobby3: '野球観戦')
-#User.create(name: 'Fsan', hobby1: 'アイドル', hobby2: 'ドラゴンクエスト', hobby3: 'プラモ')
+
+u1 = User.create(name: 'Asann')
+u2 = User.create(name: 'Bsann')
+u3 = User.create(name: 'Csann')
+u4 = User.create(name: 'Dsann')
+u5 = User.create(name: 'Esann')
+u6 = User.create(name: 'Fsann')
+u7 = User.create(name: 'Gsann')
+u8 = User.create(name: 'Hsann')
+u9 = User.create(name: 'Isann')
+u10 = User.create(name: 'Jsann')
+u11 = User.create(name: 'Ksann')
+u12 = User.create(name: 'Lsann')
+u13 = User.create(name: 'Msann')
+u14 = User.create(name: 'Nsann')
+u15 = User.create(name: 'Osann')
+u16 = User.create(name: 'Psann')
+u17 = User.create(name: 'Qsann')
+u18 = User.create(name: 'Rsann')
+
+
+g1 = Group.create(group_name: 'うめぼし')
+g2 = Group.create(group_name: 'しゃけ')
+g3 = Group.create(group_name: 'こんぶ')
+g4 = Group.create(group_name: 'めんたいこ')
+g5 = Group.create(group_name: 'からし')
+
+
+h1 = Hobby.create(hobby_name: '漫画')
+h2 = Hobby.create(hobby_name: 'アニメ')
+h3 = Hobby.create(hobby_name: '惰眠')
+h4 = Hobby.create(hobby_name: 'ツイ廃')
+h5 = Hobby.create(hobby_name: '徘徊')
+h6 = Hobby.create(hobby_name: 'パチスロ')
+h7 = Hobby.create(hobby_name: '競馬')
+h8 = Hobby.create(hobby_name: 'ドラクエ')
+h9 = Hobby.create(hobby_name: 'アイドル')
+h10 = Hobby.create(hobby_name: 'グラボ')
+
+
+UserHobby.create(user_id: u1.id, hobby_id: h2.id)
+UserHobby.create(user_id: u1.id, hobby_id: h4.id)
+UserHobby.create(user_id: u1.id, hobby_id: h7.id)
+UserHobby.create(user_id: u2.id, hobby_id: h3.id)
+UserHobby.create(user_id: u2.id, hobby_id: h5.id)
+UserHobby.create(user_id: u2.id, hobby_id: h7.id)
+UserHobby.create(user_id: u3.id, hobby_id: h9.id)
+UserHobby.create(user_id: u3.id, hobby_id: h7.id)
+UserHobby.create(user_id: u3.id, hobby_id: h4.id)
+UserHobby.create(user_id: u4.id, hobby_id: h2.id)
+UserHobby.create(user_id: u4.id, hobby_id: h3.id)
+UserHobby.create(user_id: u4.id, hobby_id: h7.id)
+UserHobby.create(user_id: u5.id, hobby_id: h6.id)
+UserHobby.create(user_id: u5.id, hobby_id: h1.id)
+UserHobby.create(user_id: u5.id, hobby_id: h2.id)
+UserHobby.create(user_id: u6.id, hobby_id: h2.id)
+UserHobby.create(user_id: u6.id, hobby_id: h1.id)
+UserHobby.create(user_id: u6.id, hobby_id: h6.id)
+UserHobby.create(user_id: u7.id, hobby_id: h2.id)
+UserHobby.create(user_id: u7.id, hobby_id: h6.id)
+UserHobby.create(user_id: u7.id, hobby_id: h1.id)
+
+
+GroupBelong.create(group_id: g4.id, user_id: u1.id)
+GroupBelong.create(group_id: g4.id, user_id: u4.id)
+GroupBelong.create(group_id: g4.id, user_id: u5.id)
+GroupBelong.create(group_id: g4.id, user_id: u2.id)
+GroupBelong.create(group_id: g3.id, user_id: u2.id)
+GroupBelong.create(group_id: g3.id, user_id: u3.id)
+GroupBelong.create(group_id: g3.id, user_id: u4.id)
+GroupBelong.create(group_id: g3.id, user_id: u5.id)
+GroupBelong.create(group_id: g2.id, user_id: u3.id)
+GroupBelong.create(group_id: g2.id, user_id: u6.id)
+GroupBelong.create(group_id: g2.id, user_id: u7.id)
+GroupBelong.create(group_id: g2.id, user_id: u2.id)
+GroupBelong.create(group_id: g1.id, user_id: u2.id)
+GroupBelong.create(group_id: g1.id, user_id: u4.id)
+GroupBelong.create(group_id: g1.id, user_id: u7.id)
+GroupBelong.create(group_id: g1.id, user_id: u5.id)
