@@ -7,6 +7,7 @@ class UserController < ApplicationController
   end
 
   def mypage
+    @user_id = params[:user_id]
   end
 
   def show
