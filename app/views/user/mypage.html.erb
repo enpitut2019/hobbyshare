@@ -4,6 +4,9 @@
 <!-- 所属しているグループ名の一覧を表示 -->
 <ol>
   <% @belong_group_name.each do |gname| %>
-  <li> <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
+  <li>
+    <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
+    <!-- ここにグループに所属してるメンバーを全て表示する -->
+  </li>
   <% end %>
 </ol>
