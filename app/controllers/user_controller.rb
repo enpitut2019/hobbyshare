@@ -3,6 +3,9 @@ class UserController < ApplicationController
     @users = User.all
   end
 
+  def login
+  end
+
   def mypage
   end
 
