@@ -7,7 +7,15 @@ class UserController < ApplicationController
   end
 
   def mypage
+    #ユーザIDを変数に入れました
     @user_id = params[:user_id]
+    #Group_belongの表からuser_idが変数@user_idに一致するレコードを全て配列に入れる
+    @belong_record = Group_belong.where(user_id:@user_id)
+    #belong_recordからgroupIDだけを取り出して配列にする
+    @belong = []
+    @belong_record.each do |record|
+      @belong.push(record.group_id)
+    end
   end
 
   def show
