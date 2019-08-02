@@ -1,0 +1,27 @@
+\q
+\dt;
+select * from nowplay_data;
+select * from user;
+\d
+.schema
+\schema
+exit
+rails dbconsole
+puit
+quit
+\q
+.schema
+\d users
+\d group
+\d groups
+\q
+\q
+\d GroupBelongs
+\d groupbelongs
+\d GroupBelongs
+\d GroupBelong
+\d group_belongs
+\q
+\d group_belongs
+.schema
+\s group_belongs

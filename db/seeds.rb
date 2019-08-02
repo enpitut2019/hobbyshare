@@ -16,6 +16,12 @@
 #User.create(name: 'Dsan', hobby1: '酒', hobby2: 'パチスロ', hobby3: 'サイクリング')
 #User.create(name: 'Esan', hobby1: 'アイドル', hobby2: 'パチスロ', hobby3: '野球観戦')
 #User.create(name: 'Fsan', hobby1: 'アイドル', hobby2: 'ドラゴンクエスト', hobby3: 'プラモ')
+GroupBelong.delete_all
+UserHobby.delete_all
+Hobby.delete_all
+Group.delete_all
+User.delete_all
+
 
 
 User.create(name: 'Asann')
@@ -37,11 +43,13 @@ User.create(name: 'Psann')
 User.create(name: 'Qsann')
 User.create(name: 'Rsann')
 
+
 Group.create(group_name: 'うめぼし')
 Group.create(group_name: 'しゃけ')
 Group.create(group_name: 'こんぶ')
 Group.create(group_name: 'めんたいこ')
 Group.create(group_name: 'からし')
+
 
 Hobby.create(hobby_name: '漫画')
 Hobby.create(hobby_name: 'アニメ')
@@ -53,3 +61,44 @@ Hobby.create(hobby_name: '競馬')
 Hobby.create(hobby_name: 'ドラクエ')
 Hobby.create(hobby_name: 'アイドル')
 Hobby.create(hobby_name: 'グラボ')
+
+
+UserHobby.create(user_id: 1, hobby_id: 2)
+UserHobby.create(user_id: 1, hobby_id: 4)
+UserHobby.create(user_id: 1, hobby_id: 7)
+UserHobby.create(user_id: 2, hobby_id: 3)
+UserHobby.create(user_id: 2, hobby_id: 5)
+UserHobby.create(user_id: 2, hobby_id: 7)
+UserHobby.create(user_id: 3, hobby_id: 9)
+UserHobby.create(user_id: 3, hobby_id: 7)
+UserHobby.create(user_id: 3, hobby_id: 4)
+UserHobby.create(user_id: 4, hobby_id: 2)
+UserHobby.create(user_id: 4, hobby_id: 3)
+UserHobby.create(user_id: 4, hobby_id: 7)
+UserHobby.create(user_id: 5, hobby_id: 6)
+UserHobby.create(user_id: 5, hobby_id: 1)
+UserHobby.create(user_id: 5, hobby_id: 2)
+UserHobby.create(user_id: 6, hobby_id: 2)
+UserHobby.create(user_id: 6, hobby_id: 1)
+UserHobby.create(user_id: 6, hobby_id: 6)
+UserHobby.create(user_id: 7, hobby_id: 2)
+UserHobby.create(user_id: 7, hobby_id: 6)
+UserHobby.create(user_id: 7, hobby_id: 1)
+
+
+GroupBelong.create(group_id: 4, user_id: 1)
+GroupBelong.create(group_id: 4, user_id: 4)
+GroupBelong.create(group_id: 4, user_id: 5)
+GroupBelong.create(group_id: 4, user_id: 2)
+GroupBelong.create(group_id: 3, user_id: 2)
+GroupBelong.create(group_id: 3, user_id: 3)
+GroupBelong.create(group_id: 3, user_id: 4)
+GroupBelong.create(group_id: 3, user_id: 5)
+GroupBelong.create(group_id: 2, user_id: 3)
+GroupBelong.create(group_id: 2, user_id: 6)
+GroupBelong.create(group_id: 2, user_id: 7)
+GroupBelong.create(group_id: 2, user_id: 2)
+GroupBelong.create(group_id: 1, user_id: 2)
+GroupBelong.create(group_id: 1, user_id: 4)
+GroupBelong.create(group_id: 1, user_id: 7)
+GroupBelong.create(group_id: 1, user_id: 5)
