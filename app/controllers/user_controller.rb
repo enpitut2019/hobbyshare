@@ -29,8 +29,8 @@ class UserController < ApplicationController
   def show
     #select.htmlで選択された人のidを@idに数字として格納
     #gidにグループidを格納する
-    @id = 4
-    @gid = 3
+    @id = params[:user_id]
+    @gid = params[:group_id]
     #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
     @query_hobbyid = []
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
