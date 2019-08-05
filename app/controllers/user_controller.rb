@@ -74,6 +74,19 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id}")
   end
 
+  def group_password
+    #userIDを受け取る
+    user_id = params[:user_id]
+    #userIDから対応するレコードを取り出す
+    user = User.find_by(id: user_id)
+    #userのgroup_passwordを変更
+    user.group_password = params[:group_password]
+    #userの名前の変更を確定
+    user.save
+    #mypageへリダイレクト
+    redirect_to("/user/mypage/#{user_id}")
+  end
+
   def show
     #select.htmlで選択された人のidを@idに数字として格納
     #gidにグループidを格納する
@@ -124,4 +137,5 @@ class UserController < ApplicationController
       end
     end
   end
+
 end
