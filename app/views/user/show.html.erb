@@ -2,8 +2,9 @@
 <% @results_seikei.each do |p| %>
 <%= p %><br>
 <% end %>
-
 <h3><%= Group.find(@gid).group_name %>に所属しているメンバー</h3>
 <% @group_user_all_andme.each do |p| %>
 <%= p %><br>
 <% end %>
+
+<%= link_to "マイページへ戻る" , "/user/mypage/#{@id}" %>
