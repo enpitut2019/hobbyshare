@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   post 'user/newhobby' => 'user#newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
+  post 'user/group_login' => 'user#group_login'
 end
