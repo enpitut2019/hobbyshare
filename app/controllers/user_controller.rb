@@ -7,6 +7,20 @@ class UserController < ApplicationController
     @users = User.all
   end
 
+  def group_login
+    user_id = params[:user_id].to_i
+    #パスワードの確認
+    if gp = User.find_by(id: user_id).group_password
+      if gp != params[:group_password]
+        flash[:notice] = "パスワードが違います"
+        redirect_to("/group/#{params[:group_id]}/list")
+        return
+      end
+    end
+    #リダイレクト
+    redirect_to("/user/mypage/#{params[:user_id]}")
+  end
+
   def mypage
     #ユーザIDを変数に入れました
     @user_id = params[:user_id]
