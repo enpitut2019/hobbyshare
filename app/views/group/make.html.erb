@@ -1,9 +1,9 @@
 <h1>新規グループ作成ページ</h1>
 <%= form_tag("/group/new") do %>
   <h3>グループ名</h3>
-  <input name="group_name">
+  <input name="group_name" required>
   <h3>人数</h3>
-  <input name="number_of_menber">
+  <input name="number_of_menber" required>
   <br>
   <p></p><!--表示をよくするための空行-->
   <input type="submit" value="グループ作成">
