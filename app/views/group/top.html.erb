@@ -1,11 +1,25 @@
-<h1>ここはトップページ</h1>
+<h1>Hobbyshareへようこそ！</h1>
 <h3> <%= link_to "新しいグループを作成","/group/make" %></h3>
 
 <%= form_tag("/group/search") do %>
 <h3>既存のグループに入る</h3>
-<input name="group_name" required>
+<input name="group_name">
 <br>
 <p></p><!--表示をよくするための空行-->
-<input type="submit" value="グループ検索">
-<input type="reset" value="入力内容をリセットする">
+<input type="submit" value="グループに入る">
+<input type="reset" value="入力をクリア">
 <% end %>
+<hr>
+<h3>Hobbyshareとは？</h3>
+<p>Hobbyshareは<strong>身近な人</strong>の中から、<br>
+  あなたと<strong>同じ趣味</strong>を持つ人とだけ<br>
+  趣味を共有することができるウェブアプリです。</p>
+<h4>使い方</h4>
+<p>友達・仕事仲間・入学（入社）する仲間を募って、<br>
+新しいグループを作りましょう<br>
+『新しいグループを作成』から趣味を共有したいグループを<br>
+作ることができます。<br>
+仲間と一緒にグループの名前、グループの人数、各メンバーに割り振る番号<br>
+自分のニックネームを決めておいてください</p>
+<p>すでに趣味を共有するグループを作成済みの場合は、<br>
+『既存のグループに入る』にそのグループの名前を入力してください。</p>
