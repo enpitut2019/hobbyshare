@@ -6,5 +6,4 @@ Rails.application.routes.draw do
   get '/' => 'user#login'
 
   get 'group/:group_id/list' => 'group#list'
-  #get 'group/:group_id/list' => 'user#mypage'
 end
