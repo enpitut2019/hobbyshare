@@ -1,0 +1,11 @@
+<h1>ここはトップページ</h1>
+<h3> <%= link_to "新しいグループを作成","/group/make" %></h3>
+
+<%= form_tag("/group/search") do %>
+<h3>既存のグループに入る</h3>
+<input name="group_name">
+<br>
+<p></p><!--表示をよくするための空行-->
+<input type="submit" value="グループ検索">
+<input type="reset" value="入力内容をリセットする">
+<% end %>
