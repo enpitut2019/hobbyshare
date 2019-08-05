@@ -88,17 +88,25 @@ class UserController < ApplicationController
 
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
     @query_guser_id = []
+    @query_guser_id_andme = []
     #GIDとUIDを結びつけているGroupBelongに対して選択されたグループのGIDで検索をかけ、
     #そのグループに所属する操作者を除くユーザのUIDを格納する。
     GroupBelong.where(group_id: @gid).each do |u|
       if u.user_id == @id
+        @query_guser_id_andme.push(u.user_id)
       else
       @query_guser_id.push(u.user_id)
+      @query_guser_id_andme.push(u.user_id)
       end
     end
     @group_user_all = []
     @query_guser_id.each do |qgi|
       @group_user_all.push(User.find(qgi).name)
+    end
+
+    @group_user_all_andme = []
+    @query_guser_id_andme.each do |qgi|
+      @group_user_all_andme.push(User.find(qgi).name)
     end
 
     #趣味が共通したユーザのデータを格納するインスタンス配列@results_seikeiの用意
