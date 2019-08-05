@@ -3,7 +3,7 @@
 <!-- ユーザー名の変更 -->
 <h3>ユーザー名変更</h3>
 <%= form_tag("/user/name_change") do %>
-  <input name="user_name">
+  <input name="user_name" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
   <input type="submit" value="名前を変更する">
   <input type="reset" value="リセット">
@@ -22,7 +22,7 @@
 <h3>趣味の登録</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
 <%= form_tag("/user/newhobby") do %>
-  <input name="hobby_name">
+  <input name="hobby_name" required>
   <br>
   <p></p><!--表示をよくするための空行-->
   <input type="hidden" name="user_id" value="<%= @user_id %>">
