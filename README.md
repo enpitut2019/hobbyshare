@@ -9,7 +9,7 @@ hobbyshare
 同じ趣味を持つ人同士で秘密に気兼ねなく気軽に趣味を共有できる.
 
 * メンバー
-関口拓海, レグルス, 鶴橋, 小林恭輔, 大盛マスク, JP
+関口拓海(PO), レグルス, 鶴橋, 小林恭輔, 大盛マスク, JP
 
 * デプロイ先URL
 [https://hobbyshare.herokuapp.com](https://hobbyshare.herokuapp.com)
