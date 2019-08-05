@@ -3,20 +3,12 @@
 <h3><%= Group.find(@gid).group_name %>に所属しているメンバー</h3>
 <!-- group_user_allに格納したレコードのうち、ユーザ名は表示に、IDをリンクに利用する -->
 <ol>
-
 <% @group_user_all.each do |user| %>
-  <%= form_tag("/user/group_login") do %>
-    <li>
-      <%= user.name %>
-      <input name="group_password">
-      <input type="hidden" name="user_id" value="<%= user.id%>">
-      <input type="hidden" name="group_id" value="<%= @gid %>">
-      <input type="submit">
-    </li>
-  <% end %>
+    <li> <%= link_to "#{user.name}","/user/mypage/#{user.id}" %></li>
 <% end %>
 </ol>
 <hr>
 <p>初めてこのページを開いた場合、<br>
 仮のユーザ名（番号）が用意されています。<br>
-友達同士で決めた番号と同じ番号のユーザを選択してください。</p>
+友達同士で決めた番号と同じ番号のユーザを選択してください。<br>
+パスワードを設定していないユーザは空欄のまま送信ボタンを押してください</p>
