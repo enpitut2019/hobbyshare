@@ -4,7 +4,15 @@
 <!-- group_user_allに格納したレコードのうち、ユーザ名は表示に、IDをリンクに利用する -->
 <ol>
 <% @group_user_all.each do |user| %>
-    <li> <%= link_to "#{user.name}","/user/mypage/#{user.id}" %></li>
+  <%= form_tag("/user/group_login") do %>
+    <li>
+      <%= user.name %>
+      <input name="group_password">
+      <input type="hidden" name="user_id" value="<%= user.id%>">
+      <input type="hidden" name="group_id" value="<%= @gid %>">
+      <input type="submit">
+    </li>
+  <% end %>
 <% end %>
 </ol>
 <hr>
