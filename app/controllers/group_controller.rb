@@ -1,4 +1,7 @@
 class GroupController < ApplicationController
+  def top
+
+  end
   def list
     #select.htmlで選択された人のidを@idに数字として格納
     #gidにグループidを格納する
@@ -11,6 +14,7 @@ class GroupController < ApplicationController
     GroupBelong.where(group_id: @gid).each do |u|
       @query_guser.push(u.user_id)
     end
+    #group_user_allにUserから取り出したレコードを格納する
     @group_user_all = []
     @query_guser.each do |qg|
       @group_user_all.push(User.find(qg))
