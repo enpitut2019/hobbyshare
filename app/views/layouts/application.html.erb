@@ -10,6 +10,11 @@
   </head>
   <meta name="viewport" content="width=device-width">
   <body>
+    <!-- flash[:notice]に中身があれば表示 -->
+    <% if flash[:notice] %>
+      <p><font color="red"><%= flash[:notice] %></font></p>
+    <% end %>
+    <!-- 本文 -->
     <%= yield %>
   </body>
 </html>
