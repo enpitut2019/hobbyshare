@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   get 'group/make' => 'group#make'
   post 'group/new' => 'group#new'
   post 'user/newhobby' => 'user#newhobby'
+  post 'user/name_change' => 'user#name_change'
 end
