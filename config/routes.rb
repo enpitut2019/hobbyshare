@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   get 'user/mypage/:user_id' => 'user#mypage'
   get 'user/login' => 'user#login'
   get '/' => 'user#login'
+
+  get 'group/:group_id/list' => 'group#list'
+  get 'group/make' => 'group#make'
+  post 'group/new' => 'group#new'
 end
