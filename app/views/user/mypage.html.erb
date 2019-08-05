@@ -9,6 +9,7 @@
   <input type="reset" value="リセット">
 <% end %>
 
+<!-- パスワード設定部分。一時的にコメントアウト中
 <h3>パスワード設定</h3>
 <%= form_tag("/user/group_password") do %>
   <input name="group_password" type="password" required>
@@ -16,6 +17,8 @@
   <input type="submit" value="パスワードを設定する">
   <input type="reset" value="リセット">
 <% end %>
+
+-->
 
 <h3>あなたが登録している趣味</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
@@ -49,3 +52,10 @@
   </li>
   <% end %>
 </ol>
+
+<hr>
+<p>ここはあなたのマイページです。<br>
+ここではあなたのユーザ名を変更したり、<br>
+共有したい趣味を登録することができます。<br>
+自分と同じ趣味を持つ仲間を知りたい場合は、<br>
+『あなたの所属してるグループ』からグループを選択して下さい</p>
