@@ -1,6 +1,6 @@
 <h1>グループメンバー一覧表示のページです</h1>
 
 <h3><%= Group.find(@gid).group_name %>に所属しているメンバー</h3>
-<% @group_user_all.each do |p| %>
-<%= p %><br>
+<% @group_user_all.each do |user| %>
+    <li> <%= link_to "#{user.name}","/user/mypage/#{user.id}" %></li>
 <% end %>

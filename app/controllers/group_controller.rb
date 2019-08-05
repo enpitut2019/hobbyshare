@@ -6,18 +6,14 @@ class GroupController < ApplicationController
     @gid = params[:group_id].to_i
 
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
-    @query_guser_id = []
+    @query_guser = []
     #GIDとUIDを結びつけているGroupBelongに対して選択されたグループのGIDで検索をかけ、
-    #そのグループに所属する操作者を除くユーザのUIDを格納する。
     GroupBelong.where(group_id: @gid).each do |u|
-      if u.user_id == @id
-      else
-      @query_guser_id.push(u.user_id)
-      end
+      @query_guser.push(u.user_id)
     end
     @group_user_all = []
-    @query_guser_id.each do |qgi|
-      @group_user_all.push(User.find(qgi).name)
+    @query_guser.each do |qg|
+      @group_user_all.push(User.find(qg))
     end
 
   end
