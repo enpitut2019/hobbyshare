@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'user/login' => 'user#login'
 
   get '/' => 'group#top'
+  post 'group/search' => 'group#search'
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
   post 'group/new' => 'group#new'
