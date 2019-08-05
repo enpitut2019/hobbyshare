@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
   post 'group/new' => 'group#new'
+  post 'user/newhobby' => 'user#newhobby'
 end

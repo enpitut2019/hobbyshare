@@ -39,6 +39,28 @@ class UserController < ApplicationController
     end
   end
 
+  def newhobby
+    #Hobbyの主キーを保存する変数hobby_idの初期化
+    user_id_tmp = params[:user_id]
+    hobby_id = 0
+    #既に登録された趣味であった場合
+    if Hobby.find_by(hobby_name: params[:hobby_name])
+      hobby_id = Hobby.find_by(hobby_name: params[:hobby_name]).id
+    else
+    #新規にHobbyに登録する趣味の場合
+      hobby_tmp = Hobby.create(hobby_name: params[:hobby_name])
+      hobby_id = hobby_tmp.id
+    end
+    #重複するレコードがあるかどうか
+    if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id_tmp)
+      flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
+    else
+    #UserHobbyへの格納
+    tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+    end
+    redirect_to("/user/mypage/#{user_id_tmp}")
+  end
+
   def show
     #select.htmlで選択された人のidを@idに数字として格納
     #gidにグループidを格納する

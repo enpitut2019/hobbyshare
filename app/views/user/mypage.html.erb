@@ -1,6 +1,7 @@
 <h1>ここはユーザのマイページです</h1>
 <p>あなたのユーザ名は<%= @user_name %>です</p>
 <h3>あなたが登録している趣味</h3>
+
 <!-- ここにユーザが登録してある趣味を全て表示する -->
 <ol>
   <% @users_hobbies.each do |hname| %>
@@ -9,9 +10,22 @@
   </li>
   <% end %>
 </ol>
+
+<h3>趣味の登録</h3>
+<!-- ここにユーザが登録してある趣味を全て表示する -->
+<%= form_tag("/user/newhobby") do %>
+  <input name="hobby_name">
+  <br>
+  <p></p><!--表示をよくするための空行-->
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="趣味を登録する">
+  <input type="reset" value="入力内容をリセットする">
+<% end %>
+
 <br>
 <h3>あなたの所属してるグループ</h3>
 <!-- 所属しているグループ名の一覧を表示 -->
+<h3>グループ名</h3>
 <ol>
   <% @belong_group_name.each do |gname| %>
   <li>
