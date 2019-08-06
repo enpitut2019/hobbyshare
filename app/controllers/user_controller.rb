@@ -61,7 +61,7 @@ class UserController < ApplicationController
     if Hobby.find_by(hobby_name: params[:hobby_name])
       hobby_id = Hobby.find_by(hobby_name: params[:hobby_name]).id
     else
-    #新規にHobbyに登録する趣味の場合
+      #新規にHobbyに登録する趣味の場合
       hobby_tmp = Hobby.create(hobby_name: params[:hobby_name])
       hobby_id = hobby_tmp.id
     end
@@ -69,8 +69,8 @@ class UserController < ApplicationController
     if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id_tmp)
       flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
     else
-    #UserHobbyへの格納
-    tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      #UserHobbyへの格納
+      tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
     end
     redirect_to("/user/mypage/#{user_id_tmp}")
   end
@@ -123,8 +123,8 @@ class UserController < ApplicationController
       if u.user_id == @id
         @query_guser_id_andme.push(u.user_id)
       else
-      @query_guser_id.push(u.user_id)
-      @query_guser_id_andme.push(u.user_id)
+        @query_guser_id.push(u.user_id)
+        @query_guser_id_andme.push(u.user_id)
       end
     end
     @group_user_all = []
@@ -151,6 +151,20 @@ class UserController < ApplicationController
         end
       end
     end
+  end
+
+  def hobby_delete
+    #各種値を変数に入れる
+    user_id = params[:user_id]
+    hobby_id = params[:hobby_id]
+    #データベースからレコードを取り出す
+    hobby = Hobby.find_by(id: hobby_id)
+    #Userhobbyの削除
+    target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    target.delete
+    #趣味を削除したことを通知してマイページへリダイレクト
+    flash[:notice] = "#{hobby.hobby_name}を削除しました"
+    redirect_to("/user/mypage/#{user_id}")
   end
 
 end
