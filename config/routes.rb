@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'user/show/:user_id/:group_id' => 'user#show'
   get 'user/mypage/:user_id' => 'user#mypage'
   get 'user/login' => 'user#login'
-  post '/user/hobby-delete' => 'user#hobby_delete'
+  post '/user/hobby_delete' => 'user#hobby_delete'
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   post 'user/group_password' => 'user#group_password'
   post 'user/group_login' => 'user#group_login'
   post 'user/new_member' => 'user#new_member'
+  post 'user/group_delete' => 'user#group_delete'
 end

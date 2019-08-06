@@ -39,7 +39,7 @@ table > tbody > tr > td:first-child::before {
   <tr>
     <td>.</td>
     <td>
-    <%= form_tag("/user/hobby-delete") do %>
+    <%= form_tag("/user/hobby_delete") do %>
     <%= "#{hname.hobby_name}" %>
     </td>
     <!-- 趣味の削除ボタン -->
@@ -68,13 +68,27 @@ table > tbody > tr > td:first-child::before {
 <h3>あなたの所属してるグループ</h3>
 <!-- 所属しているグループ名の一覧を表示 -->
 <h3>グループ名</h3>
-<ol>
+
+
+
+<table>
   <% @belong_group_name.each do |gname| %>
-  <li>
+  <tr>
+    <td>.</td>
+    <td>
     <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
-  </li>
+    <%= form_tag("/user/group_delete") do %>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+    <input type="hidden" name="user_id" value="<%= @user_id %>">
+    <input type="hidden" name="group_id" value="<%= gname.id %>">
+    <input type="submit" value="削除">
+    </td>
+    <% end %>
+  </tr>
   <% end %>
-</ol>
+</table>
 
 <hr>
 <p>ここはあなたのマイページです。<br>
