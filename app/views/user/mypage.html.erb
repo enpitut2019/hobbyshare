@@ -23,7 +23,13 @@
 <ol>
   <% @users_hobbies.each do |hname| %>
   <li>
+    <%= form_tag("/user/hobby-delete") do %>
     <%= "#{hname.hobby_name}" %>
+    <!-- 趣味の削除ボタン -->
+    <input type="hidden" name=user_id" value="<%= @user_id %>">
+    <input type="hidden" name=hobby_id" value="<%= hname.id %>">
+    <input type="submit" value="削除">
+    <% end %>
   </li>
   <% end %>
 </ol>
