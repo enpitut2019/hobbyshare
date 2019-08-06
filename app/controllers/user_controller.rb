@@ -57,6 +57,7 @@ class UserController < ApplicationController
     new_user = User.create(name: params[:user_name])
     GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
     redirect_to("/group/#{params[:group_id]}/list")
+    flash[:notice] = "#{params[:user_name]}を追加しました！"
   end
 
 
