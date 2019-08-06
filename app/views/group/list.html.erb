@@ -23,7 +23,7 @@
 <h3>メンバーを追加する</h3>
 <%= form_tag("/user/new_member") do %>
   <input type="hidden" name="group_id" value="<%= @gid %>">
-  <input  name="user_name">
+  <input  name="user_name" required>
   <input type="submit">
 <% end %>
 
