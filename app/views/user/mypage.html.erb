@@ -42,17 +42,6 @@ p.caution {
 </table>
 <p class="caution"><small>※所属しているグループが無くなるとユーザの情報も削除されます</small></p>
 
-<h3>趣味の登録</h3>
-<!-- ここにユーザが登録してある趣味を全て表示する -->
-<%= form_tag("/user/newhobby") do %>
-  <input name="hobby_name" required>
-  <br>
-  <p></p><!--表示をよくするための空行-->
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="趣味を登録する">
-  <input type="reset" value="入力内容をリセットする">
-<% end %>
-
 <h3>あなたが登録している趣味</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
 <table>
@@ -74,6 +63,28 @@ p.caution {
   <% end %>
 </table>
 
+<h4>趣味の登録</h4>
+<!-- ここにユーザが登録してある趣味を全て表示する -->
+<%= form_tag("/user/newhobby") do %>
+  <input name="hobby_name" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="趣味を登録する">
+  <input type="reset" value="入力内容をリセットする">
+<% end %>
+<br>
+<!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
+<%= form_tag("/user/newhobby") do %>
+<select name="hobby_name"required>
+  <option value="">おすすめ趣味一覧</option>
+  <option value="りんご">りんご</option>
+  <option value="ぶどう">ぶどう</option>
+  <option value="みかん">みかん</option>
+  <option value="ゆず">ゆず</option>
+</select>
+<input type="hidden" name="user_id" value="<%= @user_id %>">
+<input type="submit" value="登録">
+<% end %>
+<hr>
 <!-- ユーザー名の変更 -->
 <h4>ユーザー名変更</h4>
 <%= form_tag("/user/name_change") do %>
