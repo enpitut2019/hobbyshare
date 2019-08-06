@@ -10,26 +10,47 @@ table > tbody > tr {
 table > tbody > tr > td:first-child::before {
   content: counter(rowCount);
 }
+
+p.caution {
+  color: red;
+}
+
 </style>
 
-<h1>ここはユーザのマイページです</h1>
-<h2>あなたのユーザ名は<%= @user_name %>です</h2>
-<!-- ユーザー名の変更 -->
-<h3>ユーザー名変更</h3>
-<%= form_tag("/user/name_change") do %>
-  <input name="user_name" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="名前を変更する">
-  <input type="reset" value="リセット">
-<% end %>
+<h1>ここは<%= @user_name %>さんのマイページです</h1>
 
-<!-- パスワード設定部分 -->
-<h3>パスワード設定</h3>
-<%= form_tag("/user/group_password") do %>
-  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
+<h3>あなたの所属してるグループ</h3>
+<p><small>グループ名をクリックして共通する趣味をチェック！</small></p>
+<!-- 所属しているグループ名の一覧を表示 -->
+<table>
+  <% @belong_group_name.each do |gname| %>
+  <tr>
+    <td>.</td>
+    <td>
+    <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
+    <%= form_tag("/user/group_delete") do %>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+    <input type="hidden" name="user_id" value="<%= @user_id %>">
+    <input type="hidden" name="group_id" value="<%= gname.id %>">
+    <input type="submit" value="グループから抜ける">
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+<p class="caution"><small>※所属しているグループが無くなるとユーザの情報も削除されます</small></p>
+
+<h3>趣味の登録</h3>
+<!-- ここにユーザが登録してある趣味を全て表示する -->
+<%= form_tag("/user/newhobby") do %>
+  <input name="hobby_name" required>
+  <br>
+  <p></p><!--表示をよくするための空行-->
   <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="パスワードを設定する">
-  <input type="reset" value="リセット">
+  <input type="submit" value="趣味を登録する">
+  <input type="reset" value="入力内容をリセットする">
 <% end %>
 
 <h3>あなたが登録している趣味</h3>
@@ -53,42 +74,25 @@ table > tbody > tr > td:first-child::before {
   <% end %>
 </table>
 
-<h3>趣味の登録</h3>
-<!-- ここにユーザが登録してある趣味を全て表示する -->
-<%= form_tag("/user/newhobby") do %>
-  <input name="hobby_name" required>
-  <br>
-  <p></p><!--表示をよくするための空行-->
+<!-- ユーザー名の変更 -->
+<h4>ユーザー名変更</h4>
+<%= form_tag("/user/name_change") do %>
+  <input name="user_name" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="趣味を登録する">
-  <input type="reset" value="入力内容をリセットする">
+  <input type="submit" value="名前を変更する">
+  <input type="reset" value="リセット">
+<% end %>
+
+<!-- パスワード設定部分 -->
+<h4>パスワード設定</h4>
+<%= form_tag("/user/group_password") do %>
+  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="パスワードを設定する">
+  <input type="reset" value="リセット">
 <% end %>
 
 <br>
-<h3>あなたの所属してるグループ</h3>
-<!-- 所属しているグループ名の一覧を表示 -->
-<h3>グループ名</h3>
-
-
-
-<table>
-  <% @belong_group_name.each do |gname| %>
-  <tr>
-    <td>.</td>
-    <td>
-    <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
-    <%= form_tag("/user/group_delete") do %>
-    </td>
-    <!-- 趣味の削除ボタン -->
-    <td>
-    <input type="hidden" name="user_id" value="<%= @user_id %>">
-    <input type="hidden" name="group_id" value="<%= gname.id %>">
-    <input type="submit" value="グループから抜ける">
-    </td>
-    <% end %>
-  </tr>
-  <% end %>
-</table>
 
 <hr>
 <p>ここはあなたのマイページです。<br>
