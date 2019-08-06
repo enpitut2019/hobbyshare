@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   get 'user/show/:user_id/:group_id' => 'user#show'
   get 'user/mypage/:user_id' => 'user#mypage'
   get 'user/login' => 'user#login'
+  post '/user/hobby-delete' => 'user#hobby_delete'
 
   get '/' => 'group#top'
+  get '/top' => 'group#top'
   post 'group/search' => 'group#search'
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'

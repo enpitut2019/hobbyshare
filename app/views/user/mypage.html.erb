@@ -1,3 +1,17 @@
+<style type="text/css">
+  table {
+  counter-reset: rowCount;
+}
+
+table > tbody > tr {
+  counter-increment: rowCount;
+}
+
+table > tbody > tr > td:first-child::before {
+  content: counter(rowCount);
+}
+</style>
+
 <h1>ここはユーザのマイページです</h1>
 <h2>あなたのユーザ名は<%= @user_name %>です</h2>
 <!-- ユーザー名の変更 -->
@@ -20,13 +34,24 @@
 
 <h3>あなたが登録している趣味</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
-<ol>
+<table>
   <% @users_hobbies.each do |hname| %>
-  <li>
+  <tr>
+    <td>.</td>
+    <td>
+    <%= form_tag("/user/hobby-delete") do %>
     <%= "#{hname.hobby_name}" %>
-  </li>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+    <input type="hidden" name="user_id" value="<%= @user_id %>">
+    <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+    <input type="submit" value="削除">
+    </td>
+    <% end %>
+  </tr>
   <% end %>
-</ol>
+</table>
 
 <h3>趣味の登録</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
