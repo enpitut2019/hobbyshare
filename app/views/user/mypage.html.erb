@@ -12,7 +12,7 @@
 <!-- パスワード設定部分 -->
 <h3>パスワード設定</h3>
 <%= form_tag("/user/group_password") do %>
-  <input pattern="^[0-9A-Za-z]+$"　name="group_password" type="password" required>
+  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
   <input type="submit" value="パスワードを設定する">
   <input type="reset" value="リセット">
