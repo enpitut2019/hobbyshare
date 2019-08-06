@@ -97,6 +97,7 @@ class UserController < ApplicationController
     user.group_password = params[:group_password]
     #userの名前の変更を確定
     user.save
+    flash[:notice] = "パスワードを設定しました"
     #mypageへリダイレクト
     redirect_to("/user/mypage/#{user_id}")
   end
