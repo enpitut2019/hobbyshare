@@ -1,16 +1,20 @@
 <h1>新規グループ作成ページ</h1>
+<p>新しく作るグループの情報を入力しましょう！大丈夫、難しいことは何もありません。</p>
+<hr>
+<p>まずは作成するグループの名前を入力してください。</p>
 <%= form_tag("/group/new") do %>
-  <h3>グループ名</h3>
+  <p><strong>グループ名</strong>
   <input name="group_name" required>
   <!--<h3>人数</h3>
     <input type="number" min="1" max="100" name="number_of_menber" required> -->
   <input type="hidden" name="number_of_menber" value="1">
-  <h3>作成者のユーザー名</h3>
+  </p>
+  <p>次に、グループ作成者（あなた）のユーザー名を入力してください。<br>
+  </p>
+  <p><strong>ユーザー名</strong>
   <input name="user_name" required>
-  <br>
-  <p></p><!--表示をよくするための空行-->
-  <input type="submit" value="グループ作成">
+  </p>
+  <p>入力内容に間違いがなければグループ作成を選択してください。</p><!--表示をよくするための空行-->
+  <input type="submit" value="この内容でグループを作成">
   <input type="reset" value="入力内容をリセットする">
 <% end %>
-<hr>
-<p>新規に作成するグループの名前とグループ作成者（あなた）に設定するユーザー名を入力してください。</p>

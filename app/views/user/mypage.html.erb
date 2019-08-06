@@ -30,8 +30,31 @@ p.caution {
 
 <h1>ここは<%= @user_name %>さんのマイページです</h1>
 
+<!-- ユーザー名の変更 -->
+<h4>ユーザー名の設定</h4>
+<p>ここではユーザ名を変更することができます。</p>
+<%= form_tag("/user/name_change") do %>
+  <input name="user_name" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="名前を変更する">
+  <input type="reset" value="リセット">
+<% end %>
+
+<!-- パスワード設定部分 -->
+<h4>パスワードの設定</h4>
+<p>パスワードを設定するとこのページにアクセスする為にパスワードが必要になります。<br>
+パスワードには半角英数字のみ使用できます。</p>
+<%= form_tag("/user/group_password") do %>
+  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="パスワードを設定する">
+  <input type="reset" value="リセット">
+<% end %>
+
+<hr>
+
 <h3>あなたの所属してるグループ</h3>
-<p><small>グループ名をクリックして共通する趣味をチェック！</small></p>
+<p>自分と同じ趣味を持つ仲間を知りたい場合は、ここから確認したいグループを選択して下さい。</p>
 <!-- 所属しているグループ名の一覧を表示 -->
 <table>
   <% @belong_group_name.each do |gname| %>
@@ -52,6 +75,8 @@ p.caution {
 </table>
 <p class="caution"><small>※所属しているグループが無くなるとユーザの情報も削除されます</small></p>
 
+<hr>
+
 <h3>あなたが登録している趣味</h3>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
 <table>
@@ -69,12 +94,12 @@ p.caution {
     <input type="submit" value="削除" onclick="return subcheck()">
     </td>
     <% end %>
-    </td>
   </tr>
   <% end %>
 </table>
 
 <h4>趣味の登録</h4>
+<p>ここで共有したい趣味を登録することができます。</p>
 <!-- ここにユーザが登録してある趣味を全て表示する -->
 <%= form_tag("/user/newhobby") do %>
   <input name="hobby_name" required>
@@ -83,6 +108,8 @@ p.caution {
   <input type="reset" value="入力内容をリセットする">
 <% end %>
 <br>
+<p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
+下のメニューから自分の趣味と合うものを選んでください。</p>
 <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
 <%= form_tag("/user/newhobby") do %>
 <select name="hobby_name"required>
@@ -96,31 +123,3 @@ p.caution {
 <input type="hidden" name="user_id" value="<%= @user_id %>">
 <input type="submit" value="登録">
 <% end %>
-<hr>
-<!-- ユーザー名の変更 -->
-<h4>ユーザー名変更</h4>
-<%= form_tag("/user/name_change") do %>
-  <input name="user_name" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="名前を変更する">
-  <input type="reset" value="リセット">
-<% end %>
-
-<!-- パスワード設定部分 -->
-<h4>パスワード設定</h4>
-<%= form_tag("/user/group_password") do %>
-  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="パスワードを設定する">
-  <input type="reset" value="リセット">
-<% end %>
-
-<br>
-
-<hr>
-<p>ここはあなたのマイページです。<br>
-ここではあなたのユーザ名を変更したり、<br>
-共有したい趣味を登録することができます。<br>
-自分と同じ趣味を持つ仲間を知りたい場合は、<br>
-『あなたの所属してるグループ』からグループを選択して下さい。<br>
-パスワードは半角英数字のみ使用できます。</p>
