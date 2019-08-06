@@ -49,11 +49,11 @@ p.caution {
   <tr>
     <td>.</td>
     <td>
-    <%= form_tag("/user/hobby_delete") do %>
     <%= "#{hname.hobby_name}" %>
     </td>
     <!-- 趣味の削除ボタン -->
     <td>
+    <%= form_tag("/user/hobby_delete") do %>
     <input type="hidden" name="user_id" value="<%= @user_id %>">
     <input type="hidden" name="hobby_id" value="<%= hname.id %>">
     <input type="submit" value="削除">
