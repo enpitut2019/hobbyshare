@@ -12,7 +12,7 @@
 <!-- パスワード設定部分 -->
 <h3>パスワード設定</h3>
 <%= form_tag("/user/group_password") do %>
-  <input name="group_password" type="password" required>
+  <input pattern="^[0-9A-Za-z]+$"　name="group_password" type="password" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
   <input type="submit" value="パスワードを設定する">
   <input type="reset" value="リセット">
@@ -56,4 +56,5 @@
 ここではあなたのユーザ名を変更したり、<br>
 共有したい趣味を登録することができます。<br>
 自分と同じ趣味を持つ仲間を知りたい場合は、<br>
-『あなたの所属してるグループ』からグループを選択して下さい</p>
+『あなたの所属してるグループ』からグループを選択して下さい。<br>
+パスワードは半角英数字のみ使用できます。</p>

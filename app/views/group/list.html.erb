@@ -11,7 +11,7 @@
       <input type="hidden" name="group_id" value="<%= @gid %>">
       <% if user.group_password.nil? %>
       <% else %>
-        <input type="password" name="group_password">
+        <input pattern="^[0-9A-Za-z]+$" type="password" name="group_password">
       <% end %>
       <input type="submit">
     </li>
