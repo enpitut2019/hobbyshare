@@ -62,14 +62,14 @@ p.caution {
     <td>.</td>
     <td>
     <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
-    <%= form_tag("/user/group_delete") do %>
     </td>
     <td>
+    <%= form_tag("/user/group_delete") do %>
     <input type="hidden" name="user_id" value="<%= @user_id %>">
     <input type="hidden" name="group_id" value="<%= gname.id %>">
     <input type="submit" value="グループから抜ける" onclick="return subcheck()">
-    </td>
     <% end %>
+    </td>
   </tr>
   <% end %>
 </table>
