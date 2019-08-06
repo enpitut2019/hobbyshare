@@ -15,6 +15,8 @@ class UserController < ApplicationController
         flash[:notice] = "パスワードが違います"
         redirect_to("/group/#{params[:group_id]}/list")
         return
+      else
+        session[:login_user_id] = user_id
       end
     end
     #リダイレクト
@@ -23,7 +25,24 @@ class UserController < ApplicationController
 
   def mypage
     #ユーザIDを変数に入れました
-    @user_id = params[:user_id]
+    @user_id = params[:user_id].to_i
+    session_id = session[:login_user_id].to_i
+
+    #セッションIDがログインユーザーと一致するか確認
+    #ユーザにパスワードが設定済みか確認
+    if User.find_by(id: @user_id).group_password
+      #既にログインしているか確認
+      if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+      else #ログインしているユーザでも違うユーザのマイページを見ようとしたら弾く
+        if @user_id != session_id
+          flash[:notice] = "このページにアクセスする権限がありません"
+          redirect_to("/")
+        end
+      end
+    end
+
     #Group_belongの表からuser_idが変数@user_idに一致するレコードを全て配列に入れる
     @belong_record = GroupBelong.where(user_id: @user_id)
     #belong_recordからgroupIDだけを取り出して配列にする
@@ -106,6 +125,8 @@ class UserController < ApplicationController
     #userの名前の変更を確定
     user.save
     flash[:notice] = "パスワードを設定しました"
+    #セッションIDを設定
+    session[:login_user_id] = user_id
     #mypageへリダイレクト
     redirect_to("/user/mypage/#{user_id}")
   end
