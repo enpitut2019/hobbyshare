@@ -18,6 +18,15 @@
   <% end %>
 <% end %>
 </ol>
+<br>
+<hr>
+<h3>メンバーを追加する</h3>
+<%= form_tag("/user/new_member") do %>
+  <input type="hidden" name="group_id" value="<%= @gid %>">
+  <input  name="user_name">
+  <input type="submit">
+<% end %>
+
 <hr>
 <p>初めてこのページを開いた場合、<br>
 仮のユーザ名（番号）が用意されています。<br>

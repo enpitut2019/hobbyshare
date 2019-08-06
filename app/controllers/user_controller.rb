@@ -53,6 +53,13 @@ class UserController < ApplicationController
     end
   end
 
+  def new_member
+    new_user = User.create(name: params[:user_name])
+    GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
+    redirect_to("/group/#{params[:group_id]}/list")
+  end
+
+
   def newhobby
     #Hobbyの主キーを保存する変数hobby_idの初期化
     user_id_tmp = params[:user_id]
