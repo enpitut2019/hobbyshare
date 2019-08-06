@@ -75,6 +75,7 @@ class UserController < ApplicationController
   def new_member
     new_user = User.create(name: params[:user_name])
     GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
+    #パスワード登録を追加と同時にやるならここでgiduid送るのが必須になる
     redirect_to("/user/mypage/#{new_user.id}")
     flash[:notice] = "#{params[:user_name]}を追加しました！"
   end
