@@ -7,9 +7,12 @@
   <%= form_tag("/user/group_login") do %>
     <li>
       <%= user.name %>
-      <input type="password" name="group_password">
       <input type="hidden" name="user_id" value="<%= user.id%>">
       <input type="hidden" name="group_id" value="<%= @gid %>">
+      <% if user.group_password.nil? %>
+      <% else %>
+        <input type="password" name="group_password">
+      <% end %>
       <input type="submit">
     </li>
   <% end %>
