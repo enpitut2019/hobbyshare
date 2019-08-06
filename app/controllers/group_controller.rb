@@ -50,8 +50,8 @@ class GroupController < ApplicationController
     number_of_menber = params[:number_of_menber].to_i
     group_name = "#{params[:group_name]}_"
     for i in 1..number_of_menber do
-      menber_name = group_name + i.to_s
-      user = User.new(name:menber_name)
+      #menber_name = group_name + i.to_s
+      user = User.new(name: params[:user_name])
       user.save
       gb = GroupBelong.new(group_id: new_group.id, user_id: user.id)
       gb.save
