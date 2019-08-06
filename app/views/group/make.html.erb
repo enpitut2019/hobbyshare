@@ -2,8 +2,9 @@
 <%= form_tag("/group/new") do %>
   <h3>グループ名</h3>
   <input name="group_name">
-  <h3>人数</h3>
-  <input type="number" min="1" max="100" name="number_of_menber" required>
+  <!--<h3>人数</h3>
+    <input type="number" min="1" max="100" name="number_of_menber" required> -->
+  <input type="hidden" name="number_of_menber" value="1">
 
   <br>
   <p></p><!--表示をよくするための空行-->
@@ -11,5 +12,4 @@
   <input type="reset" value="入力内容をリセットする">
 <% end %>
 <hr>
-<p>このページではあなたたちのグループの名前と<br>
-人数を入力してください。</p>
+<p>このページではあなたたちのグループの名前を入力してください。</p>
