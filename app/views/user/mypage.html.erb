@@ -59,16 +59,17 @@ p.caution {
   <tr>
     <td>.</td>
     <td>
-    <%= form_tag("/user/hobby_delete") do %>
     <%= "#{hname.hobby_name}" %>
     </td>
     <!-- 趣味の削除ボタン -->
     <td>
+    <%= form_tag("/user/hobby_delete") do %>
     <input type="hidden" name="user_id" value="<%= @user_id %>">
     <input type="hidden" name="hobby_id" value="<%= hname.id %>">
     <input type="submit" value="削除" onclick="return subcheck()">
     </td>
     <% end %>
+    </td>
   </tr>
   <% end %>
 </table>
@@ -86,10 +87,11 @@ p.caution {
 <%= form_tag("/user/newhobby") do %>
 <select name="hobby_name"required>
   <option value="">おすすめ趣味一覧</option>
-  <option value="りんご">りんご</option>
-  <option value="ぶどう">ぶどう</option>
-  <option value="みかん">みかん</option>
-  <option value="ゆず">ゆず</option>
+  <option value="スポーツ">スポーツ</option>
+  <option value="映画">映画</option>
+  <option value="ゲーム">ゲーム</option>
+  <option value="アニメ">アニメ</option>
+  <option value="開発">開発</option>
 </select>
 <input type="hidden" name="user_id" value="<%= @user_id %>">
 <input type="submit" value="登録">
