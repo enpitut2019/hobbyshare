@@ -57,7 +57,7 @@ class GroupController < ApplicationController
       gb.save
     end
 
-    redirect_to("/group/#{new_group.id}/list") #グループ内メンバー一覧ページへリダイレクト
+    redirect_to("/user/mypage/#{user.id}") #グループ内メンバー一覧ページへリダイレクト
   end
 
 end
