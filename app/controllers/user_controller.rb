@@ -230,7 +230,7 @@ class UserController < ApplicationController
         @query_hobbyid.each do |qh|
           #一致していた場合、文として整形し配列@results_seikeiに格納する
           if qh == uh.hobby_id
-            @results_seikei.push(Hobby.find(uh.hobby_id).hobby_name + "を" + User.find(gu).name + "さんと共有しています")
+            @results_seikei.push(Hobby.find(uh.hobby_id).hobby_name + "を" + User.find(gu).name + "さんと,")
           end
         end
       end
