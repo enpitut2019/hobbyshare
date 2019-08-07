@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'user/select' => 'user#select'
   get 'user/show/:user_id/:group_id' => 'user#show'
   get 'user/mypage/:user_id' => 'user#mypage'
+  get 'user/first_setting/:user_id' => 'user#first_setting'
   get 'user/login' => 'user#login'
   post '/user/hobby_delete' => 'user#hobby_delete'
 
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
   post 'user/newhobby' => 'user#newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
+  post 'user/first_password' => 'user#first_password'
   post 'user/group_login' => 'user#group_login'
   post 'user/new_member' => 'user#new_member'
   post 'user/group_delete' => 'user#group_delete'

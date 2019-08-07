@@ -76,8 +76,28 @@ class UserController < ApplicationController
     new_user = User.create(name: params[:user_name])
     GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
     #パスワード登録を追加と同時にやるならここでgiduid送るのが必須になる
-    redirect_to("/user/mypage/#{new_user.id}")
-    flash[:notice] = "#{params[:user_name]}を追加しました！"
+    redirect_to("/user/first_setting/#{new_user.id}")
+    flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+  end
+
+  def first_setting
+    @user_id = params[:user_id].to_i
+    session_id = session[:login_user_id].to_i
+
+    #セッションIDがログインユーザーと一致するか確認
+    #ユーザにパスワードが設定済みか確認
+    if User.find_by(id: @user_id).group_password
+      #既にログインしているか確認
+      if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+      else #ログインしているユーザでも違うユーザのマイページを見ようとしたら弾く
+        if @user_id != session_id
+          flash[:notice] = "このページにアクセスする権限がありません"
+          redirect_to("/")
+        end
+      end
+    end
   end
 
 
@@ -128,6 +148,40 @@ class UserController < ApplicationController
     flash[:notice] = "パスワードを設定しました"
     #セッションIDを設定
     session[:login_user_id] = user_id
+    #mypageへリダイレクト
+    redirect_to("/user/mypage/#{user_id}")
+  end
+
+  def first_password
+    #userIDを受け取る
+    user_id = params[:user_id]
+    #userIDから対応するレコードを取り出す
+    user = User.find_by(id: user_id)
+    #userのgroup_passwordを変更
+    user.group_password = params[:group_password]
+    #userの名前の変更を確定
+    user.save
+    #セッションIDを設定
+    session[:login_user_id] = user_id
+    params[:hobby_name].each do |c1, c2|
+      if c2 == "1"
+        hobby_id = 0
+        #既に登録された趣味であった場合
+        if Hobby.find_by(hobby_name: c1)
+          hobby_id = Hobby.find_by(hobby_name: c1).id
+        else
+          #新規にHobbyに登録する趣味の場合
+          hobby_tmp = Hobby.create(hobby_name: c1)
+          hobby_id = hobby_tmp.id
+        end
+        #重複するレコードがあるかどうか
+        if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id)
+        else
+          #UserHobbyへの格納
+          tmp = UserHobby.create(user_id: user_id, hobby_id: hobby_id)
+        end
+      end
+    end
     #mypageへリダイレクト
     redirect_to("/user/mypage/#{user_id}")
   end
