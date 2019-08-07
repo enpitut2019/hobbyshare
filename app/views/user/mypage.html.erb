@@ -30,16 +30,6 @@ p.caution {
 
 <h1>ここは<%= @user_name %>さんのマイページです</h1>
 
-<!-- パスワード設定部分 -->
-<h4>パスワードの設定</h4>
-<p>パスワードを設定するとこのページにアクセスする為にパスワードが必要になります。<br>
-パスワードには半角英数字のみ使用できます。</p>
-<%= form_tag("/user/group_password") do %>
-  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="パスワードを設定する">
-  <input type="reset" value="リセット">
-<% end %>
 
 <hr>
 
@@ -136,5 +126,15 @@ p.caution {
   <input name="user_name" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
   <input type="submit" value="名前を変更する">
+  <input type="reset" value="リセット">
+<% end %>
+
+<!-- パスワード設定部分 -->
+<h4>パスワードの再設定</h4>
+<p>パスワードには半角英数字のみ使用できます。</p>
+<%= form_tag("/user/group_password") do %>
+  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="パスワードを設定する">
   <input type="reset" value="リセット">
 <% end %>
