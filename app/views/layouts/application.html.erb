@@ -12,7 +12,7 @@
   <body>
     <!-- flash[:notice]に中身があれば表示 -->
     <header>
-      <%= link_to 'トップへ戻る', '/' %>
+      <span class="title"><strong><%= link_to 'HobbyShare', '/' %></strong></span>
     </header>
     <% if flash[:notice] %>
       <p><font color="red"><%= flash[:notice] %></font></p>

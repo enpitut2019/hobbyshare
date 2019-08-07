@@ -1,5 +1,5 @@
 <style type="text/css">
-  table {
+/*  table {
   counter-reset: rowCount;
 }
 
@@ -9,7 +9,7 @@ table > tbody > tr {
 
 table > tbody > tr > td:first-child::before {
   content: counter(rowCount);
-}
+}*/
 
 p.caution {
   color: red;
@@ -29,15 +29,6 @@ p.caution {
 </script>
 
 <h1>ここは<%= @user_name %>さんのマイページです</h1>
-<!-- ユーザー名の変更 -->
-<h4>ユーザー名の設定</h4>
-<p>ここではユーザ名を変更することができます。</p>
-<%= form_tag("/user/name_change") do %>
-  <input name="user_name" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="名前を変更する">
-  <input type="reset" value="リセット">
-<% end %>
 
 <!-- パスワード設定部分 -->
 <h4>パスワードの設定</h4>
@@ -52,27 +43,40 @@ p.caution {
 
 <hr>
 
-<h3>あなたの所属してるグループ</h3>
-<p>自分と同じ趣味を持つ仲間を知りたい場合は、ここから確認したいグループを選択して下さい。</p>
+<h3>グループから同じ趣味の人を探す</h3>
+
 <!-- 所属しているグループ名の一覧を表示 -->
 <table>
   <% @belong_group_name.each do |gname| %>
   <tr>
-    <td>.</td>
-    <td>
-    <%= link_to "#{gname.group_name}","/user/show/#{@user_id}/#{gname.id}" %>
-    <%= form_tag("/user/group_delete") do %>
+    <td></td>
+    <td align="center">
+    <small>グループ名:</small><span><strong><%= "#{gname.group_name}" %></strong></span>
     </td>
-    <td>
+  </tr>
+  <tr>
+    <td></td>
+    <td align="center">
+    <button type="button"onclick="location.href='<%= "/user/show/#{@user_id}/#{gname.id}" %>'"style="width:200px; height:28px;">同じの趣味の人を探す！</button>
+  </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><p class="caution"><small>※グループから抜けるとユーザの情報も消えます。</small></p></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td align="center">
+    <%= form_tag("/user/group_delete") do %>
     <input type="hidden" name="user_id" value="<%= @user_id %>">
     <input type="hidden" name="group_id" value="<%= gname.id %>">
     <input type="submit" value="グループから抜ける" onclick="return subcheck()">
-    </td>
     <% end %>
+    </td>
   </tr>
   <% end %>
 </table>
-<p class="caution"><small>※所属しているグループが無くなるとユーザの情報も削除されます</small></p>
+
 
 <hr>
 
@@ -121,4 +125,16 @@ p.caution {
 </select>
 <input type="hidden" name="user_id" value="<%= @user_id %>">
 <input type="submit" value="登録">
+<% end %>
+
+<hr>
+
+<!-- ユーザー名の変更 -->
+<h4>ユーザー名の設定</h4>
+<p>ここではユーザ名を変更することができます。</p>
+<%= form_tag("/user/name_change") do %>
+  <input name="user_name" required>
+  <input type="hidden" name="user_id" value="<%= @user_id %>">
+  <input type="submit" value="名前を変更する">
+  <input type="reset" value="リセット">
 <% end %>
