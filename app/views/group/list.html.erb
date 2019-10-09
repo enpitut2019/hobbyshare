@@ -12,10 +12,7 @@
       <%= user.name %>
       <input type="hidden" name="user_id" value="<%= user.id%>">
       <input type="hidden" name="group_id" value="<%= @gid %>">
-      <% if user.group_password.nil? %>
-      <% else %>
-        <input pattern="^[0-9A-Za-z]+$" type="password" name="group_password">
-      <% end %>
+      <input pattern="^[0-9A-Za-z]+$" type="password" name="group_password">
       <input type="submit" value="マイページに移動">
     </li>
   <% end %>

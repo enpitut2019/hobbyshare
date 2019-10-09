@@ -10,15 +10,14 @@ class UserController < ApplicationController
   def group_login
     user_id = params[:user_id].to_i
     #パスワードの確認
-    if gp = User.find_by(id: user_id).group_password
-      if gp != params[:group_password]
-        flash[:notice] = "パスワードが違います"
-        redirect_to("/group/#{params[:group_id]}/list")
-        return
-      else
-        session[:login_user_id] = user_id
-      end
+    if !User.find_by(id: user_id).authenticate(params[:group_password])
+      flash[:notice] = "パスワードが違います"
+      redirect_to("/group/#{params[:group_id]}/list")
+      return
+    else
+      session[:login_user_id] = user_id
     end
+
     #リダイレクト
     redirect_to("/user/mypage/#{params[:user_id]}")
   end
@@ -30,7 +29,7 @@ class UserController < ApplicationController
 
     #セッションIDがログインユーザーと一致するか確認
     #ユーザにパスワードが設定済みか確認
-    if User.find_by(id: @user_id).group_password
+    if !User.find_by(id: @user_id).authenticate("password")
       #既にログインしているか確認
       if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
         flash[:notice] = "このページにアクセスする権限がありません"
@@ -73,7 +72,7 @@ class UserController < ApplicationController
   end
 
   def new_member
-    new_user = User.create(name: params[:user_name])
+    new_user = User.create(name: params[:user_name], password: "password")
     GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
     #パスワード登録を追加と同時にやるならここでgiduid送るのが必須になる
     redirect_to("/user/first_setting/#{new_user.id}")
@@ -86,7 +85,7 @@ class UserController < ApplicationController
 
     #セッションIDがログインユーザーと一致するか確認
     #ユーザにパスワードが設定済みか確認
-    if User.find_by(id: @user_id).group_password
+    if !User.find_by(id: @user_id).authenticate("password")
       #既にログインしているか確認
       if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
         flash[:notice] = "このページにアクセスする権限がありません"
@@ -141,8 +140,8 @@ class UserController < ApplicationController
     user_id = params[:user_id]
     #userIDから対応するレコードを取り出す
     user = User.find_by(id: user_id)
-    #userのgroup_passwordを変更
-    user.group_password = params[:group_password]
+    #userのpasswordを変更
+    user.password = params[:group_password]
     #userの名前の変更を確定
     user.save
     flash[:notice] = "パスワードを設定しました"
@@ -157,8 +156,8 @@ class UserController < ApplicationController
     user_id = params[:user_id]
     #userIDから対応するレコードを取り出す
     user = User.find_by(id: user_id)
-    #userのgroup_passwordを変更
-    user.group_password = params[:group_password]
+    #userのpasswordを変更
+    user.password = params[:group_password]
     #userの名前の変更を確定
     user.save
     #セッションIDを設定
