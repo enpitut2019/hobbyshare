@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   post 'user/group_login' => 'user#group_login'
   post 'user/new_member' => 'user#new_member'
   post 'user/group_delete' => 'user#group_delete'
+
+  get 'account/sign_up' => 'account#sign_up'
 end
