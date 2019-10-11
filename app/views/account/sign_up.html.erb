@@ -1,19 +1,24 @@
-<h1>新規作成ページ</h1>
+<h1>新規アカウント作成ページ</h1>
 <p>新しく作るユーザーの情報を入力しましょう！大丈夫、難しいことは何もありません。</p>
 <hr>
 <p>まずは作成するユーザーの名前を入力してください。</p>
-<%= form_tag("/group/new") do %>
+<%= form_tag("/account/new_account") do %>
   <p><strong>ユーザー名</strong>
-  <input name="group_name" required>
-  <!--<h3>人数</h3>
-    <input type="number" min="1" max="100" name="number_of_menber" required> -->
-  <input type="hidden" name="number_of_menber" value="1">
+  <input name="acount_name" required>
   </p>
-  <p>あなたのユーザー名を入力してください。<br>
+  
+  <p>あなたのEmailを入力してください。<br>
   </p>
-  <p><strong>ユーザー名</strong>
-  <input name="user_name" required>
+  <p><strong>Email</strong>
+  <input name="mail" required>
   </p>
+
+  <p>あなたのパスワードを入力してください。<br>
+  </p>
+  <p><strong>パスワード</strong>
+  <input name="password" required>
+  </p>
+
   <p>入力内容に間違いがなければユーザー作成を選択してください。</p><!--表示をよくするための空行-->
   <input type="submit" value="この内容でユーザーを作成">
   <input type="reset" value="入力内容をリセットする">

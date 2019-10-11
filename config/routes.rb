@@ -23,4 +23,5 @@ Rails.application.routes.draw do
 
   get 'account/sign_up' => 'account#sign_up'
   get 'account/:account_id' => 'account#mypage'
+  post 'account/new_account' => 'account#new_account'
 end
