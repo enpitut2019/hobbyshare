@@ -7,7 +7,9 @@ class AccountController < ApplicationController
   end
 
   def new_account
-     ac = Account.create(name: params[:name], mail: params[:mail], password: params[:password])
+    new_user = User.create(name: params[:acount_name], password: "password")
+    userid = new_user.id
+     ac = Account.create(name: params[:acount_name], mail: params[:mail], password: params[:password], user_id: userid)
      flash[:notice] = "アカウントを作成しました！"
      redirect_to("/account/#{ac.id}")
   end
