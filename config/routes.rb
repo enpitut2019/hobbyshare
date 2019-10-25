@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
+
+  get '/index' => 'group#index'
+  
   post 'group/search' => 'group#search'
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
