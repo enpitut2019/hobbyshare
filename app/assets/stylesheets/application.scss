@@ -18,3 +18,5 @@ header a {
   text-decoration: none;
   color: #1e90ff;
 }
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";
