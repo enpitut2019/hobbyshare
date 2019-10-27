@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_25_084605) do
+ActiveRecord::Schema.define(version: 2019_10_27_030840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,8 +21,9 @@ ActiveRecord::Schema.define(version: 2019_10_25_084605) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.integer "dummyuser_id"
+    t.boolean "is_temp", default: false, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
   create_table "group_belongs", force: :cascade do |t|
@@ -60,12 +61,17 @@ ActiveRecord::Schema.define(version: 2019_10_25_084605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
-    t.integer "account_id"
-    t.integer "group_id"
+    t.bigint "account_id"
+    t.bigint "group_id"
+    t.index ["account_id"], name: "index_users_on_account_id"
+    t.index ["group_id"], name: "index_users_on_group_id"
   end
 
+  add_foreign_key "accounts", "users"
   add_foreign_key "group_belongs", "groups"
   add_foreign_key "group_belongs", "users"
   add_foreign_key "user_hobbies", "hobbies"
   add_foreign_key "user_hobbies", "users"
+  add_foreign_key "users", "accounts"
+  add_foreign_key "users", "groups"
 end
