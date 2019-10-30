@@ -4,19 +4,21 @@
 <p>まずは作成するユーザーの名前を入力してください。</p>
 <%= form_tag("/account/new_account") do %>
   <p><strong>ユーザー名</strong>
-  <input name="acount_name" required>
+  <input name="name" required>
   </p>
-  
+
+  <!--
   <p>あなたのEmailを入力してください。<br>
   </p>
   <p><strong>Email</strong>
   <input name="mail" required>
   </p>
+  -->
 
   <p>あなたのパスワードを入力してください。<br>
   </p>
   <p><strong>パスワード</strong>
-  <input name="password" required>
+  <input type="password" name="password" required>
   </p>
 
   <p>入力内容に間違いがなければユーザー作成を選択してください。</p><!--表示をよくするための空行-->
