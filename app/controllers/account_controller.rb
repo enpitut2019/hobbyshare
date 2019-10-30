@@ -17,10 +17,10 @@ class AccountController < ApplicationController
    end
   end
 
-  def login_process
-    login_pass = Account.find_by(name: params[:name])
-    if login_pass && login_pass.authenticate(params[:password])
-      redirect_to("/account/#{login_pass.id}")
+  def login_process#セッションはまかせた
+    login_name = Account.find_by(name: params[:name])
+    if login_name && login_name.authenticate(params[:password])
+      redirect_to("/account/#{login_name.id}")
     else
       flash[:notice] = "入力された内容に誤りがあります"#nameかpasswordが間違っている場合は弾く
       redirect_to("/account/login")
