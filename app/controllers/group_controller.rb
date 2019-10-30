@@ -18,8 +18,17 @@ class GroupController < ApplicationController
     #query_guser_idにグループに所属するユーザのUIDを格納する
     @query_guser = []
     #Userにて指定グループのgidを持つユーザを抽出
+    @login_uid == nil
     User.where(group_id: @gid).each do |u|
       @query_guser.push(u)
+    end
+    if session[:login_account_id] != nil
+      User.where(account_id: session[:login_account_id]).each do |u|
+        if u.group_id == @gid
+          @login_uid = u.id
+          @login_uname = u.name
+        end
+      end
     end
   end
 
@@ -56,5 +65,7 @@ class GroupController < ApplicationController
   def add_member
     @group_id = params[:group_id].to_i
   end
+
+
 
 end

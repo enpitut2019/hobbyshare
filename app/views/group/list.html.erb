@@ -20,5 +20,14 @@
 </ol>
 <br>
 <hr>
+<!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
+<% if @login_uid == nil %>
 <h3>まだグループに参加してない人はここからメンバー追加</h3>
 <%= link_to 'グループに参加する！', "/group/#{@gid}/add_member" %>
+<% else %>
+<%= @login_uname %>としてこのグループに参加しています
+<br>
+<%= link_to 'マイページへ移動する', "/user/mypage/#{@login_uid}" %>
+<br>
+<%= link_to '共有している趣味を閲覧する', "/user/show/#{@login_uid}/#{@gid}" %>
+<% end %>
