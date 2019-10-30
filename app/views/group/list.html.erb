@@ -20,11 +20,5 @@
 </ol>
 <br>
 <hr>
-<h3>グループに参加したいときは？</h3>
-<li>メンバーの人はグループに参加してほしい人にこのグループ名を教えてください。</li>
-<li>新たにグループに参加したい人はこの入力フォームにユーザ名を入力して登録ボタンを押してください</li>
-<%= form_tag("/user/new_member") do %>
-  <input type="hidden" name="group_id" value="<%= @gid %>">
-  <input  name="user_name" required>
-  <input type="submit" value="グループに参加！">
-<% end %>
+<h3>まだグループに参加してない人はここからメンバー追加</h3>
+<%= link_to 'グループに参加する！', "/group/#{@gid}/add_member" %>
