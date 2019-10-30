@@ -1,0 +1,22 @@
+<h1>ログインページ</h1>
+<hr>
+<%= form_tag("/account/login_process") do %>
+  <p><strong>ユーザー名</strong>
+  <input name="name" required>
+  </p>
+
+  <!--
+  <p>あなたのEmailを入力してください。<br>
+  </p>
+  <p><strong>Email</strong>
+  <input name="mail" required>
+  </p>
+  -->
+
+  </p>
+  <p><strong>パスワード</strong>
+  <input type="password" name="password" required>
+  </p>
+
+  <input type="submit" value="ログイン">
+<% end %>
