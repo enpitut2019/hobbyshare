@@ -72,11 +72,42 @@ class UserController < ApplicationController
   end
 
   def new_member
-    new_user = User.create(name: params[:user_name], password: "password")
-    GroupBelong.create(group_id: params[:group_id], user_id: new_user.id)
-    #パスワード登録を追加と同時にやるならここでgiduid送るのが必須になる
-    redirect_to("/user/first_setting/#{new_user.id}")
-    flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+    #グループ内でユーザー名が被るなら弾く
+    new_user_name = params[:user_name]
+    group_id = params[:group_id]
+    User.where(group_id: group_id).each do |u|
+      if u.name == new_user_name
+        flash[:notice] = "そのユーザー名は既に使用されています！"
+        redirect_to("/group/#{group_id}/add_member")
+      end
+    end
+
+    #セッションのアカウントIDを確認して、あるかないかで分岐
+
+    if session[:login_account_id] == nil #セッションがない場合
+      #Accountモデルの作成
+      new_account = Account.create(password: "password", is_temp: true)
+      #Userモデルの作成
+      new_user = User.create(name: new_user_name, group_id: group_id, password: "password", account_id: new_account.id)
+      #セッションのaccount_idを作成したAccountのIDにする
+      session[:login_account_id] = new_account.id
+      #グループメンバー一覧へリダイレクト
+      redirect_to("/group/#{group_id}/list")
+      flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+    else
+      #Userモデルからaccout_idに対応するuserを検索、見つかればgroup_idを取り出す。そのgroup_idがメンバー追加しようとしているgroup_idなら既にユーザーがあるのでメンバー一覧ページへ戻す。
+      User.where(accout_id: session[:login_account_id]).each do |u|
+        if u.group_id == group_id
+          flash[:notice] = "このグループ内で既にユーザーを作成しています！"
+          redirect_to("/group/#{group_id}/add_member")
+        end
+      end
+
+      #Userモデルの作成
+      new_user = User.create(name: user_name, group_id: group_id, password: "password", accout_id: session[:login_account_id])
+      redirect_to("group/#{group_id}/add_member")
+      flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+    end
   end
 
   def first_setting

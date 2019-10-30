@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
   post 'group/new' => 'group#new'
+  get 'group/:group_id/add_member' => 'group#add_member'
   post 'user/newhobby' => 'user#newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'

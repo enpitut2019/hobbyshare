@@ -61,4 +61,8 @@ class GroupController < ApplicationController
     redirect_to("/user/first_setting/#{user.id}") #グループ内メンバー一覧ページへリダイレクト
   end
 
+  def add_member
+    @group_id = params[:group_id].to_i
+  end
+
 end

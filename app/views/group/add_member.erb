@@ -1,0 +1,7 @@
+<h1>グループにメンバーを追加します</h1>
+
+<%= form_tag("/user/new_member") do %>
+  <input type="hidden" name="group_id" value="<%= @group_id %>">
+  <input  name="user_name" required>
+  <input type="submit" value="グループに参加！">
+<% end %>
