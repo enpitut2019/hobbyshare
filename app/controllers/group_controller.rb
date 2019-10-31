@@ -3,6 +3,7 @@ class GroupController < ApplicationController
   end
 
   def enter
+    #グループ名の初期値.ログイン失敗で戻ってくる場合に入力内容を引き継ぐために使う.
     @group_name = ""
   end
 
@@ -38,6 +39,7 @@ class GroupController < ApplicationController
   end
 
   def make
+    #グループ名の初期値.グループ作成失敗で戻ってくる場合に入力内容を引き継ぐために使う.
     @group_name = ""
   end
 
