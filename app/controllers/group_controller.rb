@@ -2,13 +2,19 @@ class GroupController < ApplicationController
   def top
   end
 
+  def enter
+    @group_name = ""
+  end
+
   def search
-    if Group.find_by(group_name: params[:group_name])
-      @gid = Group.find_by(group_name: params[:group_name]).id#入力されたグループのメンバー一覧ページへの飛ばす
-      redirect_to("/group/#{@gid}/list") #入力されたグループのページへリダイレクト
+    if @gid = Group.find_by(group_name: params[:group_name])&.id
+      #入力されたグループが存在するならばメンバー一覧ページへ飛ばす
+      redirect_to("/group/#{@gid}/list")
     else
-      flash.now[:notice] = "入力された名前のグループは存在しません"#存在しないグループ名が入力された場合はやり直させる
-      render("top")
+      #存在しないグループ名が入力された場合はやり直させる
+      flash.now[:notice] = "入力された名前のグループは存在しません"
+      @group_name = params[:group_name] #入力内容の引継ぎ
+      render("enter")
     end
   end
 
@@ -39,7 +45,7 @@ class GroupController < ApplicationController
     #既に同じ名前のグループが存在する場合にはやり直させる
     if Group.find_by(group_name: params[:group_name])
       flash[:notice] = "そのグループ名は既に使用されています"
-      @group_name = params[:group_name] #グループ名の入力内容を保存
+      @group_name = params[:group_name] #グループ名の入力内容を#入力内容の引継ぎ
       render("make")
       return
     end

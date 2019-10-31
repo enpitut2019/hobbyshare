@@ -12,14 +12,7 @@
 その際、仲間と一緒にグループの名前と自分のニックネームを決めておいてください。</p>
 <button type="button"onclick="location.href='group/make'"style="width:200px; height:28px;">グループ作成</button>
 
-<%= form_tag("/group/search") do %>
 <hr>
 <h3>既存のグループに入る</h3>
 <li>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</li>
-<li>すでに参加しているグループが存在する場合はそのグループの名前を入力してください</li>
-<input name="group_name">
-<br>
-<p></p><!--表示をよくするための空行-->
-<input type="submit" value="グループに入る">
-<input type="reset" value="入力をクリア">
-<% end %>
+<button type="button"onclick="location.href='group/enter'"style="width:200px; height:28px;">グループログイン</button>
