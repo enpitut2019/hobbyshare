@@ -33,39 +33,10 @@ p.caution {
 
 <hr>
 
-<h3>グループから同じ趣味の人を探す</h3>
+<h3>所属グループ:<%= @group_name %></h3>
+<button type="button"onclick="location.href='<%= "/user/show/#{@user_id}/#{@gid}" %>'"style="width:200px; height:28px;">同じの趣味の人を探す！</button>
 
-<!-- 所属しているグループ名の一覧を表示 -->
-<table>
-  <% @belong_group_name.each do |gname| %>
-  <tr>
-    <td></td>
-    <td align="center">
-    <small>グループ名:</small><span><strong><%= "#{gname.group_name}" %></strong></span>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td align="center">
-    <button type="button"onclick="location.href='<%= "/user/show/#{@user_id}/#{gname.id}" %>'"style="width:200px; height:28px;">同じの趣味の人を探す！</button>
-  </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><p class="caution"><small>※グループから抜けるとユーザの情報も消えます。</small></p></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td align="center">
-    <%= form_tag("/user/group_delete") do %>
-    <input type="hidden" name="user_id" value="<%= @user_id %>">
-    <input type="hidden" name="group_id" value="<%= gname.id %>">
-    <input type="submit" value="グループから抜ける" onclick="return subcheck()">
-    <% end %>
-    </td>
-  </tr>
-  <% end %>
-</table>
+
 
 
 <hr>
@@ -126,15 +97,5 @@ p.caution {
   <input name="user_name" required>
   <input type="hidden" name="user_id" value="<%= @user_id %>">
   <input type="submit" value="名前を変更する">
-  <input type="reset" value="リセット">
-<% end %>
-
-<!-- パスワード設定部分 -->
-<h4>パスワードの再設定</h4>
-<p>パスワードには半角英数字のみ使用できます。</p>
-<%= form_tag("/user/group_password") do %>
-  <input pattern="^[0-9A-Za-z]+$" name="group_password" type="password" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input type="submit" value="パスワードを設定する">
   <input type="reset" value="リセット">
 <% end %>

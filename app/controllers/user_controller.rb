@@ -23,37 +23,28 @@ class UserController < ApplicationController
   end
 
   def mypage
-    #ユーザIDを変数に入れました
+    #ユーザIDを変数に入れる
     @user_id = params[:user_id].to_i
-    session_id = session[:login_user_id].to_i
-
-    #セッションIDがログインユーザーと一致するか確認
-    #ユーザにパスワードが設定済みか確認
-    if !User.find_by(id: @user_id).authenticate("password")
-      #既にログインしているか確認
-      if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
-        flash[:notice] = "このページにアクセスする権限がありません"
-        redirect_to("/")
-      else #ログインしているユーザでも違うユーザのマイページを見ようとしたら弾く
-        if @user_id != session_id
-          flash[:notice] = "このページにアクセスする権限がありません"
-          redirect_to("/")
+    session_id = session[:login_account_id]
+    #セッションが存在かつ正しいユーザーの場合のみ通す
+    if session_id == nil #セッションが存在するか確認
+      flash[:notice] = “このページにアクセスする権限がありません”
+      redirect_to(“/”)
+    else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
+      is_OK = false
+      User.where(account_id: session_id).each do |u|
+        if u.id == @user_id
+          is_OK = true
         end
+      end
+      if is_OK == false
+        flash[:notice] = “このページにアクセスする権限がありません”
+        redirect_to(“/”)
       end
     end
 
-    #Group_belongの表からuser_idが変数@user_idに一致するレコードを全て配列に入れる
-    @belong_record = GroupBelong.where(user_id: @user_id)
-    #belong_recordからgroupIDだけを取り出して配列にする
-    @belong = []
-    @belong_record.each do |record|
-      @belong.push(record.group_id)
-    end
-    #グループIDに対応するレコードを取ってくる
-    @belong_group_name = []
-    @belong.each do |gid|
-      @belong_group_name.push(Group.find_by(id: gid))
-    end
+    @gid = User.find(@user_id).group_id
+    @group_name = Group.find(@gid).group_name
     #ユーザ名を変数に入れる
     @user_name = User.find_by(id: @user_id).name
 
