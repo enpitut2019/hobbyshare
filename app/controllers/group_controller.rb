@@ -32,33 +32,22 @@ class GroupController < ApplicationController
   end
 
   def make
+    @group_name = ""
   end
 
   def new
     #既に同じ名前のグループが存在する場合にはやり直させる
     if Group.find_by(group_name: params[:group_name])
       flash[:notice] = "そのグループ名は既に使用されています"
+      @group_name = params[:group_name] #グループ名の入力内容を保存
       render("make")
       return
     end
 
     #グループを新規作成
-    new_group = Group.new(group_name: params[:group_name])
-    new_group.save
+    new_group = Group.create(group_name: params[:group_name])
 
-    #グループメンバーの数だけ仮ユーザーを作成
-    number_of_menber = params[:number_of_menber].to_i
-    group_name = "#{params[:group_name]}_"
-    for i in 1..number_of_menber do
-      #menber_name = group_name + i.to_s
-      user = User.new(name: params[:user_name])
-      user.password = "password"
-      user.save
-      gb = GroupBelong.new(group_id: new_group.id, user_id: user.id)
-      gb.save
-    end
-
-    redirect_to("/user/first_setting/#{user.id}") #グループ内メンバー一覧ページへリダイレクト
+    redirect_to("/group/#{new_group.id}/list") #グループ内メンバー一覧ページへリダイレクト
   end
 
 end
