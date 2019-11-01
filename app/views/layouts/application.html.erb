@@ -11,12 +11,28 @@
   <meta name="viewport" content="width=device-width">
   <body>
     <!-- flash[:notice]に中身があれば表示 -->
-    <header>
-      <span class="title"><strong><%= link_to 'HobbyShare', '/' %></strong></span>
-    </header>
-    <% if flash[:notice] %>
-      <p><font color="red"><%= flash[:notice] %></font></p>
-    <% end %>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Hobbyshare</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <% if flash[:notice] %>
+          <p><font color="red"><%= flash[:notice] %></font></p>
+        <% end %>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/top">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
     <!-- 本文 -->
     <%= yield %>
   </body>
