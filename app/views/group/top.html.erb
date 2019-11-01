@@ -2,24 +2,19 @@
 <h3>Hobbyshareとは？</h3>
 <p>Hobbyshareは<strong>身近な人</strong>の中から、あなたと<strong>同じ趣味</strong>を持つ人とだけ趣味を共有することができるウェブアプリです。</p>
 <hr>
-<h3>ユーザーを作成する</h3>
+<h3>アカウントを作成する</h3>
 <p>自分のアカウントを作成したい場合はこちら。</p>
-<button type="button"onclick="location.href='/account/sign_up'"style="width:200px; height:28px;">Sign Up</button>
+<button type="button"onclick="location.href='/account/sign_up'"style="width:200px; height:28px;">アカウントを作成</button>
+<p><br></p><!-- 1行分のスペース-->
 
 <h3>グループを作成する</h3>
 <p>友達・仕事仲間・入学（入社）する仲間を募って新しいグループを作りましょう。<br>
 代表者1名が『新しいグループを作成』から趣味を共有したいグループを作ってください。<br>
 その際、仲間と一緒にグループの名前と自分のニックネームを決めておいてください。</p>
 <button type="button"onclick="location.href='group/make'"style="width:200px; height:28px;">グループ作成</button>
+<p><br></p><!-- 1行分のスペース-->
 
-<%= form_tag("/group/search") do %>
-<hr>
 <h3>既存のグループに入る</h3>
-<li>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</li>
-<li>すでに参加しているグループが存在する場合はそのグループの名前を入力してください</li>
-<input name="group_name">
-<br>
-<p></p><!--表示をよくするための空行-->
-<input type="submit" value="グループに入る">
-<input type="reset" value="入力をクリア">
-<% end %>
+<p>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</p>
+<button type="button"onclick="location.href='group/enter'"style="width:200px; height:28px;">グループログイン</button>
+<p><br></p><!-- 1行分のスペース-->

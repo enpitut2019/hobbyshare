@@ -9,10 +9,14 @@ Rails.application.routes.draw do
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
+  get 'group/enter' => 'group#enter'
+  get 'group/search' => 'group#enter'
   post 'group/search' => 'group#search'
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
+  get 'group/new' => 'group#make'
   post 'group/new' => 'group#new'
+
   post 'user/newhobby' => 'user#newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'

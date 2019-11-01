@@ -37,15 +37,14 @@ function clearElement(element) {
 }
 </script>
 
-
-<h1>新規グループ作成ページ</h1>
-<p>新しく作るグループの情報を入力しましょう！</p>
+<h1>グループログインページ</h1>
 <hr>
-<p>まずは作成するグループの名前を入力してください。</p>
-<%= form_tag("/group/new") do %>
+<li>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</li>
+<li>すでに参加しているグループが存在する場合はそのグループの名前を入力してください</li>
+<%= form_tag("/group/search") do %>
   <p><strong>グループ名</strong>
-  <input name="group_name" value="<%= @group_name %>" required>
+  <input name="group_name" value="<%= @group_name %>" id="aaa" required>
   </p>
-  <input type="submit" value="グループを作成">
+  <input type="submit" value="グループに入る">
   <button type="button" onclick="clearFormAll();">リセット</button>
 <% end %>
