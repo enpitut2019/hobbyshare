@@ -30,6 +30,7 @@ class UserController < ApplicationController
     if session_id == nil #セッションが存在するか確認
       flash[:notice] = "このページにアクセスする権限がありません"
       redirect_to("/")
+      return
     else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
       is_OK = false
       User.where(account_id: session_id).each do |u|
@@ -40,6 +41,7 @@ class UserController < ApplicationController
       if is_OK == false
         flash[:notice] = "このページにアクセスする権限がありません"
         redirect_to("/")
+        return
       end
     end
 
@@ -70,6 +72,7 @@ class UserController < ApplicationController
       if u.name == new_user_name
         flash[:notice] = "そのユーザー名は既に使用されています！"
         redirect_to("/group/#{group_id}/add_member")
+        return
       end
     end
 
@@ -91,6 +94,7 @@ class UserController < ApplicationController
         if u.group_id == group_id
           flash[:notice] = "このグループ内で既にユーザーを作成しています！"
           redirect_to("/group/#{group_id}/add_member")
+          return
         end
       end
 

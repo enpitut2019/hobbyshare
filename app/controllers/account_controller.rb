@@ -4,8 +4,17 @@ class AccountController < ApplicationController
   end
 
   def mypage
-    session_id = session[:login_account_id].to_i
-    @account_name = Account.find_by(id: session[:login_account_id]).name
+    session_id = session[:login_account_id]
+    account = Account.find_by(id: session_id)
+    # ログインしていない場合や仮アカウントの場合は弾く
+    if !session_id || account.is_temp
+      flash[:notice] = "まだログインしていません！"
+      redirect_to("/")
+      return
+    end
+
+    @account_name = account.name
+    @users = User.where(account_id: account.id)
   end
 
   def new_account
@@ -13,6 +22,7 @@ class AccountController < ApplicationController
     if Account.find_by(name: params[:name])
       flash[:notice] = "その名前はすでに使われています"#nameが既存のものと一致した場合は弾く
       redirect_to("/account/sign_up")
+      return
     end
 
     # セッションがない場合
@@ -69,7 +79,7 @@ class AccountController < ApplicationController
       redirect_to("/account/#{target_account.id}")
       else
         session_account = Account.find_by(id:session_id)
-        if session_account.is_temp = false
+        if session_account.is_temp == false
           flash[:notice] = "既に別のアカウントでログインしています"
           redirect_to("/")
         else
@@ -95,7 +105,7 @@ class AccountController < ApplicationController
       redirect_to("/")
     else
       login_account = Account.find_by(id:session[:login_account_id])
-      if login_account.is_temp = true
+      if login_account.is_temp == true
         flash[:notice] = "まだログインしていません"
         #仮アカウントからログアウトすべきかは微妙
         session[:login_account_id] = nil
