@@ -78,12 +78,12 @@ class AccountController < ApplicationController
       flash[:notice] = "ログインしました！"
       redirect_to("/account/#{target_account.id}")
       else
-        session_account = Account.find_by(id:session_id)
+        session_account = Account.find_by(id: session_id)
         if session_account.is_temp == false
           flash[:notice] = "既に別のアカウントでログインしています"
           redirect_to("/")
         else
-          User.where(account_id: session_account).each do |u|
+          User.where(account_id: session_id).each do |u|
             u.account_id = target_account
           end
           session_accout.dedtroy()
