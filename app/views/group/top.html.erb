@@ -2,13 +2,6 @@
 <html lang="ja">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Hobbyshare - トップページ</title>
 </head>
 
 <body>
@@ -29,13 +22,19 @@
 
     <div class="row">
       <div class="col-md-8 mb-5">
-        <h2>グループを作成する</h2>
+        <h2>アカウントを作成する</h2>
         <hr>
-        <p>友達・仕事仲間・入学（入社）する仲間を募って新しいグループを作りましょう。</p>
-        <p>  代表者1名が『新しいグループを作成』から趣味を共有したいグループを作ってください。<br>
-          その際、仲間と一緒にグループの名前と自分のニックネームを決めておいてください。</p>
-          <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/sign_up'">Sign Up</button>
+        <p>自分のアカウントを作成したい場合はこちら。</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/sign_up'">Sign Up</button>
       </div>
+      <div class="col-md-8 mb-5">
+      <h3>グループを作成する</h3>
+      <p>友達・仕事仲間・入学（入社）する仲間を募って新しいグループを作りましょう。<br>
+        代表者1名が『新しいグループを作成』から趣味を共有したいグループを作ってください。<br>
+        その際、仲間と一緒にグループの名前と自分のニックネームを決めておいてください。</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='group/make'">グループ作成</button>
+        <p><br></p><!-- 1行分のスペース-->
+        </div>
       <%= form_tag("/group/search") do %>
       <div class="col-md-8 mb-5">
         <h2>既存のグループに入る</h2>
