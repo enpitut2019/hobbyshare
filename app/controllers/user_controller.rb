@@ -95,9 +95,9 @@ class UserController < ApplicationController
       end
 
       #Userモデルの作成
-      new_user = User.create(name: user_name, group_id: group_id, password: "password", accout_id: session[:login_account_id])
-      redirect_to("group/#{group_id}/add_member")
+      new_user = User.create(name: new_user_name, group_id: group_id, password: "password", account_id: session[:login_account_id])
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+      redirect_to("/user/mypage/#{new_user.id}")
     end
   end
 
