@@ -87,7 +87,7 @@ class UserController < ApplicationController
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
     else
       #Userモデルからaccout_idに対応するuserを検索、見つかればgroup_idを取り出す。そのgroup_idがメンバー追加しようとしているgroup_idなら既にユーザーがあるのでメンバー一覧ページへ戻す。
-      User.where(accout_id: session[:login_account_id]).each do |u|
+      User.where(account_id: session[:login_account_id]).each do |u|
         if u.group_id == group_id
           flash[:notice] = "このグループ内で既にユーザーを作成しています！"
           redirect_to("/group/#{group_id}/add_member")
