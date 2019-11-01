@@ -9,9 +9,12 @@ Rails.application.routes.draw do
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
+  get 'group/enter' => 'group#enter'
+  get 'group/search' => 'group#enter'
   post 'group/search' => 'group#search'
   get 'group/:group_id/list' => 'group#list'
   get 'group/make' => 'group#make'
+  get 'group/new' => 'group#make'
   post 'group/new' => 'group#new'
   get 'group/:group_id/add_member' => 'group#add_member'
   post 'user/newhobby' => 'user#newhobby'
@@ -23,6 +26,8 @@ Rails.application.routes.draw do
   post 'user/group_delete' => 'user#group_delete'
   post 'user/user_delete' => 'user#user_delete'
   get 'account/sign_up' => 'account#sign_up'
+  get 'account/login' => 'account#login'
   get 'account/:account_id' => 'account#mypage'
   post 'account/new_account' => 'account#new_account'
+  post 'account/login_process' => 'account#login_process'
 end
