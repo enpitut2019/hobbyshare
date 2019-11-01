@@ -52,14 +52,37 @@ class AccountController < ApplicationController
     end
   end
 
-  def login_process#セッションはまかせた
-    login_name = Account.find_by(name: params[:name])
-    if login_name && login_name.authenticate(params[:password])
-      session[:login_account_id] = login_name.id
-      redirect_to("/account/#{login_name.id}")
-    else
-      flash[:notice] = "入力された内容に誤りがあります"#nameかpasswordが間違っている場合は弾く
+  def login_process
+    # ログインしようとしているアカウント
+    target_account = Account.find_by(name: params[:name])
+
+    if target_account&.is_temp || !target_account&.authenticate(params[:password])
+      #仮アカウントだったりパスワードが違う場合は弾く
+      flash[:notice] = "入力された内容に誤りがあります"
       redirect_to("/account/login")
+    else
+      session_id = session[:login_account_id]
+      #今はログインしていない場合
+      if session_id == nil
+      session[:login_account_id] = target_account.id
+      flash[:notice] = "ログインしました！"
+      redirect_to("/account/#{target_account.id}")
+      else
+        session_account = Account.find_by(id:session_id)
+        if session_account.is_temp = false
+          flash[:notice] = "既に別のアカウントでログインしています"
+          redirect_to("/")
+        else
+          User.where(account_id: session_account).each do |u|
+            u.account_id = target_account
+          end
+          session_accout.dedtroy()
+          session[:login_account_id] = target_account
+          flash[:notice] = "ログインしました！"
+          redirect_to("/account/#{target_account.id}")
+        end
+      end
+
     end
   end
 end
