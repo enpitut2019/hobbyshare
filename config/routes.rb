@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get 'group/new' => 'group#make'
   post 'group/new' => 'group#new'
   get 'group/:group_id/add_member' => 'group#add_member'
+
   post 'user/newhobby' => 'user#newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
@@ -25,8 +26,10 @@ Rails.application.routes.draw do
   post 'user/new_member' => 'user#new_member'
   post 'user/group_delete' => 'user#group_delete'
   post 'user/user_delete' => 'user#user_delete'
+
   get 'account/sign_up' => 'account#sign_up'
   get 'account/login' => 'account#login'
+  get 'account/logout' => 'account#logout'
   get 'account/:account_id' => 'account#mypage'
   post 'account/new_account' => 'account#new_account'
   post 'account/login_process' => 'account#login_process'

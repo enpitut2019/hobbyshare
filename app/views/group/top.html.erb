@@ -22,32 +22,33 @@
 
     <div class="row">
       <div class="col-md-8 mb-5">
-        <h2>アカウントを作成する</h2>
-        <hr>
-        <p>自分のアカウントを作成したい場合はこちら。</p>
-        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/sign_up'">Sign Up</button>
-      </div>
-      <div class="col-md-8 mb-5">
-      <h3>グループを作成する</h3>
-      <p>友達・仕事仲間・入学（入社）する仲間を募って新しいグループを作りましょう。<br>
-        代表者1名が『新しいグループを作成』から趣味を共有したいグループを作ってください。<br>
-        その際、仲間と一緒にグループの名前と自分のニックネームを決めておいてください。</p>
+      <h2>グループを作成する</h2>
+      <hr>
+        <p>趣味を共有するグループを作成しましょう</p>
         <button class="btn btn-primary btn-lg" type="button"onclick="location.href='group/make'">グループ作成</button>
-        <p><br></p><!-- 1行分のスペース-->
         </div>
-      <%= form_tag("/group/search") do %>
       <div class="col-md-8 mb-5">
         <h2>既存のグループに入る</h2>
         <hr>
-        <p>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</p>
-        <p>すでに参加しているグループが存在する場合はそのグループの名前を入力してください</p>
-        <input name="group_name">
-        <br>
-        <br>
-        <input class="btn btn-primary btn-sm" type="submit" value="グループに入る">
-        <input class="btn btn-primary btn-sm" type="reset" value="入力をクリア">
+        <p>同じグループの人と趣味を共有しよう</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='group/enter'">グループページ</button>
       </div>
-      <% end %>
+      <div class="col-md-8 mb-5">
+        <h2>アカウントを作成する</h2>
+        <hr>
+        <p>自分のアカウントを作成したい場合はこちら。</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/sign_up'">アカウント作成</button>
+        <p><br></p>
+        <h2>ログイン</h2>
+        <hr>
+        <p>アカウントにログインする場合はこちら</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/login'">login</button>
+        <p><br></p>
+        <h2>ログアウト</h2>
+        <hr>
+        <p>アカウントからログアウトする場合はこちら</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/logout'">logout</button>
+      </div>
     </div>
 
   </div>

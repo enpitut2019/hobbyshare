@@ -85,4 +85,27 @@ class AccountController < ApplicationController
 
     end
   end
+
+  def login
+  end
+
+  def logout
+    if !session[:login_account_id]
+      flash[:notice] = "まだログインしていません！"
+      redirect_to("/")
+    else
+      login_account = Account.find_by(id:session[:login_account_id])
+      if login_account.is_temp = true
+        flash[:notice] = "まだログインしていません"
+        #仮アカウントからログアウトすべきかは微妙
+        session[:login_account_id] = nil
+        redirect_to("/")
+      else
+        session[:login_account_id] = nil
+        flash[:notice] = "ログアウトしました"
+        redirect_to("/")
+      end
+    end
+  end
+
 end
