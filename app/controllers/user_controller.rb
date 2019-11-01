@@ -97,10 +97,11 @@ class UserController < ApplicationController
       #Userモデルの作成
       new_user = User.create(name: new_user_name, group_id: group_id, password: "password", account_id: session[:login_account_id])
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
-      redirect_to("/user/#{group_id}/list")
+      redirect_to("/group/#{group_id}/list")
     end
   end
 
+  #もう使わないはず
   def first_setting
     @user_id = params[:user_id].to_i
     session_id = session[:login_user_id].to_i
@@ -273,34 +274,45 @@ class UserController < ApplicationController
   end
 
  #もう使わないはず
-#  def group_delete
+  def group_delete
     #各種値を変数に入れる
-  #  user_id = params[:user_id]
-  #  group_id = params[:group_id]
+    user_id = params[:user_id]
+    group_id = params[:group_id]
     #データベースからレコードを取り出す
-  #  group_name = Group.find_by(id: group_id).group_name
+    group_name = Group.find_by(id: group_id).group_name
     #Userhobbyの削除
-  #  target = GroupBelong.find_by(user_id: user_id, group_id: group_id)
-  #  target.delete
+    target = GroupBelong.find_by(user_id: user_id, group_id: group_id)
+    target.delete
 
-  #  if GroupBelong.where(user_id: user_id).count < 1
-  #    UserHobby.where(user_id: user_id).delete_all
-  #    User.find_by(id: user_id).destroy
-  #    if GroupBelong.where(group_id: group_id).count < 1
-  #      Group.find_by(id: group_id).destroy
-  #      flash[:notice] = "グループとユーザーを削除しました"
-  #      redirect_to("/")
-  #    else
-  #      flash[:notice] = "所属グループが0になったためユーザーを削除しました"
-  #      redirect_to("/")
-  #    end
-  #  else
-  #    #趣味を削除したことを通知してマイページへリダイレクト
-  #    flash[:notice] = "#{group_name}を削除しました"
-  #    redirect_to("/user/mypage/#{user_id}")
-  #  end
-  #end
+    if GroupBelong.where(user_id: user_id).count < 1
+      UserHobby.where(user_id: user_id).delete_all
+      User.find_by(id: user_id).destroy
+      if GroupBelong.where(group_id: group_id).count < 1
+        Group.find_by(id: group_id).destroy
+        flash[:notice] = "グループとユーザーを削除しました"
+        redirect_to("/")
+      else
+        flash[:notice] = "所属グループが0になったためユーザーを削除しました"
+        redirect_to("/")
+      end
+    else
+      #趣味を削除したことを通知してマイページへリダイレクト
+      flash[:notice] = "#{group_name}を削除しました"
+      redirect_to("/user/mypage/#{user_id}")
+    end
+  end
 
+  def user_delete
+    user_id = params[:user_id]
+    user = User.find_by(id: user_id)
+    group_id = user.group_id
+    # ユーザーの趣味情報を削除
+    UserHobby.where(user_id: user_id).delete_all
+    # ユーザーの削除
+    user.destroy
+    flash[:notice] = "ユーザーを削除しました"
+    redirect_to("/group/#{group_id}/list")
+  end
 
 
 end

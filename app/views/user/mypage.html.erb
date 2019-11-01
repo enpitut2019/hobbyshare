@@ -2,15 +2,15 @@
 <html lang="ja">
 <style type="text/css">
 /*  table {
-  counter-reset: rowCount;
+counter-reset: rowCount;
 }
 
 table > tbody > tr {
-  counter-increment: rowCount;
+counter-increment: rowCount;
 }
 
 table > tbody > tr > td:first-child::before {
-  content: counter(rowCount);
+content: counter(rowCount);
 }*/
 
 p.caution {
@@ -20,14 +20,14 @@ p.caution {
 </style>
 
 <script type="text/javascript">
-	function subcheck() {
-		if (window.confirm('本当に削除しますか')) {
-			return true;
-		} else {
-      window.alert('キャンセルされました'); // 警告ダイアログを表示
-		  return false; // 送信を中止
-		}
-	}
+function subcheck() {
+  if (window.confirm('本当に削除しますか')) {
+    return true;
+  } else {
+    window.alert('キャンセルされました'); // 警告ダイアログを表示
+    return false; // 送信を中止
+  }
+}
 </script>
 <body>
   <!-- Header -->
@@ -45,75 +45,82 @@ p.caution {
 
     <div class="row">
       <div class="col-md-8 mb-5">
-<hr>
+        <hr>
 
-<h3>所属グループ:<%= @group_name %></h3>
-<button class="btn btn-primary btn" type="button"onclick="location.href='<%= "/user/show/#{@user_id}/#{@gid}" %>'">同じの趣味の人を探す！</button>
-
-
+        <h3>所属グループ:<%= @group_name %></h3>
+        <button class="btn btn-primary btn" type="button" onclick="location.href='/group/<%= @gid %>/list'">グループメンバーリスト</button>
 
 
-<hr>
-<h3>あなたが登録している趣味</h3>
-<!-- ここにユーザが登録してある趣味を全て表示する -->
-<table>
-  <% @users_hobbies.each do |hname| %>
-  <tr>
-    <td></td>
-    <td>
-    <%= "#{hname.hobby_name}" %>
-    </td>
-    <!-- 趣味の削除ボタン -->
-    <td>
-    <%= form_tag("/user/hobby_delete") do %>
-    <input type="hidden" name="user_id" value="<%= @user_id %>">
-    <input type="hidden" name="hobby_id" value="<%= hname.id %>">
-    <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
-    </td>
-    <% end %>
-  </tr>
-  <% end %>
-</table>
+        <hr>
+        <h3>あなたが登録している趣味</h3>
+        <!-- ここにユーザが登録してある趣味を全て表示する -->
+        <table>
+          <% @users_hobbies.each do |hname| %>
+          <tr>
+            <td></td>
+            <td>
+              <%= "#{hname.hobby_name}" %>
+            </td>
+            <!-- 趣味の削除ボタン -->
+            <td>
+              <%= form_tag("/user/hobby_delete") do %>
+              <input type="hidden" name="user_id" value="<%= @user_id %>">
+              <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+              <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+            </td>
+            <% end %>
+          </tr>
+          <% end %>
+        </table>
 
-<h4>趣味の登録</h4>
-<p>ここで共有したい趣味を登録することができます。</p>
-<!-- ここにユーザが登録してある趣味を全て表示する -->
-<%= form_tag("/user/newhobby") do %>
-  <input name="hobby_name" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
-  <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセットする">
-<% end %>
-<br>
-<p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
-下のメニューから自分の趣味と合うものを選んでください。</p>
-<!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
-<%= form_tag("/user/newhobby") do %>
-<select name="hobby_name"required>
-  <option value="">おすすめ趣味一覧</option>
-  <option value="スポーツ">スポーツ</option>
-  <option value="映画">映画</option>
-  <option value="ゲーム">ゲーム</option>
-  <option value="アニメ">アニメ</option>
-  <option value="開発">開発</option>
-</select>
-<input type="hidden" name="user_id" value="<%= @user_id %>">
-<input class="btn btn-primary btn-sm" type="submit" value="登録">
-<% end %>
+        <h4>趣味の登録</h4>
+        <p>ここで共有したい趣味を登録することができます。</p>
+        <!-- ここにユーザが登録してある趣味を全て表示する -->
+        <%= form_tag("/user/newhobby") do %>
+        <input name="hobby_name" required>
+        <input type="hidden" name="user_id" value="<%= @user_id %>">
+        <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
+        <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセットする">
+        <% end %>
+        <br>
+        <p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
+          下のメニューから自分の趣味と合うものを選んでください。</p>
+          <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
+          <%= form_tag("/user/newhobby") do %>
+          <select name="hobby_name"required>
+            <option value="">おすすめ趣味一覧</option>
+            <option value="スポーツ">スポーツ</option>
+            <option value="映画">映画</option>
+            <option value="ゲーム">ゲーム</option>
+            <option value="アニメ">アニメ</option>
+            <option value="開発">開発</option>
+          </select>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <input class="btn btn-primary btn-sm" type="submit" value="登録">
+          <% end %>
 
-<hr>
+          <hr>
 
-<!-- ユーザー名の変更 -->
-<h4>ユーザー名の設定</h4>
-<p>ここではユーザ名を変更することができます。</p>
-<%= form_tag("/user/name_change") do %>
-  <input name="user_name" required>
-  <input type="hidden" name="user_id" value="<%= @user_id %>">
-  <input class="btn btn-primary btn-sm" type="submit" value="名前を変更する">
-  <input class="btn btn-primary btn-sm" type="reset" value="リセット">
-<% end %>
-</div>
-</div>
-</div>
-</body>
-</html>
+          <!-- ユーザー名の変更 -->
+          <h4>ユーザー名の設定</h4>
+          <p>ここではユーザ名を変更することができます。</p>
+          <%= form_tag("/user/name_change") do %>
+          <input name="user_name" required>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <input class="btn btn-primary btn-sm" type="submit" value="名前を変更する">
+          <input class="btn btn-primary btn-sm" type="reset" value="リセット">
+          <% end %>
+
+          <hr>
+
+          <!--ユーザーの削除 -->
+          <h4>ユーザーの削除</h4>
+          <%= form_tag("/user/#{@user_id}/delete") do %>
+          <p>このユーザーを削除する場合はこちら</p>
+          <input class="btn btn-primary btn-sm" type="submit" value="ユーザー削除">
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </body>
+  </html>
