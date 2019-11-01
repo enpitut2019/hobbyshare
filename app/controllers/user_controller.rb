@@ -218,34 +218,19 @@ class UserController < ApplicationController
     @id = params[:user_id].to_i
     @gid = params[:group_id].to_i
     #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
-    @query_hobbyid = []
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
-    UserHobby.where(user_id: @id).each do |h|
-      @query_hobbyid.push(h.hobby_id)
-    end
+    @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
 
+    users = User.where(group_id: @gid)
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
-    @query_guser_id = []
-    @query_guser_id_andme = []
-    #GIDとUIDを結びつけているGroupBelongに対して選択されたグループのGIDで検索をかけ、
-    #そのグループに所属する操作者を除くユーザのUIDを格納する。
-    GroupBelong.where(group_id: @gid).each do |u|
-      if u.user_id == @id
-        @query_guser_id_andme.push(u.user_id)
-      else
-        @query_guser_id.push(u.user_id)
-        @query_guser_id_andme.push(u.user_id)
-      end
-    end
-    @group_user_all = []
-    @query_guser_id.each do |qgi|
-      @group_user_all.push(User.find(qgi).name)
-    end
+    @query_guser_id_andme = users.ids
+    @query_guser_id = @query_guser_id_andme.select {|id| id != @id }
 
-    @group_user_all_andme = []
-    @query_guser_id_andme.each do |qgi|
-      @group_user_all_andme.push(User.find(qgi).name)
-    end
+    #グループ内のユーザーの名前の配列を作成
+    @group_user_all_andme = users.pluck(:name)
+    user_name = User.find_by(id: @id).name
+    @group_user_all = @group_user_all_andme.select {|name| name != user_name}
+
 
     #趣味が共通したユーザのデータを格納するインスタンス配列@results_seikeiの用意
     @results_seikei = []
