@@ -70,13 +70,15 @@ class AccountController < ApplicationController
       #仮アカウントだったりパスワードが違う場合は弾く
       flash[:notice] = "入力された内容に誤りがあります"
       redirect_to("/account/login")
+      return
     else
       session_id = session[:login_account_id]
       #今はログインしていない場合
       if session_id == nil
-      session[:login_account_id] = target_account.id
-      flash[:notice] = "ログインしました！"
-      redirect_to("/account/#{target_account.id}")
+        session[:login_account_id] = target_account.id
+        flash[:notice] = "ログインしました！"
+        redirect_to("/account/#{target_account.id}")
+        return
       else
         session_account = Account.find_by(id: session_id)
         if session_account.is_temp == false
@@ -84,15 +86,14 @@ class AccountController < ApplicationController
           redirect_to("/")
         else
           User.where(account_id: session_id).each do |u|
-            u.account_id = target_account
+            u.account_id = target_account.id
           end
-          session_accout.dedtroy()
-          session[:login_account_id] = target_account
+          session_account.destroy()
+          session[:login_account_id] = target_account.id
           flash[:notice] = "ログインしました！"
           redirect_to("/account/#{target_account.id}")
         end
       end
-
     end
   end
 
