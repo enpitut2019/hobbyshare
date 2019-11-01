@@ -48,6 +48,11 @@
         <hr>
         <p>アカウントからログアウトする場合はこちら</p>
         <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/logout'">logout</button>
+        <p><br></p>
+        <h2>マイページ</h2>
+        <hr>
+        <p>アカウントのマイページはこちら</p>
+        <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/account/<%= session[:login_account_id]%>'">マイページ</button>
       </div>
     </div>
 
