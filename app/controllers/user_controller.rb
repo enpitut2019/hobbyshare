@@ -105,7 +105,6 @@ class UserController < ApplicationController
     end
   end
 
-  #もう使わないはず
   def first_setting
     @user_id = params[:user_id].to_i
     session_id = session[:login_user_id].to_i
@@ -262,7 +261,6 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id}")
   end
 
- #もう使わないはず
   def group_delete
     #各種値を変数に入れる
     user_id = params[:user_id]
