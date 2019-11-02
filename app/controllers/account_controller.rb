@@ -37,6 +37,7 @@ class AccountController < ApplicationController
      # マイページへ飛ばす
      flash[:notice] = "アカウントを作成しました！"
      redirect_to("/account/#{ac.id}")
+    # セッションがある場合
     else
       # セッションがあるのでログインしているアカウントを取り出す
       login_account = Account.find_by(id:session_id)
@@ -81,14 +82,19 @@ class AccountController < ApplicationController
         return
       else
         session_account = Account.find_by(id: session_id)
+        # 別の本アカウントでログインしている場合
         if session_account.is_temp == false
           flash[:notice] = "既に別のアカウントでログインしています"
           redirect_to("/")
+        # 仮アカウントが発行されている場合
         else
+          # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
           User.where(account_id: session_id).each do |u|
-            u.account_id = target_account.id
+            u.update!(account_id: target_account.id)
           end
+          # 仮アカウントを削除
           session_account.destroy()
+          # セッションを本アカウントに変更し、マイページに飛ばす
           session[:login_account_id] = target_account.id
           flash[:notice] = "ログインしました！"
           redirect_to("/account/#{target_account.id}")
