@@ -91,7 +91,7 @@ class AccountController < ApplicationController
         # 仮アカウントが発行されている場合
         else
           # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
-          User.where(account_id: session_id).update!(account_id: target_account.id)
+          User.where(account_id: session_id).update(account_id: target_account.id)
           # 仮アカウントを削除
           session_account.destroy()
           # セッションを本アカウントに変更し、マイページに飛ばす
