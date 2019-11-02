@@ -31,7 +31,7 @@ class AccountController < ApplicationController
      ac = Account.create(name: params[:name], password: params[:password])
       # dummy_userを設定
      dummy_user = User.create()
-     ac.user_id = dummy_user.id
+     ac.update[user_id: dummy_user.id]
      # セッションを書き換え
      session[:login_account_id] = ac.id
      # マイページへ飛ばす
@@ -56,6 +56,8 @@ class AccountController < ApplicationController
         login_account.user_id = dummy_user.id
         # 仮アカウントから本アカウント扱いに変更
         login_account.is_temp = false
+        #変更を保存
+        login_account.save
         # マイページへリダイレクト
         flash[:notice] = "アカウントを作成しました！"
         redirect_to("/account/#{login_account.id}")
@@ -89,9 +91,7 @@ class AccountController < ApplicationController
         # 仮アカウントが発行されている場合
         else
           # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
-          User.where(account_id: session_id).each do |u|
-            u.update!(account_id: target_account.id)
-          end
+          User.where(account_id: session_id).update!(account_id: target_account.id)
           # 仮アカウントを削除
           session_account.destroy()
           # セッションを本アカウントに変更し、マイページに飛ばす
