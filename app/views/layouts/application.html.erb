@@ -22,9 +22,6 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <% if flash[:notice] %>
-          <p><font color="red"><%= flash[:notice] %></font></p>
-        <% end %>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <% if @is_logged_in == false %>
@@ -54,6 +51,11 @@
         </div>
       </div>
     </nav>
+    <% if flash[:notice] %>
+      <div>
+        <p><font color="red"><%= flash[:notice] %></font></p>
+      </div>
+    <% end %>
     <!-- 本文 -->
     <%= yield %>
   </body>
