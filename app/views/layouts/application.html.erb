@@ -52,8 +52,8 @@
       </div>
     </nav>
     <% if flash[:notice] %>
-      <div>
-        <p><font color="red"><%= flash[:notice] %></font></p>
+      <div class="alert alert-warning" role="alert">
+        <%= flash[:notice] %>
       </div>
     <% end %>
     <!-- 本文 -->

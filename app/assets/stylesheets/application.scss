@@ -1,4 +1,9 @@
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 
-body { padding-top: 70px; }
+body { padding-top: 56px; }
+
+.alert-warning {
+  margin: 0px;
+  padding: 5px 20px;
+}
