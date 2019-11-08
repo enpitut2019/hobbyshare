@@ -4,21 +4,18 @@ class AccountController < ApplicationController
   end
 
   def mypage
-    session_id = session[:login_account_id]
-    account = Account.find_by(id: session_id)
     # ログインしていない場合や仮アカウントの場合は弾く
-    if !session_id || account.is_temp
+    if @session_status == "no_session" || @session_status == "temporary_account"
       flash[:notice] = "まだログインしていません！"
       redirect_to("/")
       return
     end
 
-    @account_name = account.name
-    @users = User.where(account_id: account.id)
+    @account_name = @login_account.name
+    @users = User.where(account_id: @login_account.id)
   end
 
   def new_account
-    session_id = session[:login_account_id]
     if Account.find_by(name: params[:name])
       flash[:notice] = "その名前はすでに使われています"#nameが既存のものと一致した場合は弾く
       redirect_to("/account/sign_up")
@@ -26,12 +23,12 @@ class AccountController < ApplicationController
     end
 
     # セッションがない場合
-    if session_id == nil
+    if @session_status == "no_session"
       # アカウントを作成
      ac = Account.create(name: params[:name], password: params[:password])
       # dummy_userを設定
      dummy_user = User.create()
-     ac.update[user_id: dummy_user.id]
+     ac.update(user_id: dummy_user.id)
      # セッションを書き換え
      session[:login_account_id] = ac.id
      # マイページへ飛ばす
@@ -39,28 +36,25 @@ class AccountController < ApplicationController
      redirect_to("/account/#{ac.id}")
     # セッションがある場合
     else
-      # セッションがあるのでログインしているアカウントを取り出す
-      login_account = Account.find_by(id:session_id)
       # 既に別のアカウントでログインしている場合
-      if login_account.is_temp == false
+      if @session_status == "valid_account"
         # トップページへ戻す
         flash[:notice] = "既に別のアカウントでログインしています！"
         redirect_to("/")
-      # ログインしているのは仮アカウントだった場合
-      else
+      else # ログインしているのは仮アカウントだった場合
         # name,passwordの設定
-        login_account.name = params[:name]
-        login_account.password = params[:password]
+        @login_account.name = params[:name]
+        @login_account.password = params[:password]
         # dummy_userの作成
         dummy_user = User.create()
-        login_account.user_id = dummy_user.id
+        @login_account.user_id = dummy_user.id
         # 仮アカウントから本アカウント扱いに変更
-        login_account.is_temp = false
+        @login_account.is_temp = false
         #変更を保存
-        login_account.save
+        @login_account.save
         # マイページへリダイレクト
         flash[:notice] = "アカウントを作成しました！"
-        redirect_to("/account/#{login_account.id}")
+        redirect_to("/account/#{@login_account.id}")
       end
     end
   end
@@ -75,25 +69,23 @@ class AccountController < ApplicationController
       redirect_to("/account/login")
       return
     else
-      session_id = session[:login_account_id]
       #今はログインしていない場合
-      if session_id == nil
+      if @session_status == "no_session"
         session[:login_account_id] = target_account.id
         flash[:notice] = "ログインしました！"
         redirect_to("/account/#{target_account.id}")
         return
       else
-        session_account = Account.find_by(id: session_id)
         # 別の本アカウントでログインしている場合
-        if session_account.is_temp == false
+        if @session_status == "valid_account"
           flash[:notice] = "既に別のアカウントでログインしています"
           redirect_to("/")
         # 仮アカウントが発行されている場合
         else
           # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
-          User.where(account_id: session_id).update(account_id: target_account.id)
+          User.where(account_id: @session_id).update(account_id: target_account.id)
           # 仮アカウントを削除
-          session_account.destroy()
+          @login_account.destroy()
           # セッションを本アカウントに変更し、マイページに飛ばす
           session[:login_account_id] = target_account.id
           flash[:notice] = "ログインしました！"
@@ -107,17 +99,16 @@ class AccountController < ApplicationController
   end
 
   def logout
-    if !session[:login_account_id]
+    if @session_status == "no_session"
       flash[:notice] = "まだログインしていません！"
       redirect_to("/")
     else
-      login_account = Account.find_by(id:session[:login_account_id])
-      if login_account.is_temp == true
+      if @session_status == "temporary_account"
         flash[:notice] = "まだログインしていません"
         #仮アカウントからログアウトすべきかは微妙
         session[:login_account_id] = nil
         redirect_to("/")
-      else
+      else #本アカウントの場合
         session[:login_account_id] = nil
         flash[:notice] = "ログアウトしました"
         redirect_to("/")

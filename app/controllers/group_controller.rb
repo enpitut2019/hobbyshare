@@ -29,8 +29,8 @@ class GroupController < ApplicationController
     User.where(group_id: @gid).each do |u|
       @query_guser.push(u)
     end
-    if session[:login_account_id] != nil
-      User.where(account_id: session[:login_account_id]).each do |u|
+    if @session_id != nil
+      User.where(account_id: @session_id).each do |u|
         if u.group_id == @gid
           @login_uid = u.id
           @login_uname = u.name

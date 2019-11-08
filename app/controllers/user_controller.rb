@@ -25,15 +25,14 @@ class UserController < ApplicationController
   def mypage
     #ユーザIDを変数に入れる
     @user_id = params[:user_id].to_i
-    session_id = session[:login_account_id]
     #セッションが存在かつ正しいユーザーの場合のみ通す
-    if session_id == nil #セッションが存在するか確認
+    if @session_status == "no_session" #セッションが存在しない場合
       flash[:notice] = "このページにアクセスする権限がありません"
       redirect_to("/")
       return
     else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
       is_OK = false
-      User.where(account_id: session_id).each do |u|
+      User.where(account_id: @session_id).each do |u|
         if u.id == @user_id
           is_OK = true
         end
@@ -78,11 +77,11 @@ class UserController < ApplicationController
 
     #セッションのアカウントIDを確認して、あるかないかで分岐
 
-    if session[:login_account_id] == nil #セッションがない場合
+    if @session_status == "no_session" #セッションがない場合
       #Accountモデルの作成
       new_account = Account.create(password: "password", is_temp: true)
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, password: "password", account_id: new_account.id)
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: new_account.id)
       #セッションのaccount_idを作成したAccountのIDにする
       session[:login_account_id] = new_account.id
       #グループメンバー一覧へリダイレクト
@@ -90,7 +89,7 @@ class UserController < ApplicationController
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
     else
       #Userモデルからaccout_idに対応するuserを検索、見つかればgroup_idを取り出す。そのgroup_idがメンバー追加しようとしているgroup_idなら既にユーザーがあるのでメンバー一覧ページへ戻す。
-      User.where(account_id: session[:login_account_id]).each do |u|
+      User.where(account_id: @session_id).each do |u|
         if u.group_id == group_id
           flash[:notice] = "このグループ内で既にユーザーを作成しています！"
           redirect_to("/group/#{group_id}/add_member")
@@ -99,7 +98,7 @@ class UserController < ApplicationController
       end
 
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, password: "password", account_id: session[:login_account_id])
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: @session_id)
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
       redirect_to("/group/#{group_id}/list")
     end
