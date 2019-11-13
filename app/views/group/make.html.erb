@@ -18,12 +18,14 @@
   <button type="button" onclick="clearFormAll();">リセット</button>
 <% end %>
 
-<hr>
-<p>以下のグループにログインしています</p>
-<ul>
-  <% @login_group_names.each do |group| %>
-    <li>
-      <%= group %>
-    </li>
-  <% end %>
-</ul>
+<% if @login_group_names %>
+  <hr>
+  <p>以下のグループにログインしています</p>
+  <ul>
+    <% @login_group_names.each do |group| %>
+      <li>
+        <%= group %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
