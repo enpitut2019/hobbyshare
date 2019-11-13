@@ -9,19 +9,18 @@
   </div>
 </header>
 
-<p>まずは作成するユーザーの名前を入力してください。</p>
-<%= form_tag("/account/new_account") do %>
-  <p><strong>ユーザー名</strong>
-  <input name="name" value="<%= @account_name %>" required>
-  </p>
+<div class="container">
+  <p>ユーザー名とパスワードを登録してアカウントを作成しましょう</p>
+  <%= form_tag("/account/new_account") do %>
+    <label><strong>ユーザー名</strong></label>
+      <input name="name" value="<%= @account_name %>" class="form-control" required>
 
-  <p>あなたのパスワードを入力してください。<br>
-  </p>
-  <p><strong>パスワード</strong>
-  <input type="password" name="password" required>
-  </p>
+    <p><strong>パスワード</strong>
+      <input type="password" name="password" class="form-control" required>
+    </p>
 
-  <p>入力内容に間違いがなければユーザー作成を選択してください。</p>
-  <input type="submit" value="この内容でユーザーを作成">
-  <button type="button" onclick="clearFormAll();">リセット</button>
-<% end %>
+    <p>入力内容に間違いがなければユーザー作成を選択してください。</p>
+    <input type="submit" value="ユーザー作成" class="btn btn-primary btn-bg">
+    <button type="button" onclick="clearFormAll();" class="btn btn-primary btn-bg">リセット</button>
+  <% end %>
+</div>
