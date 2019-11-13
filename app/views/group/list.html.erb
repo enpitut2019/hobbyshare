@@ -15,7 +15,7 @@
     <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
     <% if @login_uid == nil %>
     <h3>まだグループに参加してない人はここからメンバー追加</h3>
-    <%= link_to 'グループに参加する！', "/group/#{@gid}/add_member" %>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">グループに参加</button>
     <% else %>
     <%= @login_uname %>としてこのグループに参加しています
     <br>
@@ -30,6 +30,7 @@
       <% @query_guser.each do |user| %>
       <li>
         <%= user.name %>
+        <button class="btn btn-primary btn-sm" type="button"onclick="location.href='/user/<%=@login_uid%>/delete'">削除</button><!-- アラートが欲しいかも -->
       </li>
       <% end %>
     </ol>
