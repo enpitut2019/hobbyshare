@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
-
+<script type="text/javascript">
+	function subcheck() {
+		if (window.confirm('本当に削除しますか')) {
+			return true;
+		} else {
+      window.alert('キャンセルされました'); // 警告ダイアログを表示
+		  return false; // 送信を中止
+		}
+	}
+</script>
 <!-- Header -->
 <header class="bg-primary py-5 mb-5">
   <div class="container h-100">
@@ -30,7 +39,9 @@
       <% @query_guser.each do |user| %>
       <li>
         <%= user.name %>
-        <button class="btn btn-primary btn-sm" type="button"onclick="location.href='/user/<%=@login_uid%>/delete'">削除</button><!-- アラートが欲しいかも -->
+        <%= form_tag("/user/#{@login_uid}/delete") do %>
+          <input type="submit" value="削除" class="btn btn-primary btn-sm" type="button" onclick="return subcheck()">
+        <% end %>
       </li>
       <% end %>
     </ol>
