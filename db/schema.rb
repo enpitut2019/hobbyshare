@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_030840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_temp", default: false, null: false
-    t.bigint "user_id"
+    t.bigint "user_id"#ダミーユーザのID
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 

@@ -12,6 +12,7 @@ class AccountController < ApplicationController
     end
 
     @account_name = @login_account.name
+    @dummy_user_id = @login_account.user_id
     @users = User.where(account_id: @login_account.id)
   end
 
