@@ -3,8 +3,18 @@ class GroupController < ApplicationController
   end
 
   def enter
-    #グループ名の初期値.ログイン失敗で戻ってくる場合に入力内容を引き継ぐために使う.
+    #グループ名の初期値.グループ作成失敗で戻ってくる場合に入力内容を引き継ぐために使う.
     @group_name = ""
+    @login_group_names = nil
+    if @session_status == "no_session"
+      #ログインしているグループはない
+    elsif @session_status == "temporary_account"
+      @login_group_ids = User.where(account_id: @session_id).pluck(:group_id)
+      @login_group_names = Group.where(id: @login_group_ids).pluck(:group_name)
+    else
+      @login_group_ids = User.where(account_id: @session_id).pluck(:group_id)
+      @login_group_names = Group.where(id: @login_group_ids).pluck(:group_name)
+    end
   end
 
   def search
@@ -42,6 +52,16 @@ class GroupController < ApplicationController
   def make
     #グループ名の初期値.グループ作成失敗で戻ってくる場合に入力内容を引き継ぐために使う.
     @group_name = ""
+    @login_group_names = nil
+    if @session_status == "no_session"
+      #ログインしているグループはない
+    elsif @session_status == "temporary_account"
+      @login_group_ids = User.where(account_id: @session_id).pluck(:group_id)
+      @login_group_names = Group.where(id: @login_group_ids).pluck(:group_name)
+    else
+      @login_group_ids = User.where(account_id: @session_id).pluck(:group_id)
+      @login_group_names = Group.where(id: @login_group_ids).pluck(:group_name)
+    end
   end
 
   def new
