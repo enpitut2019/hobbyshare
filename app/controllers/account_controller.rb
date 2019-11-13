@@ -1,6 +1,8 @@
 class AccountController < ApplicationController
 
   def sign_up
+    # アカウント名の初期値.作成失敗で戻ってくる場合に入力内容を引き継ぐために使う.
+    @account_name = ""
   end
 
   def mypage
@@ -18,7 +20,8 @@ class AccountController < ApplicationController
   def new_account
     if Account.find_by(name: params[:name])
       flash[:notice] = "その名前はすでに使われています"#nameが既存のものと一致した場合は弾く
-      redirect_to("/account/sign_up")
+      @account_name = params[:name] #入力内容の引継ぎ
+      render("sign_up")
       return
     end
 
@@ -66,7 +69,8 @@ class AccountController < ApplicationController
     if target_account&.is_temp || !target_account&.authenticate(params[:password])
       #仮アカウントだったりパスワードが違う場合は弾く
       flash[:notice] = "入力された内容に誤りがあります"
-      redirect_to("/account/login")
+      @account_name = params[:name] #入力内容の引継ぎ
+      render("login")
       return
     else
       #今はログインしていない場合
@@ -96,6 +100,8 @@ class AccountController < ApplicationController
   end
 
   def login
+    # アカウント名の初期値.ログイン失敗で戻ってくる場合に入力内容を引き継ぐために使う.
+    @account_name = ""
   end
 
   def logout

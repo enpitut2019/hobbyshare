@@ -1,10 +1,10 @@
 <h1>新規アカウント作成ページ</h1>
-<p>新しく作るユーザーの情報を入力しましょう！大丈夫、難しいことは何もありません。</p>
+<p>アカウントを作成することで、ユーザー情報を永続的に残すことができます</p>
 <hr>
 <p>まずは作成するユーザーの名前を入力してください。</p>
 <%= form_tag("/account/new_account") do %>
   <p><strong>ユーザー名</strong>
-  <input name="name" required>
+  <input name="name" value="<%= @account_name %>" required>
   </p>
 
   <p>あなたのパスワードを入力してください。<br>
@@ -13,7 +13,7 @@
   <input type="password" name="password" required>
   </p>
 
-  <p>入力内容に間違いがなければユーザー作成を選択してください。</p><!--表示をよくするための空行-->
+  <p>入力内容に間違いがなければユーザー作成を選択してください。</p>
   <input type="submit" value="この内容でユーザーを作成">
-  <input type="reset" value="入力内容をリセットする">
+  <button type="button" onclick="clearFormAll();">リセット</button>
 <% end %>

@@ -2,7 +2,7 @@
 <hr>
 <%= form_tag("/account/login_process") do %>
   <p><strong>ユーザー名</strong>
-  <input name="name" required>
+  <input name="name" value="<%=@account_name%>" required>
   </p>
 
   </p>
@@ -11,4 +11,5 @@
   </p>
 
   <input type="submit" value="ログイン">
+  <button type="button" onclick="clearFormAll();">リセット</button>
 <% end %>
