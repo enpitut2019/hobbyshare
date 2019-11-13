@@ -86,13 +86,33 @@ class AccountController < ApplicationController
           redirect_to("/")
         # 仮アカウントが発行されている場合
         else
+          # 仮アカウントと本アカウントにそれぞれ紐づけられているユーザー
+          temporary_account_users = User.where(account_id: @session_id)
+          valid_account_users = User.where(account_id: target_account.id)
+          # それぞれのユーザーの所属しているグループのIDの配列
+          temporary_account_users_groups = temporary_account_users.pluck(:group_id)
+          valid_account_users_groups = valid_account_users.pluck(:group_id)
+          # 重複しているものを取り出す
+          duplications = temporary_account_users_groups & valid_account_users_groups
+
           # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
-          User.where(account_id: @session_id).update(account_id: target_account.id)
+          temporary_account_users.update(account_id: target_account.id)
           # 仮アカウントを削除
           @login_account.destroy()
-          # セッションを本アカウントに変更し、マイページに飛ばす
+          # セッションを本アカウントに変更
           session[:login_account_id] = target_account.id
-          flash[:notice] = "ログインしました！"
+
+          # 重複がない場合はログイン通知
+          if duplications.empty?
+            flash[:notice] = "ログインしました！"
+          else # 重複がある場合はその旨の通知
+            dup_group_names = ""
+            duplications.each do |dup|
+              dup_group_names = "#{dup_group_names}「#{Group.find_by(id:dup).group_name}」"
+            end
+            flash[:notice] = "グループ#{dup_group_names}で複数のユーザーを登録しています！不要なユーザを削除してください"
+          end
+          # アカウントのマイページに飛ばす
           redirect_to("/account/#{target_account.id}")
         end
       end
