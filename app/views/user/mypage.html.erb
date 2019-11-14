@@ -45,7 +45,6 @@ function subcheck() {
 
     <div class="row">
       <div class="col-md-8 mb-5">
-        <hr>
 
         <h3>所属グループ:<%= @group_name %></h3>
         <button class="btn btn-primary btn" type="button" onclick="location.href='/group/<%= @gid %>/list'">グループメンバーリスト</button>
@@ -54,10 +53,9 @@ function subcheck() {
         <hr>
         <h3>あなたが登録している趣味</h3>
         <!-- ここにユーザが登録してある趣味を全て表示する -->
-        <table class="table">
+        <table class="table table-condensed">
           <% @users_hobbies.each do |hname| %>
           <tr>
-            <td></td>
             <td>
               <%= "#{hname.hobby_name}" %>
             </td>
@@ -73,14 +71,15 @@ function subcheck() {
           <% end %>
         </table>
 
+        <hr>
         <h4>趣味の登録</h4>
         <p>ここで共有したい趣味を登録することができます。</p>
         <!-- ここにユーザが登録してある趣味を全て表示する -->
         <%= form_tag("/user/newhobby") do %>
-        <input name="hobby_name" required>
+        <input name="hobby_name" class="form-control" required>
         <input type="hidden" name="user_id" value="<%= @user_id %>">
-        <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
-        <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセットする">
+        <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
+        <input class="btn btn-primary btn-bg" type="reset" value="リセット">
         <% end %>
         <br>
         <p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
@@ -105,10 +104,10 @@ function subcheck() {
           <h4>ユーザー名の設定</h4>
           <p>ここではユーザ名を変更することができます。</p>
           <%= form_tag("/user/name_change") do %>
-          <input name="user_name" required>
+          <input name="user_name" class="form-control" required>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <input class="btn btn-primary btn-sm" type="submit" value="名前を変更する">
-          <input class="btn btn-primary btn-sm" type="reset" value="リセット">
+          <input class="btn btn-primary btn-bg" type="submit" value="名前を変更する">
+          <input class="btn btn-primary btn-bg" type="reset" value="リセット">
           <% end %>
 
           <hr>
@@ -117,7 +116,7 @@ function subcheck() {
           <h4>ユーザーの削除</h4>
           <%= form_tag("/user/#{@user_id}/delete") do %>
           <p>このユーザーを削除する場合はこちら</p>
-          <input class="btn btn-primary btn-sm" type="submit" value="ユーザー削除">
+          <input class="btn btn-primary btn-bg" type="submit" value="ユーザー削除">
           <% end %>
         </div>
       </div>

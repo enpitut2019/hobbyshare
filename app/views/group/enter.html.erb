@@ -22,12 +22,14 @@
 <% if @login_group_names %>
   <hr>
   <p>以下のグループにログインしています</p>
-  <ul>
+  <table class="table">
     <% @login_group_names.each do |group| %>
-      <li>
+    <tr>
+      <td>
         <%= group %>
-      </li>
+      </td>
+    </tr>
     <% end %>
-  </ul>
+  </table>
 <% end %>
 </div>
