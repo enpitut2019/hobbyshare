@@ -1,50 +1,35 @@
-<script>
-function clearFormAll() {
-  for (var i=0; i<document.forms.length; ++i) {
-      clearForm(document.forms[i]);
-  }
-}
-function clearForm(form) {
-  for(var i=0; i<form.elements.length; ++i) {
-      clearElement(form.elements[i]);
-  }
-}
-function clearElement(element) {
-  switch(element.type) {
-      case "hidden":
-      case "submit":
-      case "reset":
-      case "button":
-      case "image":
-          return;
-      case "file":
-          return;
-      case "text":
-      case "password":
-      case "textarea":
-          element.value = "";
-          return;
-      case "checkbox":
-      case "radio":
-          element.checked = false;
-          return;
-      case "select-one":
-      case "select-multiple":
-          element.selectedIndex = 0;
-          return;
-      default:
-  }
-}
-</script>
+<header class="bg-primary py-5 mb-5">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-lg-12">
+        <h1 class="display-4 text-white mt-5 mb-2">グループログイン</h1>
+        <p class="lead mb-5 text-white-50">グループ内で趣味を共有しましょう</p>
+      </div>
+    </div>
+  </div>
+</header>
 
-<h1>グループログインページ</h1>
-<hr>
-<li>参加したいグループがある場合はグループメンバーからそのグループ名を教えてもらい、そのグループの名前を入力してください。</li>
-<li>すでに参加しているグループが存在する場合はそのグループの名前を入力してください</li>
+<div class="container">
+<p>所属するグループの名前を入力してください</p>
 <%= form_tag("/group/search") do %>
   <p><strong>グループ名</strong>
-  <input name="group_name" value="<%= @group_name %>" id="aaa" required>
+  <input name="group_name" value="<%= @group_name %>" id="aaa" class="form-control" required>
   </p>
-  <input type="submit" value="グループに入る">
-  <button type="button" onclick="clearFormAll();">リセット</button>
+  <input type="submit" value="グループに入る" class="btn btn-primary btn-bg">
+  <button type="button" onclick="clearFormAll();" class="btn btn-primary btn-bg">リセット</button>
 <% end %>
+
+<% if @login_group_names %>
+  <hr>
+  <p>以下のグループにログインしています</p>
+  <table class="table">
+    <% @login_group_names.each do |group| %>
+    <tr>
+      <td>
+        <%= group %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+</div>

@@ -1,6 +1,8 @@
 class AccountController < ApplicationController
 
   def sign_up
+    # アカウント名の初期値.作成失敗で戻ってくる場合に入力内容を引き継ぐために使う.
+    @account_name = ""
   end
 
   def mypage
@@ -39,7 +41,8 @@ class AccountController < ApplicationController
   def new_account
     if Account.find_by(name: params[:name])
       flash[:notice] = "その名前はすでに使われています"#nameが既存のものと一致した場合は弾く
-      redirect_to("/account/sign_up")
+      @account_name = params[:name] #入力内容の引継ぎ
+      render("sign_up")
       return
     end
 
@@ -87,7 +90,8 @@ class AccountController < ApplicationController
     if target_account&.is_temp || !target_account&.authenticate(params[:password])
       #仮アカウントだったりパスワードが違う場合は弾く
       flash[:notice] = "入力された内容に誤りがあります"
-      redirect_to("/account/login")
+      @account_name = params[:name] #入力内容の引継ぎ
+      render("login")
       return
     else
       #今はログインしていない場合
@@ -103,13 +107,33 @@ class AccountController < ApplicationController
           redirect_to("/")
         # 仮アカウントが発行されている場合
         else
+          # 仮アカウントと本アカウントにそれぞれ紐づけられているユーザー
+          temporary_account_users = User.where(account_id: @session_id)
+          valid_account_users = User.where(account_id: target_account.id)
+          # それぞれのユーザーの所属しているグループのIDの配列
+          temporary_account_users_groups = temporary_account_users.pluck(:group_id)
+          valid_account_users_groups = valid_account_users.pluck(:group_id)
+          # 重複しているものを取り出す
+          duplications = temporary_account_users_groups & valid_account_users_groups
+
           # 仮アカウントに紐付けられているユーザーを本アカウントに紐付け直す
-          User.where(account_id: @session_id).update(account_id: target_account.id)
+          temporary_account_users.update(account_id: target_account.id)
           # 仮アカウントを削除
           @login_account.destroy()
-          # セッションを本アカウントに変更し、マイページに飛ばす
+          # セッションを本アカウントに変更
           session[:login_account_id] = target_account.id
-          flash[:notice] = "ログインしました！"
+
+          # 重複がない場合はログイン通知
+          if duplications.empty?
+            flash[:notice] = "ログインしました！"
+          else # 重複がある場合はその旨の通知
+            dup_group_names = ""
+            duplications.each do |dup|
+              dup_group_names = "#{dup_group_names}「#{Group.find_by(id:dup).group_name}」"
+            end
+            flash[:notice] = "グループ#{dup_group_names}で複数のユーザーを登録しています！不要なユーザを削除してください"
+          end
+          # アカウントのマイページに飛ばす
           redirect_to("/account/#{target_account.id}")
         end
       end
@@ -117,6 +141,8 @@ class AccountController < ApplicationController
   end
 
   def login
+    # アカウント名の初期値.ログイン失敗で戻ってくる場合に入力内容を引き継ぐために使う.
+    @account_name = ""
   end
 
   def logout

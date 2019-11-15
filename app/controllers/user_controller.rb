@@ -7,21 +7,6 @@ class UserController < ApplicationController
     @users = User.all
   end
 
-  def group_login
-    user_id = params[:user_id].to_i
-    #パスワードの確認
-    if !User.find_by(id: user_id).authenticate(params[:group_password])
-      flash[:notice] = "パスワードが違います"
-      redirect_to("/group/#{params[:group_id]}/list")
-      return
-    else
-      session[:login_user_id] = user_id
-    end
-
-    #リダイレクト
-    redirect_to("/user/mypage/#{params[:user_id]}")
-  end
-
   def mypage
     #ユーザIDを変数に入れる
     @user_id = params[:user_id].to_i
@@ -104,27 +89,6 @@ class UserController < ApplicationController
     end
   end
 
-  def first_setting
-    @user_id = params[:user_id].to_i
-    session_id = session[:login_user_id].to_i
-
-    #セッションIDがログインユーザーと一致するか確認
-    #ユーザにパスワードが設定済みか確認
-    if !User.find_by(id: @user_id).authenticate("password")
-      #既にログインしているか確認
-      if !session_id#ログインしてないユーザがパスワード設定済みのマイページを見ようとしたら弾く
-        flash[:notice] = "このページにアクセスする権限がありません"
-        redirect_to("/")
-      else #ログインしているユーザでも違うユーザのマイページを見ようとしたら弾く
-        if @user_id != session_id
-          flash[:notice] = "このページにアクセスする権限がありません"
-          redirect_to("/")
-        end
-      end
-    end
-  end
-
-
   def newhobby
     #Hobbyの主キーを保存する変数hobby_idの初期化
     user_id_tmp = params[:user_id]
@@ -178,56 +142,6 @@ class UserController < ApplicationController
     user.name = params[:user_name]
     #userの名前の変更を確定
     user.save
-    #mypageへリダイレクト
-    redirect_to("/user/mypage/#{user_id}")
-  end
-
-  def group_password
-    #userIDを受け取る
-    user_id = params[:user_id]
-    #userIDから対応するレコードを取り出す
-    user = User.find_by(id: user_id)
-    #userのpasswordを変更
-    user.password = params[:group_password]
-    #userの名前の変更を確定
-    user.save
-    flash[:notice] = "パスワードを設定しました"
-    #セッションIDを設定
-    session[:login_user_id] = user_id
-    #mypageへリダイレクト
-    redirect_to("/user/mypage/#{user_id}")
-  end
-
-  def first_password
-    #userIDを受け取る
-    user_id = params[:user_id]
-    #userIDから対応するレコードを取り出す
-    user = User.find_by(id: user_id)
-    #userのpasswordを変更
-    user.password = params[:group_password]
-    #userの名前の変更を確定
-    user.save
-    #セッションIDを設定
-    session[:login_user_id] = user_id
-    params[:hobby_name].each do |c1, c2|
-      if c2 == "1"
-        hobby_id = 0
-        #既に登録された趣味であった場合
-        if Hobby.find_by(hobby_name: c1)
-          hobby_id = Hobby.find_by(hobby_name: c1).id
-        else
-          #新規にHobbyに登録する趣味の場合
-          hobby_tmp = Hobby.create(hobby_name: c1)
-          hobby_id = hobby_tmp.id
-        end
-        #重複するレコードがあるかどうか
-        if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id)
-        else
-          #UserHobbyへの格納
-          tmp = UserHobby.create(user_id: user_id, hobby_id: hobby_id)
-        end
-      end
-    end
     #mypageへリダイレクト
     redirect_to("/user/mypage/#{user_id}")
   end
@@ -336,6 +250,5 @@ class UserController < ApplicationController
     flash[:notice] = "ユーザーを削除しました"
     redirect_to("/group/#{group_id}/list")
   end
-
 
 end
