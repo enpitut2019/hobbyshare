@@ -14,7 +14,28 @@ class AccountController < ApplicationController
     end
 
     @account_name = @login_account.name
+    @dummy_user_id = @login_account.user_id
     @users = User.where(account_id: @login_account.id)
+    @account_id = @login_account.id
+
+
+
+    #ユーザの趣味を取得して変数に入れる
+    @uhobby_record = UserHobby.where(user_id: @dummy_user_id)
+
+    #uhobby_recordからhobbyIDだけを取り出して配列にする
+    @hobbies_id = []
+    @uhobby_record.each do |record|
+      @hobbies_id.push(record.hobby_id)
+    end
+
+
+    #HobbyIDに対応するレコードを取ってくる
+    @users_hobbies = []
+    @hobbies_id.each do |hid|
+      @users_hobbies.push(Hobby.find_by(id: hid))
+    end
+
   end
 
   def new_account

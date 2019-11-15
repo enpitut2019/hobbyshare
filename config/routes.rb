@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'user/first_setting/:user_id' => 'user#first_setting'
   get 'user/login' => 'user#login'
   post '/user/hobby_delete' => 'user#hobby_delete'
+  post '/user/account_hobby_delete' => 'user#account_hobby_delete'
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   get 'group/:group_id/add_member' => 'group#add_member'
 
   post 'user/newhobby' => 'user#newhobby'
+  post 'user/account_newhobby' => 'user#account_newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
   post 'user/first_password' => 'user#first_password'
