@@ -9,23 +9,26 @@
   </div>
 </header>
 
-<p>まずは作成するグループの名前を入力してください。</p>
+<div class="container">
 <%= form_tag("/group/new") do %>
   <p><strong>グループ名</strong>
-  <input name="group_name" value="<%= @group_name %>" required>
+  <input name="group_name" value="<%= @group_name %>" class="form-control" required>
   </p>
-  <input type="submit" value="グループを作成">
-  <button type="button" onclick="clearFormAll();">リセット</button>
+  <input type="submit" value="グループを作成" class="btn btn-primary btn-bg">
+  <button type="button" onclick="clearFormAll();" class="btn btn-primary btn-bg">リセット</button>
 <% end %>
 
 <% if @login_group_names %>
   <hr>
   <p>以下のグループにログインしています</p>
-  <ul>
+  <table class="table">
     <% @login_group_names.each do |group| %>
-      <li>
+    <tr>
+      <td>
         <%= group %>
-      </li>
+      </td>
+    </tr>
     <% end %>
-  </ul>
+  </table>
 <% end %>
+</div>
