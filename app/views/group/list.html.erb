@@ -48,5 +48,13 @@
     <hr>
     </div>
   </div>
+  この辺からおすすめ趣味欄
+  <%= form_tag("/user/dummy_newhobby") do %>
+  <input name="hobby_name" class="form-control" required>
+  <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
+  <input type="hidden" name="group_id" value="<%= @gid %>">
+  <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
+  <input class="btn btn-primary btn-bg" type="reset" value="リセット">
+  <% end %>
 <br>
 </div>

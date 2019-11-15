@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'group/:group_id/add_member' => 'group#add_member'
 
   post 'user/newhobby' => 'user#newhobby'
+  post 'user/dummy_newhobby' => 'user#dummy_newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
   post 'user/first_password' => 'user#first_password'
