@@ -23,10 +23,10 @@
   <hr>
   <p>以下のグループにログインしています</p>
   <table class="table">
-    <% @login_group_names.each do |group| %>
+    <% @login_group_names.each do |g| %>
     <tr>
       <td>
-        <%= group %>
+        <a href="/group/<%=Group.find_by(group_name: g).id%>/list"><%= g %>
       </td>
     </tr>
     <% end %>
