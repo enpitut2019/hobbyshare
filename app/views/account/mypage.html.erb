@@ -8,15 +8,52 @@
   </div>
 </header>
 
-<h1>ここは<%= @account_name %>さんのマイページです</h1>
-
 <h3>アカウントに紐づけられているユーザー一覧</h3>
-<ul>
+<table class="table">
+  <thead>
+    <tr>
+    <th>所属グループ</th>
+    <th>グループ内のユーザーネーム</th>
+  </tr>
+  </thead>
+<tbody>
+
 <% @users.each do |user| %>
   <% group = Group.find_by(id:user.group_id) %>
-  <li><a href="/group/<%=group.id%>/list"><%=user.name + ":" + group.group_name%></a></li>
+  <tr>
+  <td>
+    <a href="/group/<%=group.id%>/list"><%=group.group_name%></a>
+  </td>
+  <td>
+  <a href="/user/mypage/<%=user.id%>"><%=user.name%></a>
+</td>
+</tr>
 <% end %>
-</ul>
+
+</tbody>
+</table>
+<hr>
+
+<h3>あなたが登録している趣味</h3>
+<!-- ここにユーザが登録してある趣味を全て表示する -->
+<table class="table table-condensed">
+  <% @users_hobbies.each do |hname| %>
+  <tr>
+    <td>
+      <%= "#{hname.hobby_name}" %>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+      <%= form_tag("/user/account_hobby_delete") do %>
+      <input type="hidden" name="account_id" value="<%= @account_id %>">
+      <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+      <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+      <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
 
 <h4>趣味の登録</h4>
 <p>ここで共有したい趣味を登録することができます。</p>

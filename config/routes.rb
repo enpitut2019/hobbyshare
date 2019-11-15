@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'user/first_setting/:user_id' => 'user#first_setting'
   get 'user/login' => 'user#login'
   post '/user/hobby_delete' => 'user#hobby_delete'
+  post '/user/account_hobby_delete' => 'user#account_hobby_delete'
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
