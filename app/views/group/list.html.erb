@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
-
+<script type="text/javascript">
+	function subcheck() {
+		if (window.confirm('本当に削除しますか')) {
+			return true;
+		} else {
+      window.alert('キャンセルされました'); // 警告ダイアログを表示
+		  return false; // 送信を中止
+		}
+	}
+</script>
 <!-- Header -->
 <header class="bg-primary py-5 mb-5">
   <div class="container h-100">
@@ -12,36 +21,32 @@
   </div>
 </header>
 <div class="container">
+    <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
+    <% if @login_uid == nil %>
+    <h3>まだグループに参加してない人はここからメンバー追加</h3>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">グループに参加</button>
+    <% else %>
+    <%= @login_uname %>としてこのグループに参加しています
+    <br>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/user/mypage/<%=@login_uid%>'">マイページ</button>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/user/show/<%=@login_uid%>/<%=@gid%>'">趣味を共有</button>
+    <% end %>
+    <hr>
   <div class="row">
     <div class="col-md-8 mb-5">
       <h4><%= Group.find(@gid).group_name %>に所属しているメンバー</h4>
-      <hr>
-    </div>
     <ol>
       <% @query_guser.each do |user| %>
-      <%= form_tag("/user/group_login") do %>
       <li>
         <%= user.name %>
-        <input type="hidden" name="user_id" value="<%= user.id%>">
-        <input type="hidden" name="group_id" value="<%= @gid %>">
-        <input pattern="^[0-9A-Za-z]+$" type="password" name="group_password" required>
-        <input type="submit" value="マイページに移動">
+        <%= form_tag("/user/#{user.id}/delete") do %>
+          <input type="submit" value="削除" class="btn btn-primary btn-sm" type="button" onclick="return subcheck()">
+        <% end %>
       </li>
       <% end %>
-      <% end %>
     </ol>
+    <hr>
+    </div>
   </div>
 <br>
-<hr>
-<!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
-<% if @login_uid == nil %>
-<h3>まだグループに参加してない人はここからメンバー追加</h3>
-<%= link_to 'グループに参加する！', "/group/#{@gid}/add_member" %>
-<% else %>
-<%= @login_uname %>としてこのグループに参加しています
-<br>
-<%= link_to 'マイページへ移動する', "/user/mypage/#{@login_uid}" %>
-<br>
-<%= link_to '共有している趣味を閲覧する', "/user/show/#{@login_uid}/#{@gid}" %>
-<% end %>
 </div>
