@@ -32,20 +32,15 @@ class GroupController < ApplicationController
   def list
     #gidにグループidを格納する
     @gid = params[:group_id].to_i
-    #query_guser_idにグループに所属するユーザのUIDを格納する
-    @query_guser = []
-    #Userにて指定グループのgidを持つユーザを抽出
+    @group_name = Group.find(@gid).group_name
+    #query_guserにグループに所属するユーザを格納する
+    @query_guser = User.where(group_id: @gid)
+    #ログインアカウントのuserにて指定グループのgidを持つユーザを抽出
     @login_uid == nil
-    User.where(group_id: @gid).each do |u|
-      @query_guser.push(u)
-    end
-    if @session_id != nil
-      User.where(account_id: @session_id).each do |u|
-        if u.group_id == @gid
-          @login_uid = u.id
-          @login_uname = u.name
-        end
-      end
+    if @session_status != "no_session"
+      account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
+      @login_uid = account_user&.id
+      @login_uname = account_user&.name
     end
   end
 

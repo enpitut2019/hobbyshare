@@ -34,7 +34,7 @@
     <hr>
   <div class="row">
     <div class="col-md-8 mb-5">
-      <h4><%= Group.find(@gid).group_name %>に所属しているメンバー</h4>
+      <h4><%= @group_name %>に所属しているメンバー</h4>
     <ol>
       <% @query_guser.each do |user| %>
       <li>
