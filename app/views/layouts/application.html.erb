@@ -19,6 +19,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
+        <!-- ロゴの表示 -->
         <a class="navbar-brand" href="/">Hobbyshare</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -26,6 +27,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <% if @is_logged_in == false %>
+            <!-- ログインしていない場合の表示 -->
             <li class="nav-item">
               <a class="nav-link" href="/account/sign_up">アカウント作成
                 <span class="sr-only">(current)</span>
@@ -37,6 +39,7 @@
               </a>
             </li>
             <% else %>
+            <!-- ログインしている場合の表示 -->
             <li class="nav-item">
               <a class="nav-link" href="/account/<%= session[:login_account_id]%>">マイページ
                 <span class="sr-only">(current)</span>
@@ -52,6 +55,7 @@
         </div>
       </div>
     </nav>
+    <!-- 通知の表示 -->
     <% if flash[:notice] %>
       <div class="alert alert-warning" role="alert">
         <%= flash[:notice] %>
