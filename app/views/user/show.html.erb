@@ -26,4 +26,5 @@
 <% end %>
 <br>
 <hr>
-<%= link_to "マイページへ戻る" , "/user/mypage/#{@id}" %>
+<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
+<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
