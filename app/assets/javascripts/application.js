@@ -54,3 +54,12 @@ function clearElement(element) {
       default:
   }
 }
+
+function subcheck() {
+  if (window.confirm('本当に削除しますか')) {
+    return true;
+  } else {
+    //window.alert('キャンセルされました'); // 警告ダイアログの表示は要らなそう
+    return false; // 送信を中止
+  }
+}
