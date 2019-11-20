@@ -147,11 +147,24 @@ class UserController < ApplicationController
   end
 
   def show
-    #select.htmlで選択された人のidを@idに数字として格納
-    #gidにグループidを格納する
     @id = params[:user_id].to_i
     @gid = params[:group_id].to_i
     @group_name = Group.find(@gid).group_name
+
+    # セッションのチェック
+    if @session_status == "no_session" #セッションが存在しない場合
+      flash[:notice] = "このページにアクセスする権限がありません"
+      redirect_to("/")
+      return
+    else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
+      if !User.find_by(account_id: @session_id, id:@id)
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+        return
+      end
+    end
+
+
     #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
     @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
