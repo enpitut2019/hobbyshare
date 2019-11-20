@@ -298,6 +298,20 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id}")
   end
 
+  def dummyhobby_delete
+    #各種値を変数に入れる
+    user_id = params[:user_id]
+    hobby_id = params[:hobby_id]
+    #データベースからレコードを取り出す
+    hobby = Hobby.find_by(id: hobby_id)
+    #Userhobbyの削除
+    target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    target.delete
+    #趣味を削除したことを通知してマイページへリダイレクト
+    flash[:notice] = "#{hobby.hobby_name}を削除しました"
+    redirect_to("/group/#{params[:group_id]}/list")
+  end
+
   def group_delete
     #各種値を変数に入れる
     user_id = params[:user_id]

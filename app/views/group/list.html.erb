@@ -45,29 +45,12 @@
       </li>
       <% end %>
     </ol>
-    <hr>
     </div>
   </div>
   <hr>
   グループのおすすめ趣味
   <br>
-  <% @dummy_hobbies.each do |hname| %>
-  <tr>
-    <td>
-      <%= "#{hname.hobby_name}" %>
-    </td>
-    <!-- 趣味の削除ボタン -->
-    <td>
-      <%= form_tag("/user/hobby_delete") do %>
-      <input type="hidden" name="user_id" value="<%= @user_id %>">
-      <input type="hidden" name="hobby_id" value="<%= hname.id %>">
-      <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
-    </td>
-    <% end %>
-  </tr>
-  <% end %>
-  <hr>
-  この辺からおすすめ趣味欄
+  グループごとにおすすめの趣味を設定できます
   <%= form_tag("/user/dummy_newhobby") do %>
   <input name="hobby_name" class="form-control" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
@@ -75,5 +58,23 @@
   <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
   <input class="btn btn-primary btn-bg" type="reset" value="リセット">
   <% end %>
+  <hr>
+  <% @dummy_hobbies.reverse_each do |hname| %>
+  <tr>
+    <td>
+      <%= "#{hname.hobby_name}" %>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+      <%= form_tag("/user/dummyhobby_delete") do %>
+      <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
+      <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+      <input type="hidden" name="group_id" value="<%= @gid %>">
+      <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+  <hr>
 <br>
 </div>
