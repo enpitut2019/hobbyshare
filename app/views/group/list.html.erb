@@ -22,7 +22,19 @@
   <div class="row">
     <div class="col-md-8 mb-5">
       <h4><%= @group_name %>に所属しているメンバー</h4>
-    <ol>
+			<table class="table table-striped">
+				<% @query_guser.each do |user| %>
+				<tr>
+					<td><%= user.name %></td>
+					<td>
+					<%= form_tag("/user/#{user.id}/delete") do %>
+	          <input type="submit" value="削除" class="btn btn-primary btn-sm" type="button" onclick="return subcheck()">
+	        <% end %>
+					</td>
+				</tr>
+				<% end %>
+			</table>
+    <!-- <ol>
       <% @query_guser.each do |user| %>
       <li>
         <%= user.name %>
@@ -31,7 +43,7 @@
         <% end %>
       </li>
       <% end %>
-    </ol>
+    </ol> -->
     </div>
   </div>
   <hr>
