@@ -24,7 +24,7 @@
         <h3>あなたが登録している趣味</h3>
         <!-- ここにユーザが登録してある趣味を全て表示する -->
         <table class="table table-condensed">
-          <% @users_hobbies.each do |hname| %>
+          <% @users_hobbies.reverse_each do |hname| %>
           <tr>
             <td>
               <%= "#{hname.hobby_name}" %>
@@ -52,17 +52,14 @@
         <input class="btn btn-primary btn-bg" type="reset" value="リセット">
         <% end %>
         <br>
-        <p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
-          下のメニューから自分の趣味と合うものを選んでください。</p>
+        <p>グループごと設定されたおすすめの趣味を追加できます</p>
           <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
           <%= form_tag("/user/newhobby") do %>
           <select name="hobby_name"required>
             <option value="">おすすめ趣味一覧</option>
-            <option value="スポーツ">スポーツ</option>
-            <option value="映画">映画</option>
-            <option value="ゲーム">ゲーム</option>
-            <option value="アニメ">アニメ</option>
-            <option value="開発">開発</option>
+            <% @dummy_hobbies.each do |hname| %>
+            <option value="<%= "#{hname.hobby_name}" %>"><%= "#{hname.hobby_name}" %></option>
+            <% end %>
           </select>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input class="btn btn-primary btn-sm" type="submit" value="登録">

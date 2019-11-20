@@ -32,10 +32,23 @@ class GroupController < ApplicationController
   def list
     #gidにグループidを格納する
     @gid = params[:group_id].to_i
-    @group_name = Group.find(@gid).group_name
-    #query_guserにグループに所属するユーザを格納する
-    @query_guser = User.where(group_id: @gid)
-    #ログインアカウントのuserにて指定グループのgidを持つユーザを抽出
+    #dummyuserの情報を格納
+    @dummy_user = Group.find(@gid).dummyuser
+    @dummyhobby = UserHobby.where(user_id: @dummy_user)
+    #dummyhobbyからhobbyIDだけを取り出して配列にする
+    @dummies_id = []
+    @dummyhobby.each do |record|
+      @dummies_id.push(record.hobby_id)
+    end
+    #HobbyIDに対応するレコードを取ってくる
+    @dummy_hobbies = []
+    @dummies_id.each do |hid|
+      @dummy_hobbies.push(Hobby.find_by(id: hid))
+    end
+
+    #query_guser_idにグループに所属するユーザのUIDを格納する
+    @query_guser = []
+    #Userにて指定グループのgidを持つユーザを抽出
     @login_uid == nil
     if @session_status != "no_session"
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
@@ -69,7 +82,8 @@ class GroupController < ApplicationController
     end
 
     #グループを新規作成
-    new_group = Group.create(group_name: params[:group_name])
+    dummy = User.create()
+    new_group = Group.create(group_name: params[:group_name], dummyuser: dummy.id)
 
     redirect_to("/group/#{new_group.id}/list") #グループ内メンバー一覧ページへリダイレクト
   end
