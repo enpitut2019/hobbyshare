@@ -46,6 +46,21 @@ class UserController < ApplicationController
     @hobbies_id.each do |hid|
       @users_hobbies.push(Hobby.find_by(id: hid))
     end
+
+    #グループおすすめ趣味の処理
+    #dummyuserの情報を格納
+    @dummy_user = Group.find(@gid).dummyuser
+    @dummyhobby = UserHobby.where(user_id: @dummy_user)
+    #dummyhobbyからhobbyIDだけを取り出して配列にする
+    @dummies_id = []
+    @dummyhobby.each do |record|
+      @dummies_id.push(record.hobby_id)
+    end
+    #HobbyIDに対応するレコードを取ってくる
+    @dummy_hobbies = []
+    @dummies_id.each do |hid|
+      @dummy_hobbies.push(Hobby.find_by(id: hid))
+    end
   end
 
   def new_member
@@ -129,6 +144,7 @@ class UserController < ApplicationController
     else
       #UserHobbyへの格納
       tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
     redirect_to("/account/login_process")
   end
@@ -196,6 +212,7 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id}")
   end
 
+
   def account_hobby_delete
     #各種値を変数に入れる
     user_id = params[:user_id]
@@ -210,6 +227,22 @@ class UserController < ApplicationController
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
     redirect_to("/account/#{params[:account_id]}")
   end
+
+  def dummyhobby_delete
+    #各種値を変数に入れる
+    user_id = params[:user_id]
+    hobby_id = params[:hobby_id]
+    #データベースからレコードを取り出す
+    hobby = Hobby.find_by(id: hobby_id)
+    #Userhobbyの削除
+    target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    target.delete
+    #趣味を削除したことを通知してマイページへリダイレクト
+    flash[:notice] = "#{hobby.hobby_name}を削除しました"
+    redirect_to("/group/#{params[:group_id]}/list")
+  end
+
+
 
   def group_delete
     #各種値を変数に入れる
@@ -250,5 +283,34 @@ class UserController < ApplicationController
     flash[:notice] = "ユーザーを削除しました"
     redirect_to("/group/#{group_id}/list")
   end
+
+
+
+  #dummyuser
+  #================================================
+  #DummyUser用（リダイレクト先が違うため）
+  def dummy_newhobby
+    #Hobbyの主キーを保存する変数hobby_idの初期化
+    user_id_tmp = params[:user_id]
+    hobby_id = 0
+    #既に登録された趣味であった場合
+    if Hobby.find_by(hobby_name: params[:hobby_name])
+      hobby_id = Hobby.find_by(hobby_name: params[:hobby_name]).id
+    else
+      #新規にHobbyに登録する趣味の場合
+      hobby_tmp = Hobby.create(hobby_name: params[:hobby_name])
+      hobby_id = hobby_tmp.id
+    end
+    #重複するレコードがあるかどうか
+    if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id_tmp)
+      flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
+    else
+      #UserHobbyへの格納
+      tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      flash[:notice] = "#{params[:hobby_name]}を登録しました！"
+    end
+    redirect_to("/group/#{params[:group_id]}/list")
+  end
+
 
 end

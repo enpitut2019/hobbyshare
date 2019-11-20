@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'user/mypage/:user_id' => 'user#mypage'
   get 'user/first_setting/:user_id' => 'user#first_setting'
   get 'user/login' => 'user#login'
+  post '/user/dummyhobby_delete' => 'user#dummyhobby_delete'
   post '/user/hobby_delete' => 'user#hobby_delete'
   post '/user/account_hobby_delete' => 'user#account_hobby_delete'
 
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
 
   post 'user/newhobby' => 'user#newhobby'
   post 'user/account_newhobby' => 'user#account_newhobby'
+  post 'user/dummy_newhobby' => 'user#dummy_newhobby'
   post 'user/name_change' => 'user#name_change'
   post 'user/group_password' => 'user#group_password'
   post 'user/first_password' => 'user#first_password'
