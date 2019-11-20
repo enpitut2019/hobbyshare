@@ -33,6 +33,7 @@ class GroupController < ApplicationController
     #gidにグループidを格納する
     @gid = params[:group_id].to_i
     #dummyuserの情報を格納
+    @group_name = Group.find(@gid).group_name
     @dummy_user = Group.find(@gid).dummyuser
     @dummyhobby = UserHobby.where(user_id: @dummy_user)
     #dummyhobbyからhobbyIDだけを取り出して配列にする
@@ -50,6 +51,9 @@ class GroupController < ApplicationController
     @query_guser = []
     #Userにて指定グループのgidを持つユーザを抽出
     @login_uid == nil
+    User.where(group_id: @gid).each do |u|
+      @query_guser.push(u)
+    end
     if @session_status != "no_session"
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
       @login_uid = account_user&.id
