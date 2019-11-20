@@ -156,16 +156,12 @@ class UserController < ApplicationController
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
     @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
 
-    users = User.where(group_id: @gid)
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
-    @query_guser_id_andme = users.ids
-    @query_guser_id = @query_guser_id_andme.select {|id| id != @id }
-
+    users = User.where(group_id: @gid)
+    @query_guser_id = users.ids.select {|id| id != @id }
     #グループ内のユーザーの名前の配列を作成
-    @group_user_all_andme = users.pluck(:name)
-    user_name = User.find_by(id: @id).name
-    @group_user_all = @group_user_all_andme.select {|name| name != user_name}
-
+    #user_name = User.find_by(id: @id).name
+    #@group_user_all = users.pluck(:name).select {|name| name != user_name}
 
     @match_hobbys_name = [] #一致した趣味を順番に格納
     match_hobbys_id = [] #一致した趣味のIDを格納
@@ -191,6 +187,12 @@ class UserController < ApplicationController
       if !match_gu.empty?
         @match_users.push(match_gu)
       end
+    end
+
+    # 趣味の一致したユーザーの名前を重複なく配列に入れる
+    @match_users_name = []
+    @match_users.each do |mu|
+      @match_users_name = @match_users_name | mu
     end
 
   end

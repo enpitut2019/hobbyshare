@@ -12,7 +12,8 @@
 <h2><strong><%= @group_name %></strong>グループで一致した趣味</h2>
   <% if @match_hobbys_name.empty? #趣味が一致しなかった場合%>
     <%= "#{@group_name}には同じ趣味を持つ人がいませんでした…"%>
-    まだ登録していない趣味があれば追加してみてください！
+    <p>まだ登録していない趣味があれば追加してみてください！</p>
+    <p>グループ一覧ページで趣味を設定すると他の人も登録してくれるかも……？</p>
   <% else #趣味が一致した場合%>
     <div class="card-deck">
     <% @match_hobbys_name.each_with_index {|name, i| %>
@@ -28,12 +29,13 @@
     </div>
   <% end %>
 
-<hr>
-<h3><%= @group_name %>に所属しているメンバー</h3>
-<% @group_user_all_andme.each do |p| %>
-<%= p %><br>
-<% end %>
-<br>
+  <hr>
+  <h3>趣味の一致したメンバー</h3>
+  <% @match_users_name.each do |mname| %>
+  <%= link_to "mname", "#" %><br>
+  <% end %>
+  <br>
+
 <hr>
 <input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
 <input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
