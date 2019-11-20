@@ -88,11 +88,9 @@ function subcheck() {
           <%= form_tag("/user/newhobby") do %>
           <select name="hobby_name"required>
             <option value="">おすすめ趣味一覧</option>
-            <option value="スポーツ">スポーツ</option>
-            <option value="映画">映画</option>
-            <option value="ゲーム">ゲーム</option>
-            <option value="アニメ">アニメ</option>
-            <option value="開発">開発</option>
+            <% @dummy_hobbies.each do |hname| %>
+            <option value="<%= "#{hname.hobby_name}" %>"><%= "#{hname.hobby_name}" %></option>
+            <% end %>
           </select>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input class="btn btn-primary btn-sm" type="submit" value="登録">

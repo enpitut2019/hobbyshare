@@ -32,6 +32,20 @@ class GroupController < ApplicationController
   def list
     #gidにグループidを格納する
     @gid = params[:group_id].to_i
+    #dummyuserの情報を格納
+    @dummy_user = Group.find(@gid).dummyuser
+    @dummyhobby = UserHobby.where(user_id: @dummy_user)
+    #dummyhobbyからhobbyIDだけを取り出して配列にする
+    @dummies_id = []
+    @dummyhobby.each do |record|
+      @dummies_id.push(record.hobby_id)
+    end
+    #HobbyIDに対応するレコードを取ってくる
+    @dummy_hobbies = []
+    @dummies_id.each do |hid|
+      @dummy_hobbies.push(Hobby.find_by(id: hid))
+    end
+
     #query_guser_idにグループに所属するユーザのUIDを格納する
     @query_guser = []
     #Userにて指定グループのgidを持つユーザを抽出

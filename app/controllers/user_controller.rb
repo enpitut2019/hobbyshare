@@ -61,6 +61,21 @@ class UserController < ApplicationController
     @hobbies_id.each do |hid|
       @users_hobbies.push(Hobby.find_by(id: hid))
     end
+
+    #グループおすすめ趣味の処理
+    #dummyuserの情報を格納
+    @dummy_user = Group.find(@gid).dummyuser
+    @dummyhobby = UserHobby.where(user_id: @dummy_user)
+    #dummyhobbyからhobbyIDだけを取り出して配列にする
+    @dummies_id = []
+    @dummyhobby.each do |record|
+      @dummies_id.push(record.hobby_id)
+    end
+    #HobbyIDに対応するレコードを取ってくる
+    @dummy_hobbies = []
+    @dummies_id.each do |hid|
+      @dummy_hobbies.push(Hobby.find_by(id: hid))
+    end
   end
 
   def new_member
