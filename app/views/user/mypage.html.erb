@@ -54,7 +54,7 @@ function subcheck() {
         <h3>あなたが登録している趣味</h3>
         <!-- ここにユーザが登録してある趣味を全て表示する -->
         <table class="table table-condensed">
-          <% @users_hobbies.each do |hname| %>
+          <% @users_hobbies.reverse_each do |hname| %>
           <tr>
             <td>
               <%= "#{hname.hobby_name}" %>

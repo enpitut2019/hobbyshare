@@ -158,6 +158,7 @@ class UserController < ApplicationController
     else
       #UserHobbyへの格納
       tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
     redirect_to("/user/mypage/#{user_id_tmp}")
   end
