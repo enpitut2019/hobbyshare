@@ -193,7 +193,7 @@ class UserController < ApplicationController
             @match_hobbys_name.push(Hobby.find_by(id:qhi).hobby_name)
           end
           #その趣味にmatchしたユーザーを配列に追加
-          match_gu.push(User.find_by(id:gui).name)
+          match_gu.push(User.find_by(id:gui))
         end
       end
       #趣味の一致したユーザー数が0以外の場合にpush
@@ -203,10 +203,44 @@ class UserController < ApplicationController
     end
 
     # 趣味の一致したユーザーの名前を重複なく配列に入れる
-    @match_users_name = []
+    @match_users_list = []
     @match_users.each do |mu|
-      @match_users_name = @match_users_name | mu
+      @match_users_list = @match_users_list | mu
     end
+
+  end
+
+  def match
+    @user_id = params[:user_id].to_i
+    @target_id = params[:target_id].to_i
+    @group_id = User.find_by(id: @user_id).group_id
+    @group_name = Group.find_by(id: @group_id).group_name
+
+    # セッションのチェック
+    if @session_status == "no_session" #セッションが存在しない場合
+      flash[:notice] = "このページにアクセスする権限がありません"
+      redirect_to("/")
+      return
+    else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
+      if !User.find_by(account_id: @session_id, id:@user_id)
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+        return
+      end
+    end
+
+    # target_userがuserと異なるグループに所属する場合弾く
+    if User.find_by(id: @target_id).group_id != @group_id
+      flash[:notice] = "無効なURLです"
+      redirect_to("/")
+      return
+    end
+
+    # userとtarget_userの持っている趣味を全て取り出し、一致するものを得る
+    user_hobbyid = UserHobby.where(user_id: @user_id).pluck(:hobby_id)
+    target_hobbyid = UserHobby.where(user_id: @target_id).pluck(:hobby_id)
+    match_hobbies_id = user_hobbyid & target_hobbyid
+    @match_hobbies = Hobby.where(id: match_hobbies_id)
 
   end
 

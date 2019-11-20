@@ -21,7 +21,7 @@
         <div class="card-header"><%= name %></div>
         <div class="card-body"><ul style="list-style: none; padding-left: 0;">
           <% @match_users[i].each do |user| %>
-            <li><%=user%></li>
+            <li><%=user.name%></li>
             <% end %>
         </ul></div>
       </div>
@@ -31,8 +31,8 @@
 
   <hr>
   <h3>趣味の一致したメンバー</h3>
-  <% @match_users_name.each do |mname| %>
-  <%= link_to mname, "#" %><br>
+  <% @match_users_list.each do |match_user| %>
+  <%= link_to match_user.name, "/user/match/#{@id}/#{match_user.id}" %><br>
   <% end %>
   <br>
 
