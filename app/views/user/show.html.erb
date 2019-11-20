@@ -8,19 +8,25 @@
   </div>
 </header>
 
-<h2><%= Group.find(@gid).group_name %></h2>
-<% @results_seikei.each do |p| %>
-<%= p %><br>
-<% end %>
+<h2><%= @group_name %></h2>
+  <% if @match_hobbys_name.empty? #趣味が一致しなかった場合%>
+    <%= "#{@group_name}には同じ趣味を持つ人がいませんでした…"%>
+    まだ登録していない趣味があれば追加してみてください！
+  <% else #趣味が一致した場合%>
+    <% @match_hobbys_name.each_with_index {|name, i| %>
+      <div>
+        <h4><%= name %></h4>
+        <ul>
+          <% @match_users[i].each do |user| %>
+            <li><%=user%></li>
+            <% end %>
+        </ul>
+      </div>
+    <% } %>
+  <% end %>
 
-<% if @results_seikei.empty? %>
-<%= "#{Group.find(@gid).group_name}には同じ趣味を持つ人がいませんでした…"%>
-まだ登録していない趣味があれば追加してみてください！
-<% else %>
-共有しています！
-<% end %>
 <hr>
-<h3><%= Group.find(@gid).group_name %>に所属しているメンバー</h3>
+<h3><%= @group_name %>に所属しているメンバー</h3>
 <% @group_user_all_andme.each do |p| %>
 <%= p %><br>
 <% end %>

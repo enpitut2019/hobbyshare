@@ -151,6 +151,7 @@ class UserController < ApplicationController
     #gidにグループidを格納する
     @id = params[:user_id].to_i
     @gid = params[:group_id].to_i
+    @group_name = Group.find(@gid).group_name
     #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
     @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
@@ -166,20 +167,32 @@ class UserController < ApplicationController
     @group_user_all = @group_user_all_andme.select {|name| name != user_name}
 
 
-    #趣味が共通したユーザのデータを格納するインスタンス配列@results_seikeiの用意
-    @results_seikei = []
-    #検索対象となった同じグループのユーザに対して順に検索を行う。
-    @query_guser_id.each do |gu|
-      #検索対象のユーザの持つ趣味に対して順に、操作者の持つ趣味と一致しているか判定する。
-      UserHobby.where(user_id: gu).each do |uh|
-        @query_hobbyid.each do |qh|
-          #一致していた場合、文として整形し配列@results_seikeiに格納する
-          if qh == uh.hobby_id
-            @results_seikei.push(Hobby.find(uh.hobby_id).hobby_name + "を" + User.find(gu).name + "さんと,")
+    @match_hobbys_name = [] #一致した趣味を順番に格納
+    match_hobbys_id = [] #一致した趣味のIDを格納
+    @match_users = [] #一致した趣味ごとの一致するユーザーの配列の配列
+
+    # ログインユーザーの各趣味ごとに順番に
+    @query_hobbyid.each do |qhi|
+      match_gu = []
+      # グループ内のユーザーごとに順番に
+      @query_guser_id.each do |gui|
+        # グループ内のi番目のユーザーの趣味に一致するものが存在するかチェック
+        if match_hobby = UserHobby.find_by(user_id: gui, hobby_id:qhi)
+          #一致した趣味が初めての一致の場合@match_hobbys_nameにpushする
+          if match_hobbys_id.last != qhi
+            match_hobbys_id.push(qhi)
+            @match_hobbys_name.push(Hobby.find_by(id:qhi).hobby_name)
           end
+          #その趣味にmatchしたユーザーを配列に追加
+          match_gu.push(User.find_by(id:gui).name)
         end
       end
+      #趣味の一致したユーザー数が0以外の場合にpush
+      if !match_gu.empty?
+        @match_users.push(match_gu)
+      end
     end
+
   end
 
   def hobby_delete
