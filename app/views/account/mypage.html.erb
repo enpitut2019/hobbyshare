@@ -24,70 +24,66 @@
         </thead>
         <tbody>
 
-        <% @users.each do |user| %>
-        <% group = Group.find_by(id:user.group_id) %>
-        <tr>
-          <td>
-            <a href="/group/<%=group.id%>/list"><%=group.group_name%></a>
-          </td>
-          <td>
-            <a href="/user/mypage/<%=user.id%>"><%=user.name%></a>
-          </td>
-        </tr>
-        <% end %>
+          <% @users.each do |user| %>
+          <% group = Group.find_by(id:user.group_id) %>
+          <tr>
+            <td>
+              <a href="/group/<%=group.id%>/list"><%=group.group_name%></a>
+            </td>
+            <td>
+              <a href="/user/mypage/<%=user.id%>"><%=user.name%></a>
+            </td>
+          </tr>
+          <% end %>
 
-      </tbody>
-    </table>
-    <hr>
+        </tbody>
+      </table>
+      <hr>
 
-    <h3>あなたが登録している趣味</h3>
-    <!-- ここにユーザが登録してある趣味を全て表示する -->
-    <table class="table table-condensed">
+      <h4>趣味の登録</h4>
+      <p>ここで共有したい趣味を登録することができます。</p>
+      <!-- ここにユーザが登録してある趣味を全て表示する -->
+      <%= form_tag("/user/account_newhobby") do %>
+      <input name="hobby_name" required>
+      <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+      <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
+      <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセットする">
+      <% end %>
+
+      <!-- ここにユーザが登録してある趣味を全て表示する -->
       <% @users_hobbies.each do |hname| %>
-      <tr>
-        <td>
+      <ul class="list-inline mt-2">
+        <li class="list-inline-item">
           <%= "#{hname.hobby_name}" %>
-        </td>
+        </li>
         <!-- 趣味の削除ボタン -->
-        <td>
+        <li class="list-inline-item">
           <%= form_tag("/user/account_hobby_delete") do %>
           <input type="hidden" name="account_id" value="<%= @account_id %>">
           <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
           <input type="hidden" name="hobby_id" value="<%= hname.id %>">
           <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
-        </td>
+        </li>
         <% end %>
-      </tr>
-      <% end %>
-    </table>
+        <% end %>
 
-    <h4>趣味の登録</h4>
-    <p>ここで共有したい趣味を登録することができます。</p>
-    <!-- ここにユーザが登録してある趣味を全て表示する -->
-    <%= form_tag("/user/account_newhobby") do %>
-    <input name="hobby_name" required>
-    <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
-    <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
-    <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセットする">
-    <% end %>
-    <br>
-    <p>共有したい趣味が思いつかない？そんな人の為にこちらがいくつか登録する趣味を提案いたします！<br>
-      下のメニューから自分の趣味と合うものを選んでください。</p>
-      <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
-      <%= form_tag("/user/account_newhobby") do %>
-      <select name="hobby_name"required>
-        <option value="">おすすめ趣味一覧</option>
-        <option value="スポーツ">スポーツ</option>
-        <option value="映画">映画</option>
-        <option value="ゲーム">ゲーム</option>
-        <option value="アニメ">アニメ</option>
-        <option value="開発">開発</option>
-      </select>
-      <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
-      <input class="btn btn-primary btn-sm" type="submit" value="登録">
-      <% end %>
 
-      <hr>
+        <p><br>共有したい趣味が思いつかない場合は、下のメニューから自分の趣味と合うものを選んでください。</p>
+        <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
+        <%= form_tag("/user/account_newhobby") do %>
+        <select name="hobby_name"required>
+          <option value="">おすすめ趣味一覧</option>
+          <option value="スポーツ">スポーツ</option>
+          <option value="映画">映画</option>
+          <option value="ゲーム">ゲーム</option>
+          <option value="アニメ">アニメ</option>
+          <option value="開発">開発</option>
+        </select>
+        <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+        <input class="btn btn-primary btn-sm" type="submit" value="登録">
+        <% end %>
+
+        <hr>
+      </div>
     </div>
   </div>
-</div>
