@@ -213,8 +213,10 @@ class UserController < ApplicationController
   def match
     @user_id = params[:user_id].to_i
     @target_id = params[:target_id].to_i
+    @target_name = User.find_by(id:@target_id).name
     @group_id = User.find_by(id: @user_id).group_id
     @group_name = Group.find_by(id: @group_id).group_name
+    @match_hobbies = nil
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合
