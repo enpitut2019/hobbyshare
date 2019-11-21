@@ -8,23 +8,36 @@
   </div>
 </header>
 
-<h2><%= Group.find(@gid).group_name %></h2>
-<% @results_seikei.each do |p| %>
-<%= p %><br>
-<% end %>
+<div class="container">
+<h2><strong><%= @group_name %></strong>グループで一致した趣味</h2>
+  <% if @match_hobbys_name.empty? #趣味が一致しなかった場合%>
+    <%= "#{@group_name}には同じ趣味を持つ人がいませんでした…"%>
+    <p>まだ登録していない趣味があれば追加してみてください！</p>
+    <p>グループ一覧ページで趣味を設定すると他の人も登録してくれるかも……？</p>
+  <% else #趣味が一致した場合%>
+    <div class="card-deck">
+    <% @match_hobbys_name.each_with_index {|name, i| %>
+      <div class="card border-info bg-light mb-3" style="max-width: 20rem; min-width: 12rem;">
+        <div class="card-header"><%= name %></div>
+        <div class="card-body"><ul style="list-style: none; padding-left: 0;">
+          <% @match_users[i].each do |user| %>
+            <li><%=user.name%></li>
+            <% end %>
+        </ul></div>
+      </div>
+    <% } %>
+    </div>
+  <% end %>
 
-<% if @results_seikei.empty? %>
-<%= "#{Group.find(@gid).group_name}には同じ趣味を持つ人がいませんでした…"%>
-まだ登録していない趣味があれば追加してみてください！
-<% else %>
-共有しています！
-<% end %>
-<hr>
-<h3><%= Group.find(@gid).group_name %>に所属しているメンバー</h3>
-<% @group_user_all_andme.each do |p| %>
-<%= p %><br>
-<% end %>
-<br>
+  <hr>
+  <h3>趣味の一致したメンバー</h3>
+  <% @match_users_list.each do |match_user| %>
+  <%= link_to match_user.name, "/user/match/#{@id}/#{match_user.id}" %><br>
+  <% end %>
+  <br>
+
 <hr>
 <input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
 <input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
+
+</div>
