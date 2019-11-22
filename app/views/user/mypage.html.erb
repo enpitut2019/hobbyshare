@@ -32,20 +32,45 @@
         <br>
 
         <!-- ここにユーザが登録してある趣味を全て表示する -->
-        <% @users_hobbies.each do |hname| %>
         <ul class="list-inline mt-2">
+        <% @users_hobbies.each do |hname| %>
+          <li>
           <li class="list-inline-item">
             <%= "#{hname.hobby_name}" %>
           </li>
+
+          <!-- 趣味の表記揺れ対策登録ボタン -->
+          <li class="list-inline-item">
+            <button class="btn btn-primary btn-sm">別名の登録</button>
+          </li>
+
           <!-- 趣味の削除ボタン -->
           <li class="list-inline-item">
             <%= form_tag("/user/hobby_delete") do %>
             <input type="hidden" name="user_id" value="<%= @user_id %>">
             <input type="hidden" name="hobby_id" value="<%= hname.id %>">
             <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+            <% end %>
+          </li>
+
+          <!-- 趣味の表記揺れ対策登録隠しフォーム -->
+          <div id="regist_hidden">
+            </li>
+              <li>
+                <%= form_tag("/user/similar_hobby") do %>
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+                あああ
+                <input class="btn btn-primary btn-sm" type="submit" value="別名の登録" onclick="return subcheck()">
+                <% end %>
+              </li>
+            <li>
+
+          </div>
+
           </li>
           <% end %>
-          <% end %>
+        </ul>
           <p><br>共有したい趣味が思いつかない場合は、下のメニューから自分の趣味と合うものを選んでください。</p>
 
         <p>グループごと設定されたおすすめの趣味を追加できます</p>
