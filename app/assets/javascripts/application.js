@@ -63,3 +63,12 @@ function subcheck() {
     return false; // 送信を中止
   }
 }
+
+// 趣味の表記揺れ対策登録隠しフォーム
+function entrySimilarHobby(index){
+  if(document.getElementById('regist_hidden'+index).style.display == "none") {
+    document.getElementById('regist_hidden'+index).style.display = "";
+  }else{
+    document.getElementById('regist_hidden'+index).style.display = "none";
+  }
+}
