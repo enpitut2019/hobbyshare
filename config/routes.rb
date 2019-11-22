@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  #getで飛ばしてるけど変えたほうが良さげ
-  get 'user/:user_id/delete' => 'user#user_delete'
 
   get 'user/select' => 'user#select'
   get 'user/show/:user_id/:group_id' => 'user#show'
+  get 'user/match/:user_id/:target_id' => 'user#match'
   get 'user/mypage/:user_id' => 'user#mypage'
   get 'user/first_setting/:user_id' => 'user#first_setting'
   get 'user/login' => 'user#login'
