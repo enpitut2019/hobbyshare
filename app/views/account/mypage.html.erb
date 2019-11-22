@@ -18,7 +18,7 @@
         <thead>
           <tr>
             <th>所属グループ</th>
-            <th>グループ内のユーザーネーム</th>
+            <th>グループ内で使用している名前</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
 
 
       <h4>趣味の登録</h4>
-      <p>ここで共有したい趣味を登録することができます。</p>
+      <p>共有したい趣味を登録できます。</p>
       <%= form_tag("/user/account_newhobby") do %>
       <input name="hobby_name" required>
       <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">

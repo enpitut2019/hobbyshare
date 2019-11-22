@@ -68,21 +68,23 @@
         <hr>
 
         <!-- ユーザー名の変更 -->
-        <h4>ユーザー名の設定</h4>
-        <p>ここではユーザ名を変更することができます。</p>
+        <h4>名前の設定</h4>
+        <p>
+          グループ内で使用する名前を変更することができます。<br>
+          （アカウントの名前を変更するわけではありません）
+        </p>
         <%= form_tag("/user/name_change") do %>
         <input name="user_name" class="form-control" required>
         <input type="hidden" name="user_id" value="<%= @user_id %>">
-        <input class="btn btn-primary btn-bg" type="submit" value="名前を変更する">
+        <input class="btn btn-primary btn-bg" type="submit" value="変更">
         <% end %>
 
         <hr>
 
         <!--ユーザーの削除 -->
-        <h4>ユーザーの削除</h4>
+        <h4>グループから抜ける</h4>
         <%= form_tag("/user/#{@user_id}/delete") do %>
-        <p>このユーザーを削除する場合はこちら</p>
-        <input class="btn btn-primary btn-bg" type="submit" value="ユーザー削除">
+        <input class="btn btn-primary btn-bg" type="submit" value="脱退">
         <% end %>
       </div>
     </div>
