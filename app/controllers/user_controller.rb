@@ -163,39 +163,103 @@ class UserController < ApplicationController
   end
 
   def show
-    #select.htmlで選択された人のidを@idに数字として格納
-    #gidにグループidを格納する
     @id = params[:user_id].to_i
     @gid = params[:group_id].to_i
+    @group_name = Group.find(@gid).group_name
+
+    # セッションのチェック
+    if @session_status == "no_session" #セッションが存在しない場合
+      flash[:notice] = "このページにアクセスする権限がありません"
+      redirect_to("/")
+      return
+    else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
+      if !User.find_by(account_id: @session_id, id:@id)
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+        return
+      end
+    end
+
+
     #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
     @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
 
-    users = User.where(group_id: @gid)
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
-    @query_guser_id_andme = users.ids
-    @query_guser_id = @query_guser_id_andme.select {|id| id != @id }
-
+    users = User.where(group_id: @gid)
+    @query_guser_id = users.ids.select {|id| id != @id }
     #グループ内のユーザーの名前の配列を作成
-    @group_user_all_andme = users.pluck(:name)
-    user_name = User.find_by(id: @id).name
-    @group_user_all = @group_user_all_andme.select {|name| name != user_name}
+    #user_name = User.find_by(id: @id).name
+    #@group_user_all = users.pluck(:name).select {|name| name != user_name}
 
+    @match_hobbys_name = [] #一致した趣味を順番に格納
+    match_hobbys_id = [] #一致した趣味のIDを格納
+    @match_users = [] #一致した趣味ごとの一致するユーザーの配列の配列
 
-    #趣味が共通したユーザのデータを格納するインスタンス配列@results_seikeiの用意
-    @results_seikei = []
-    #検索対象となった同じグループのユーザに対して順に検索を行う。
-    @query_guser_id.each do |gu|
-      #検索対象のユーザの持つ趣味に対して順に、操作者の持つ趣味と一致しているか判定する。
-      UserHobby.where(user_id: gu).each do |uh|
-        @query_hobbyid.each do |qh|
-          #一致していた場合、文として整形し配列@results_seikeiに格納する
-          if qh == uh.hobby_id
-            @results_seikei.push(Hobby.find(uh.hobby_id).hobby_name + "を" + User.find(gu).name + "さんと,")
+    # ログインユーザーの各趣味ごとに順番に
+    @query_hobbyid.each do |qhi|
+      match_gu = []
+      # グループ内のユーザーごとに順番に
+      @query_guser_id.each do |gui|
+        # グループ内のi番目のユーザーの趣味に一致するものが存在するかチェック
+        if match_hobby = UserHobby.find_by(user_id: gui, hobby_id:qhi)
+          #一致した趣味が初めての一致の場合@match_hobbys_nameにpushする
+          if match_hobbys_id.last != qhi
+            match_hobbys_id.push(qhi)
+            @match_hobbys_name.push(Hobby.find_by(id:qhi).hobby_name)
           end
+          #その趣味にmatchしたユーザーを配列に追加
+          match_gu.push(User.find_by(id:gui))
         end
       end
+      #趣味の一致したユーザー数が0以外の場合にpush
+      if !match_gu.empty?
+        @match_users.push(match_gu)
+      end
     end
+
+    # 趣味の一致したユーザーの名前を重複なく配列に入れる
+    @match_users_list = []
+    @match_users.each do |mu|
+      @match_users_list = @match_users_list | mu
+    end
+
+  end
+
+  def match
+    @user_id = params[:user_id].to_i
+    @target_id = params[:target_id].to_i
+    @target_name = User.find_by(id:@target_id).name
+    @group_id = User.find_by(id: @user_id).group_id
+    @group_name = Group.find_by(id: @group_id).group_name
+    @match_hobbies = nil
+
+    # セッションのチェック
+    if @session_status == "no_session" #セッションが存在しない場合
+      flash[:notice] = "このページにアクセスする権限がありません"
+      redirect_to("/")
+      return
+    else #セッションが存在しても対象のユーザーのアカウントでなければ弾く
+      if !User.find_by(account_id: @session_id, id:@user_id)
+        flash[:notice] = "このページにアクセスする権限がありません"
+        redirect_to("/")
+        return
+      end
+    end
+
+    # target_userがuserと異なるグループに所属する場合弾く
+    if User.find_by(id: @target_id).group_id != @group_id
+      flash[:notice] = "無効なURLです"
+      redirect_to("/")
+      return
+    end
+
+    # userとtarget_userの持っている趣味を全て取り出し、一致するものを得る
+    user_hobbyid = UserHobby.where(user_id: @user_id).pluck(:hobby_id)
+    target_hobbyid = UserHobby.where(user_id: @target_id).pluck(:hobby_id)
+    match_hobbies_id = user_hobbyid & target_hobbyid
+    @match_hobbies = Hobby.where(id: match_hobbies_id)
+
   end
 
   def hobby_delete

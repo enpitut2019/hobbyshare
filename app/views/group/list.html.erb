@@ -7,7 +7,7 @@
     </div>
   </div>
 </header>
-<div class="container">
+<div class="container main">
     <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
     <% if @login_uid == nil %>
     <h3>まだグループに参加してない人はここからメンバー追加</h3>
@@ -20,7 +20,7 @@
     <% end %>
     <hr>
   <div class="row">
-    <div class="col-md-8 mb-5">
+    <div class="col-md-8">
       <h4><%= @group_name %>に所属しているメンバー</h4>
     <ol>
       <% @query_guser.each do |user| %>
@@ -67,4 +67,7 @@
     <hr>
     <br>
   </details>
-  </div>
+
+  <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
+  <div><p></p></div>
+</div>
