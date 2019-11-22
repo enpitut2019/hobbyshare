@@ -306,8 +306,6 @@ class UserController < ApplicationController
     redirect_to("/group/#{params[:group_id]}/list")
   end
 
-
-
   def group_delete
     #各種値を変数に入れる
     user_id = params[:user_id]

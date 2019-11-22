@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_15_071124) do
+ActiveRecord::Schema.define(version: 2019_11_22_070316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2019_11_15_071124) do
     t.string "password_digest"
     t.bigint "account_id"
     t.bigint "group_id"
+    t.string "info"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
   end
