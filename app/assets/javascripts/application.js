@@ -64,6 +64,15 @@ function subcheck() {
   }
 }
 
+function subcheck_regist() {
+  if (window.confirm('本当に登録しますか')) {
+    return true;
+  } else {
+    //window.alert('キャンセルされました'); // 警告ダイアログの表示は要らなそう
+    return false; // 送信を中止
+  }
+}
+
 // 趣味の表記揺れ対策登録隠しフォーム
 function entrySimilarHobby(index){
   if(document.getElementById('regist_hidden'+index).style.display == "none") {
