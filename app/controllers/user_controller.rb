@@ -152,6 +152,7 @@ class UserController < ApplicationController
         tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hid)
       end
     end
+    flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
     redirect_to("/account/#{params[:account_id].to_i}")
   end
 
