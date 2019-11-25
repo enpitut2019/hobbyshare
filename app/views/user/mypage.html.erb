@@ -73,11 +73,21 @@
                 ＿＿
               </li>
               <% alias_names = @alias_names_queue.shift %>
-                <% alias_names.each do |alias_name| %>
-              <li class="list-inline-item pl-2">
+              <% alias_ids = @alias_ids_queue.shift %>
+                <% alias_names.each_with_index do |alias_name, index| %>
+                <!-- 趣味の別名の表示 -->
+                <li class="list-inline-item pl-2">
                 <%=  alias_name %>
-              </li>
-              <% end %>
+                </li>
+                <!-- 趣味の別名の削除ボタン -->
+                <li class="list-inline-item">
+                  <%= form_tag("/user/similar_hobby_delete") do %>
+                  <input type="hidden" name="user_id" value="<%= @user_id %>">
+                  <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
+                  <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+                  <% end %>
+                </li>
+                <% end %>
           <div id="<%="regist_hidden#{i}"%>" style="display: none;">
           </li>
           <li class="pl-5">

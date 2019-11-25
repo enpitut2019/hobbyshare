@@ -56,13 +56,17 @@ class UserController < ApplicationController
     end
     #趣味の別名の配列を配列にする
     @alias_names_queue = []
+    @alias_ids_queue = []
     has_alias_id.each do |alias_id|
+      alias_ids = []
       alias_names = []
       while alias_id != nil do
+        alias_ids.push(alias_id)
         has_alias = SimilarHobby.find_by(id: alias_id)
         alias_names.push(Hobby.find_by(id: has_alias.hobby_id).hobby_name)
         alias_id = has_alias.next
       end
+      @alias_ids_queue.push(alias_ids)
       @alias_names_queue.push(alias_names)
     end
 
@@ -346,6 +350,30 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id}")
   end
 
+  def similar_hobby_delete
+    #各種値を変数に入れる
+    user_id = params[:user_id]
+    similar_hobby_id = params[:similar_hobby_id]
+    #データベースからレコードを取り出す
+    similar_hobby = SimilarHobby.find_by(id: similar_hobby_id)
+    similar_hobby_name = Hobby.find_by(id: similar_hobby.hobby_id).hobby_name
+
+    if uh = UserHobby.find_by(similar_hobbies_id: similar_hobby.id)
+      uh.update(similar_hobbies_id: similar_hobby.next)
+    elsif sh = SimilarHobby.find_by(next: similar_hobby.id)
+      sh.update(next: similar_hobby.next)
+    else
+      flash[:notice] = "エラーが起きました"
+      redirect_to("/user/mypage/#{user_id}")
+      return
+    end
+
+    similar_hobby.destroy
+
+    #趣味を削除したことを通知してマイページへリダイレクト
+    flash[:notice] = "#{similar_hobby_name}を削除しました"
+    redirect_to("/user/mypage/#{user_id}")
+  end
 
   def account_hobby_delete
     #各種値を変数に入れる
