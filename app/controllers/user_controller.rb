@@ -191,6 +191,34 @@ class UserController < ApplicationController
 
   end
 
+  def similar_hobby_add
+    user_id = params[:user_id]
+    hobby_id = params[:hobby_id]
+    similar_hobby_name = params[:similar_hobby_name]
+    user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    similar_hobby_first = SimilarHobby.find_by(id: user_hobby.similar_hobbies_id)
+    similar_hobby_last = similar_hobby_first
+    while similar_hobby_last.next != nil do
+      similar_hobby_last = SimilarHobby.find_by(id: similar_hobby_last.next)
+    end
+
+    similar_hobby_id = 0
+    #既に登録された趣味であった場合
+    if tmp = Hobby.find_by(hobby_name: similar_hobby_name)
+      similar_hobby_id = tmp.id
+    else
+      #新規にHobbyに登録する趣味の場合
+      similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
+    end
+
+    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id)
+    similar_hobby_last.update(next: similar_hobby.id)
+
+    flash[:notice] = "趣味の別名を追加しました！"
+    redirect_to("/user/mypage/#{user_id}")
+
+  end
+
   def name_change
     #userIDを受け取る
     user_id = params[:user_id]

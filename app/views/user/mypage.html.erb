@@ -81,7 +81,7 @@
           <div id="<%="regist_hidden#{i}"%>" style="display: none;">
           </li>
           <li class="pl-5">
-              <%= form_tag("/user/similar_hobby") do %>
+              <%= form_tag("/user/similar_hobby_add") do %>
               <input type="hidden" name="user_id" value="<%= @user_id %>">
               <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
               <input name="similar_hobby_name">
