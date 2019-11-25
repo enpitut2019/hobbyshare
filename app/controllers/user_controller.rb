@@ -255,9 +255,11 @@ class UserController < ApplicationController
     end
 
 
-    #趣味で検索するためにHobbiesの主キーであるHIDを格納する@query_hobbyidの用意
+    #趣味で検索するためにHobbiesの主キーであるHIDを格納するquery_hobbyidの用意
     #UIDとHIDを結びつけているUserHobbyに対して操作中ユーザのUIDで検索をかけ、そのHIDを格納。
-    @query_hobbyid = UserHobby.where(user_id: @id).pluck(:hobby_id)
+    user_hobbys = UserHobby.where(user_id: @id)
+    query_hobbyid = user_hobbys.pluck(:hobby_id)
+    query_has_similar = user_hobbys.pluck(:similar_hobbies_id)
 
     #query_guser_idに同じグループに所属するユーザのUIDを格納する
     users = User.where(group_id: @gid)
@@ -271,12 +273,31 @@ class UserController < ApplicationController
     @match_users = [] #一致した趣味ごとの一致するユーザーの配列の配列
 
     # ログインユーザーの各趣味ごとに順番に
-    @query_hobbyid.each do |qhi|
+    query_hobbyid.each_with_index do |qhi,index|
       match_gu = []
       # グループ内のユーザーごとに順番に
       @query_guser_id.each do |gui|
+        is_match = false
         # グループ内のi番目のユーザーの趣味に一致するものが存在するかチェック
-        if match_hobby = UserHobby.find_by(user_id: gui, hobby_id:qhi)
+        if UserHobby.find_by(user_id: gui, hobby_id:qhi)
+          is_match = true
+        end
+        # 同名趣味がある場合さらに検索
+        if query_has_similar[index] && !is_match
+          similar_hobby_id = query_has_similar[index]
+          while similar_hobby_id != nil do
+            sh = SimilarHobby.find_by(id: similar_hobby_id)
+            hid = sh.hobby_id
+            if UserHobby.find_by(user_id: gui, hobby_id:hid)
+              is_match = true
+              break
+            else
+              similar_hobby_id = sh.next
+            end
+          end
+        end
+        # 趣味が一致した場合
+        if is_match
           #一致した趣味が初めての一致の場合@match_hobbys_nameにpushする
           if match_hobbys_id.last != qhi
             match_hobbys_id.push(qhi)
