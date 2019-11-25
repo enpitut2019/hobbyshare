@@ -53,6 +53,7 @@
             <% end %>
           </li>
 
+          <% if !@has_alias[i] #趣味の別名が無い場合 %>
           <!-- 趣味の表記揺れ対策登録隠しフォーム -->
           <div id="<%="regist_hidden#{i}"%>" style="display: none;">
             </li>
@@ -64,6 +65,30 @@
               <input class="btn btn-primary btn-sm" type="submit" value="追加" onclick="return subcheck_regist()">
               <% end %>
           </div>
+
+          <% else #趣味の別名がある場合 %>
+            </li>
+            <li>
+              <li class="list-inline-item pl-2">
+                ＿＿
+              </li>
+              <% alias_names = @alias_names_queue.shift %>
+                <% alias_names.each do |alias_name| %>
+              <li class="list-inline-item pl-2">
+                <%=  alias_name %>
+              </li>
+              <% end %>
+          <div id="<%="regist_hidden#{i}"%>" style="display: none;">
+          </li>
+          <li class="pl-5">
+              <%= form_tag("/user/similar_hobby") do %>
+              <input type="hidden" name="user_id" value="<%= @user_id %>">
+              <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+              <input name="similar_hobby_name">
+              <input class="btn btn-primary btn-sm" type="submit" value="追加" onclick="return subcheck_regist()">
+              <% end %>
+          </div>
+          <% end %>
 
           </li>
         <% } %>

@@ -38,13 +38,32 @@ class UserController < ApplicationController
     @uhobby_record = UserHobby.where(user_id: @user_id)
     #uhobby_recordからhobbyIDだけを取り出して配列にする
     @hobbies_id = []
+    @has_alias = []
+    has_alias_id = [] #別名を持つ趣味
     @uhobby_record.each do |record|
       @hobbies_id.push(record.hobby_id)
+      if record.similar_hobbies_id != nil
+        @has_alias.push(true)
+        has_alias_id.push(record.similar_hobbies_id)
+      else
+        @has_alias.push(false)
+      end
     end
     #HobbyIDに対応するレコードを取ってくる
     @users_hobbies = []
     @hobbies_id.each do |hid|
       @users_hobbies.push(Hobby.find_by(id: hid))
+    end
+    #趣味の別名の配列を配列にする
+    @alias_names_queue = []
+    has_alias_id.each do |alias_id|
+      alias_names = []
+      while alias_id != nil do
+        has_alias = SimilarHobby.find_by(id: alias_id)
+        alias_names.push(Hobby.find_by(id: has_alias.hobby_id).hobby_name)
+        alias_id = has_alias.next
+      end
+      @alias_names_queue.push(alias_names)
     end
 
     #グループおすすめ趣味の処理
