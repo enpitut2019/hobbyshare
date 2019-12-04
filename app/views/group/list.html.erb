@@ -10,8 +10,7 @@
 <div class="container main">
     <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
     <% if @login_uid == nil %>
-    <h3>まだグループに参加してない人はここからメンバー追加</h3>
-    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">グループに参加</button>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">このグループに参加する</button>
     <% else %>
     <%= @login_uname %>としてこのグループに参加しています
     <br>
@@ -36,6 +35,9 @@
     </div>
   </div>
   <hr>
+  <% else %>
+  このグループにはまだ参加者がいません
+  <br><hr>
 <% end %>
   グループのおすすめ趣味
   <br>
