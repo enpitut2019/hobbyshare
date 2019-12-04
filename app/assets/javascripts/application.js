@@ -73,3 +73,11 @@ function ac_subcheck(a,b) {
     return false; // 送信を中止
   }
 }
+
+
+function textarea_select(){
+    //テキストエリアをフォーカスする
+    document.form.textarea.focus();
+    //テキストエリアを全選択する
+    document.form.textarea.select();
+}
