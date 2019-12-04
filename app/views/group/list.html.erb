@@ -37,7 +37,7 @@
   </div>
   <hr>
   <% end %>
-  グループのおすすめ趣味
+  <strong>グループのおすすめ趣味</strong>
   <br>
   おすすめしたい趣味を設定できます
   <%= form_tag("/user/dummy_newhobby") do %>
@@ -47,27 +47,25 @@
   <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
   <% end %>
   <hr>
-  <details>
-    <summary>登録済みのおすすめ趣味一覧</summary>
-    <% @dummy_hobbies.reverse_each do |hname| %>
-    <tr>
-      <td>
-        <%= "#{hname.hobby_name}" %>
-      </td>
-      <!-- 趣味の削除ボタン -->
-      <td>
-        <%= form_tag("/user/dummyhobby_delete") do %>
-        <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
-        <input type="hidden" name="hobby_id" value="<%= hname.id %>">
-        <input type="hidden" name="group_id" value="<%= @gid %>">
-        <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
-      </td>
+  <summary><strong>登録済みのおすすめ趣味一覧</strong></summary>
+  <% @dummy_hobbies.reverse_each do |hname| %>
+  <tr>
+    <td>
+      <%= "#{hname.hobby_name}" %>
+    </td>
+    <!-- 趣味の削除ボタン -->
+    <td>
+      <%= form_tag("/user/dummyhobby_delete") do %>
+      <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
+      <input type="hidden" name="hobby_id" value="<%= hname.id %>">
+      <input type="hidden" name="group_id" value="<%= @gid %>">
+      <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
       <% end %>
-    </tr>
-    <% end %>
-    <hr>
-    <br>
-  </details>
+    </td>
+  </tr>
+  <% end %>
+  <hr>
+  <br>
 
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
   <div><p></p></div>
