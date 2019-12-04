@@ -32,37 +32,89 @@
         <br>
 
         <!-- ここにユーザが登録してある趣味を全て表示する -->
-        <table class="table table-borderless">
-          <% @users_hobbies.each do |hname| %>
-          <tr>
-            <td>
-              <%= "#{hname.hobby_name}" %>
-            </td>
-            <!-- 趣味の削除ボタン -->
-            <td>
-              <%= form_tag("/user/hobby_delete") do %>
+        <ul class="list-inline mt-2">
+        <% @users_hobbies.each_with_index {|hobby,i| %>
+          <li>
+          <li class="list-inline-item">
+            <%= "#{hobby.hobby_name}" %>
+          </li>
+
+          <!-- 趣味の表記揺れ対策登録ボタン -->
+          <li class="list-inline-item" onclick="<%="entrySimilarHobby(#{i})"%>">
+            <button class="btn btn-primary btn-sm">別名の登録</button>
+          </li>
+
+          <!-- 趣味の削除ボタン -->
+          <li class="list-inline-item">
+            <%= form_tag("/user/hobby_delete") do %>
+            <input type="hidden" name="user_id" value="<%= @user_id %>">
+            <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+            <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+            <% end %>
+          </li>
+
+          <% if !@has_alias[i] #趣味の別名が無い場合 %>
+          <!-- 趣味の表記揺れ対策登録隠しフォーム -->
+          <div id="<%="regist_hidden#{i}"%>" style="display: none;">
+            </li>
+            <li class="pl-5">
+              <%= form_tag("/user/similar_hobby") do %>
               <input type="hidden" name="user_id" value="<%= @user_id %>">
-              <input type="hidden" name="hobby_id" value="<%= hname.id %>">
-              <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+              <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+              <input name="similar_hobby_name">
+              <input class="btn btn-primary btn-sm" type="submit" value="追加" onclick="return subcheck_regist()">
               <% end %>
-            </td>
-          </tr>
-          <% end %>
-        </table>
-        <p><br>グループごと設定されたおすすめの趣味の中から追加できます</p>
+          </div>
 
-        <p>下のメニューから自分の趣味と合うものを選んでください。</p>
-
-        <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
-        <%= form_tag("/user/newhobby") do %>
-        <select name="hobby_name"required>
-          <option value="">おすすめ趣味一覧</option>
-          <% @dummy_hobbies.each do |hname| %>
-          <option value="<%= "#{hname.hobby_name}" %>"><%= "#{hname.hobby_name}" %></option>
+          <% else #趣味の別名がある場合 %>
+            </li>
+            <li>
+              <li class="list-inline-item pl-2">
+                ＿＿
+              </li>
+              <% alias_names = @alias_names_queue.shift %>
+              <% alias_ids = @alias_ids_queue.shift %>
+                <% alias_names.each_with_index do |alias_name, index| %>
+                <!-- 趣味の別名の表示 -->
+                <li class="list-inline-item pl-2">
+                <%=  alias_name %>
+                </li>
+                <!-- 趣味の別名の削除ボタン -->
+                <li class="list-inline-item">
+                  <%= form_tag("/user/similar_hobby_delete") do %>
+                  <input type="hidden" name="user_id" value="<%= @user_id %>">
+                  <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
+                  <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+                  <% end %>
+                </li>
+                <% end %>
+          <div id="<%="regist_hidden#{i}"%>" style="display: none;">
+          </li>
+          <li class="pl-5">
+              <%= form_tag("/user/similar_hobby_add") do %>
+              <input type="hidden" name="user_id" value="<%= @user_id %>">
+              <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+              <input name="similar_hobby_name">
+              <input class="btn btn-primary btn-sm" type="submit" value="追加" onclick="return subcheck_regist()">
+              <% end %>
+          </div>
           <% end %>
-        </select>
-        <input type="hidden" name="user_id" value="<%= @user_id %>">
-        <input class="btn btn-primary btn-sm" type="submit" value="登録">
+
+          </li>
+        <% } %>
+        </ul>
+          <p><br>共有したい趣味が思いつかない場合は、下のメニューから自分の趣味と合うものを選んでください。</p>
+
+          <!-- プルダウンメニューで人(user.nameを表示)を選択させて、選択された人のIDを/user/show/にpostで送信-->
+          <%= form_tag("/user/newhobby") do %>
+          <select name="hobby_name"required>
+            <option value="">おすすめ趣味一覧</option>
+            <% @dummy_hobbies.each do |hobby| %>
+            <option value="<%= "#{hobby.hobby_name}" %>"><%= "#{hobby.hobby_name}" %></option>
+            <% end %>
+          </select>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <input class="btn btn-primary btn-sm" type="submit" value="登録">
         <% end %>
 
         <hr>

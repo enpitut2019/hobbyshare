@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hobby: one
+  next: 1
+
+two:
+  hobby: two
+  next: 1
