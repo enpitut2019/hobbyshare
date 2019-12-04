@@ -41,7 +41,7 @@
 <% end %>
   グループのおすすめ趣味
   <br>
-  おすすめしたい趣味を設定できます
+  このグループのメンバーの趣味登録画面に表示される「おすすめの趣味」を登録できます
   <%= form_tag("/user/dummy_newhobby") do %>
   <input name="hobby_name" class="form-control" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
