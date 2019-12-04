@@ -144,7 +144,7 @@ class UserController < ApplicationController
       flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
     else
       #UserHobbyへの格納
-      tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
     end
     redirect_to("/user/mypage/#{user_id_tmp}")
   end
@@ -187,6 +187,13 @@ class UserController < ApplicationController
       similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
     end
 
+    #重複するレコードがあったら登録しない
+    if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
+      flash[:notice] = "#{similar_hobby_name}は既に登録されています"
+      redirect_to("/user/mypage/#{user_id}")
+      return
+    end
+
     similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
     user_hobby.update(similar_hobbies_id: similar_hobby.id)
 
@@ -213,6 +220,13 @@ class UserController < ApplicationController
     else
       #新規にHobbyに登録する趣味の場合
       similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
+    end
+
+    #重複するレコードがあったら登録しない
+    if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
+      flash[:notice] = "#{similar_hobby_name}は既に登録されています"
+      redirect_to("/user/mypage/#{user_id}")
+      return
     end
 
     similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
@@ -359,7 +373,7 @@ class UserController < ApplicationController
       is_match = false
       if target_hobbyid.include?(ushb.hobby_id)
         is_match = true
-      elsif slhb_id = ushb.similar_hobbies_id != nil #趣味の別名が存在する場合
+      elsif (slhb_id = ushb.similar_hobbies_id) != nil #趣味の別名が存在する場合
         while slhb_id != nil do
           slhb = SimilarHobby.find_by(id: slhb_id)
           if target_hobbyid.include?(slhb.hobby_id)
@@ -388,7 +402,14 @@ class UserController < ApplicationController
     hobby = Hobby.find_by(id: hobby_id)
     #Userhobbyの削除
     target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    target_similar_hobby_id = target.similar_hobbies_id
     target.delete
+    #趣味の別名があった場合それも全て削除
+    while target_similar_hobby_id != nil
+      target_similar_hobby = SimilarHobby.find_by(id: target_similar_hobby_id)
+      target_similar_hobby_id = target_similar_hobby.next
+      target_similar_hobby.destroy
+    end
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
     redirect_to("/user/mypage/#{user_id}")
