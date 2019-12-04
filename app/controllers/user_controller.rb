@@ -224,8 +224,8 @@ class UserController < ApplicationController
       return
     end
 
-    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
-    user_hobby.update(similar_hobbies_id: similar_hobby.id)
+    sh = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
+    user_hobby.update(similar_hobbies_id: sh.id)
 
     flash[:notice] = "趣味の別名を登録しました！"
     redirect_to("/user/mypage/#{user_id}")
