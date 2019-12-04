@@ -16,7 +16,6 @@
   <input name="group_name" value="<%= @group_name %>" id="aaa" class="form-control" required>
   </p>
   <input type="submit" value="グループに入る" class="btn btn-primary btn-bg">
-  <button type="button" onclick="clearFormAll();" class="btn btn-primary btn-bg">リセット</button>
 <% end %>
 
 <% if @login_group_names %>
@@ -32,4 +31,7 @@
     <% end %>
   </table>
 <% end %>
+
+<hr>
+<input type="button" class="btn btn-link" value="トップページへ戻る" onclick="location.href='/'">
 </div>
