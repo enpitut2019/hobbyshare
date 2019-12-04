@@ -47,25 +47,15 @@
           </tbody>
           </table>
 
-      <h4>趣味の登録</h4>
-      <p>共有したい趣味を登録できます。</p>
-      <%= form_tag("/user/account_newhobby") do %>
-      <input name="hobby_name" required>
-      <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
-      <input class="btn btn-primary btn-sm" type="submit" value="趣味を登録する">
-      <% end %>
-
-          <hr>
             <h4>お気に入り趣味の登録</h4>
             <p>一括登録したい趣味を登録できます</p>
-            <!-- ここにユーザが登録してある趣味を全て表示する -->
             <%= form_tag("/user/account_newhobby") do %>
             <input name="hobby_name" required>
             <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
             <input class="btn btn-primary btn-sm" type="submit" value="登録する">
-            <input class="btn btn-primary btn-sm" type="reset" value="入力内容をリセット">
             <% end %>
             <br>
+            <% if @users_hobbies.size > 0 %>
             <hr>
             <h4>あなたが登録している趣味</h4>
             <!-- ここにユーザが登録してある趣味を全て表示する -->
@@ -89,6 +79,7 @@
               <% end %>
               </tbody>
           </table>
+          <% end %>
         </div>
       </div>
       <hr>
