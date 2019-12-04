@@ -63,3 +63,13 @@ function subcheck() {
     return false; // 送信を中止
   }
 }
+
+//アカウントマイページ、お気に入り趣味用
+function ac_subcheck(a,b) {
+  if (window.confirm(a +':' + b + 'に趣味をコピーしますか？')) {
+    return true;
+  } else {
+    //window.alert('キャンセルされました'); // 警告ダイアログの表示は要らなそう
+    return false; // 送信を中止
+  }
+}
