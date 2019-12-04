@@ -187,7 +187,7 @@ class UserController < ApplicationController
       similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
     end
 
-    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id)
+    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
     user_hobby.update(similar_hobbies_id: similar_hobby.id)
 
     flash[:notice] = "趣味の別名を登録しました！"
@@ -215,7 +215,7 @@ class UserController < ApplicationController
       similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
     end
 
-    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id)
+    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
     similar_hobby_last.update(next: similar_hobby.id)
 
     flash[:notice] = "趣味の別名を追加しました！"
@@ -279,7 +279,7 @@ class UserController < ApplicationController
       @query_guser_id.each do |gui|
         is_match = false
         # グループ内のi番目のユーザーの趣味に一致するものが存在するかチェック
-        if UserHobby.find_by(user_id: gui, hobby_id:qhi)
+        if UserHobby.find_by(user_id:gui, hobby_id:qhi) || SimilarHobby.find_by(user_id:gui,hobby_id:qhi)
           is_match = true
         end
         # 同名趣味がある場合さらに検索
@@ -288,7 +288,7 @@ class UserController < ApplicationController
           while similar_hobby_id != nil do
             sh = SimilarHobby.find_by(id: similar_hobby_id)
             hid = sh.hobby_id
-            if UserHobby.find_by(user_id: gui, hobby_id:hid)
+            if UserHobby.find_by(user_id:gui, hobby_id:hid) || SimilarHobby.find_by(user_id:gui,hobby_id:hid)
               is_match = true
               break
             else
@@ -349,11 +349,34 @@ class UserController < ApplicationController
       return
     end
 
-    # userとtarget_userの持っている趣味を全て取り出し、一致するものを得る
-    user_hobbyid = UserHobby.where(user_id: @user_id).pluck(:hobby_id)
-    target_hobbyid = UserHobby.where(user_id: @target_id).pluck(:hobby_id)
-    match_hobbies_id = user_hobbyid & target_hobbyid
+    # matchしたhobbyのID
+    match_hobbies_id = []
+    # targetのhobbyIDの配列
+    target_hobbyid = UserHobby.where(user_id: @target_id).pluck(:hobby_id) | SimilarHobby.where(user_id: @target_id).pluck(:hobby_id)
+    # userのそれぞれの趣味が一致するか調べる
+    user_hobbyid = UserHobby.where(user_id: @user_id)
+    user_hobbyid.each do |ushb|
+      is_match = false
+      if target_hobbyid.include?(ushb.hobby_id)
+        is_match = true
+      elsif slhb_id = ushb.similar_hobbies_id != nil #趣味の別名が存在する場合
+        while slhb_id != nil do
+          slhb = SimilarHobby.find_by(id: slhb_id)
+          if target_hobbyid.include?(slhb.hobby_id)
+            is_match = true
+            break
+          end
+          slhb_id = slhb.next
+        end
+      end
+      # 趣味が一致していたらmatch_hobbies_idに格納
+      if is_match
+        match_hobbies_id.push(ushb.hobby_id)
+      end
+    end
+    # matchした趣味を取り出す
     @match_hobbies = Hobby.where(id: match_hobbies_id)
+
 
   end
 

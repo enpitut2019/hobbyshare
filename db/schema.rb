@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_22_063903) do
+ActiveRecord::Schema.define(version: 2019_11_26_063739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,9 @@ ActiveRecord::Schema.define(version: 2019_11_22_063903) do
     t.integer "next"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["hobby_id"], name: "index_similar_hobbies_on_hobby_id"
+    t.index ["user_id"], name: "index_similar_hobbies_on_user_id"
   end
 
   create_table "user_hobbies", force: :cascade do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_063903) do
   add_foreign_key "group_belongs", "groups"
   add_foreign_key "group_belongs", "users"
   add_foreign_key "similar_hobbies", "hobbies"
+  add_foreign_key "similar_hobbies", "users"
   add_foreign_key "user_hobbies", "hobbies"
   add_foreign_key "user_hobbies", "similar_hobbies", column: "similar_hobbies_id"
   add_foreign_key "user_hobbies", "users"
