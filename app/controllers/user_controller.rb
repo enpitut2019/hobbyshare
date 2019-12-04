@@ -149,6 +149,36 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_id_tmp}")
   end
 
+
+  def ac_newhobbies
+    #Hobbyの主キーを保存する変数hobby_idの初期化
+    user_id_tmp = params[:user_id]
+    #既に登録された趣味であった場合
+    @account_name = @login_account.name
+    @dummy_user_id = @login_account.user_id
+    @users = User.where(account_id: @login_account.id)
+    @account_id = @login_account.id
+    #ユーザの趣味を取得して変数に入れる
+    @uhobby_record = UserHobby.where(user_id: @dummy_user_id)
+
+    #uhobby_recordからhobbyIDだけを取り出して配列にする
+    @hobbies_id = []
+    @uhobby_record.each do |record|
+      @hobbies_id.push(record.hobby_id)
+    end
+
+    @hobbies_id.each do |hid|
+      #重複するレコードがあるかどうか
+      if UserHobby.find_by(hobby_id: hid, user_id: user_id_tmp)
+      else
+        #UserHobbyへの格納
+        tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hid)
+      end
+    end
+    flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
+    redirect_to("/account/#{params[:account_id].to_i}")
+  end
+
   def account_newhobby
     #Hobbyの主キーを保存する変数hobby_idの初期化
     user_id_tmp = params[:user_id]
