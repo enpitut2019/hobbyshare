@@ -77,11 +77,6 @@ function ac_subcheck(a,b) {
   }
 }
 
-//= require zeroclipboard
-
-$(document).ready(function() {
-  var clip = new ZeroClipboard($("#d_clip_button"))
-});
 
 function textarea_select(){
     //テキストエリアをフォーカスする

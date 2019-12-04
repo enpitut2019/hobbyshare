@@ -81,10 +81,15 @@
     <br>
   </details>
 
+  <br>
+  <%= @group_name %>への参加リンクを共有する<br>
+  <textarea id="fe_text" name="" rows="1" cols="20"><%= request.url %></textarea><br>
 
 
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Hobbyshareのグループ<%= @group_name %>で共通の趣味を確認してみませんか？" data-hashtags="hobbyshare" data-show-count="false">Tweet</a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="<%= request.url %>" data-color="default" data-size="small" data-count="false" style="display: none;"></div>
+ <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
   <div><p></p></div>
 </div>
