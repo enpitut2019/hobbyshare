@@ -10,8 +10,7 @@
 <div class="container main">
     <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
     <% if @login_uid == nil %>
-    <h3>まだグループに参加してない人はここからメンバー追加</h3>
-    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">グループに参加</button>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/<%=@gid%>/add_member'">このグループに参加する</button>
     <% else %>
     <%= @login_uname %>としてこのグループに参加しています
     <br>
@@ -39,7 +38,7 @@
   <% end %>
   <strong>グループのおすすめ趣味</strong>
   <br>
-  おすすめしたい趣味を設定できます
+  このグループのメンバーの趣味登録画面に表示される「おすすめの趣味」を登録できます
   <%= form_tag("/user/dummy_newhobby") do %>
   <input name="hobby_name" class="form-control" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
@@ -67,6 +66,15 @@
   <hr>
   <br>
 
+  <br>
+  <%= @group_name %>への参加リンクを共有する<br>
+  <textarea readonly id="fe_text" name="" rows="1" cols="20"><%= request.url %></textarea><br>
+
+
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Hobbyshareのグループ<%= @group_name %>で共通の趣味を確認してみませんか？" data-hashtags="hobbyshare" data-show-count="false">Tweet</a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" data-url="<%= request.url %>" data-color="default" data-size="small" data-count="false" style="display: none;"></div>
+  <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
   <div><p></p></div>
 </div>

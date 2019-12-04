@@ -18,6 +18,9 @@
 //= require jquery
 //= require popper
 
+
+
+
 function clearFormAll() {
   for (var i=0; i<document.forms.length; ++i) {
       clearForm(document.forms[i]);
@@ -72,4 +75,12 @@ function ac_subcheck(a,b) {
     //window.alert('キャンセルされました'); // 警告ダイアログの表示は要らなそう
     return false; // 送信を中止
   }
+}
+
+
+function textarea_select(){
+    //テキストエリアをフォーカスする
+    document.form.textarea.focus();
+    //テキストエリアを全選択する
+    document.form.textarea.select();
 }
