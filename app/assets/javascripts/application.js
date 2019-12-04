@@ -18,6 +18,9 @@
 //= require jquery
 //= require popper
 
+
+
+
 function clearFormAll() {
   for (var i=0; i<document.forms.length; ++i) {
       clearForm(document.forms[i]);
@@ -74,6 +77,11 @@ function ac_subcheck(a,b) {
   }
 }
 
+//= require zeroclipboard
+
+$(document).ready(function() {
+  var clip = new ZeroClipboard($("#d_clip_button"))
+});
 
 function textarea_select(){
     //テキストエリアをフォーカスする

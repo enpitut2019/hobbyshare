@@ -81,10 +81,13 @@
     <br>
   </details>
 
-  <form name="form">
-    <p><input type="button" value="文字列を全部選択する" onClick="textarea_select()"></p>
-    <textarea name="textarea"><%= request.url %></textarea>
-  </form>
+
+  <div>
+    <textarea id="fe_text" name="" rows="7" cols="100"><%= request.url %></textarea>
+    <button class='my_clip_button' data-clipboard-target='fe_text' data-clipboard-text='Default clipboard text from attribute' id='d_clip_button'>
+      <b>コピーする</b>
+    </button>
+  </div>
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Hobbyshareのグループ<%= @group_name %>で共通の趣味を確認してみませんか？" data-hashtags="hobbyshare" data-show-count="false">Tweet</a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
