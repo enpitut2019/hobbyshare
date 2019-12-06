@@ -66,6 +66,16 @@
 
           <h4>ユーザー情報の登録</h4>
           <p>趣味を共有したメンバーに公開する情報を追加できます</p>
+          <p><%= @user_intro %></p>
+          <%= form_tag("/user/userintro") do %>
+          <input name="user_intro" class="form-control" required>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <input class="btn btn-primary btn-bg" type="submit" value="登録">
+          <% end %>
+
+
+          <hr>
+
 
           <!-- ユーザー名の変更 -->
           <h4>ユーザー名の設定</h4>

@@ -47,6 +47,8 @@ class UserController < ApplicationController
       @users_hobbies.push(Hobby.find_by(id: hid))
     end
 
+    @user_intro = User.find_by(id: @user_id).intro
+
     #グループおすすめ趣味の処理
     #dummyuserの情報を格納
     @dummy_user = Group.find(@gid).dummyuser
@@ -149,6 +151,16 @@ class UserController < ApplicationController
     redirect_to("/account/login_process")
   end
 
+  def userintro
+    #userIDを受け取る
+    user_id = params[:user_id]
+    #userIDから対応するレコードを取り出す
+    user = User.find_by(id: user_id)
+    user.intro = params[:user_intro]
+    user.save
+    redirect_to("/user/mypage/#{user_id}")
+  end
+
   def name_change
     #userIDを受け取る
     user_id = params[:user_id]
@@ -233,6 +245,7 @@ class UserController < ApplicationController
     @group_id = User.find_by(id: @user_id).group_id
     @group_name = Group.find_by(id: @group_id).group_name
     @match_hobbies = nil
+    @target_intro = User.find_by(id:@target_id).intro
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合
