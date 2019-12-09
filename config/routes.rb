@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
 
-  get 'user/select' => 'user#select'
   get 'user/show/:user_id/:group_id' => 'user#show'
   get 'user/match/:user_id/:target_id' => 'user#match'
   get 'user/mypage/:user_id' => 'user#mypage'
-  get 'user/first_setting/:user_id' => 'user#first_setting'
-  get 'user/login' => 'user#login'
   post '/user/dummyhobby_delete' => 'user#dummyhobby_delete'
   post '/user/hobby_delete' => 'user#hobby_delete'
   post '/user/account_hobby_delete' => 'user#account_hobby_delete'
@@ -29,11 +26,7 @@ Rails.application.routes.draw do
   post 'user/ac_newhobbies' => 'user#ac_newhobbies'
   post 'user/dummy_newhobby' => 'user#dummy_newhobby'
   post 'user/name_change' => 'user#name_change'
-  post 'user/group_password' => 'user#group_password'
-  post 'user/first_password' => 'user#first_password'
-  post 'user/group_login' => 'user#group_login'
   post 'user/new_member' => 'user#new_member'
-  post 'user/group_delete' => 'user#group_delete'
   post 'user/:user_id/delete' => 'user#user_delete'
 
   get 'account/sign_up' => 'account#sign_up'

@@ -1,11 +1,4 @@
 class UserController < ApplicationController
-  def select
-    @users = User.all
-  end
-
-  def login
-    @users = User.all
-  end
 
   def mypage
     #ユーザIDを変数に入れる
@@ -497,36 +490,6 @@ class UserController < ApplicationController
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
     redirect_to("/group/#{params[:group_id]}/list")
-  end
-
-
-
-  def group_delete
-    #各種値を変数に入れる
-    user_id = params[:user_id]
-    group_id = params[:group_id]
-    #データベースからレコードを取り出す
-    group_name = Group.find_by(id: group_id).group_name
-    #Userhobbyの削除
-    target = GroupBelong.find_by(user_id: user_id, group_id: group_id)
-    target.delete
-
-    if GroupBelong.where(user_id: user_id).count < 1
-      UserHobby.where(user_id: user_id).delete_all
-      User.find_by(id: user_id).destroy
-      if GroupBelong.where(group_id: group_id).count < 1
-        Group.find_by(id: group_id).destroy
-        flash[:notice] = "グループとユーザーを削除しました"
-        redirect_to("/")
-      else
-        flash[:notice] = "所属グループが0になったためユーザーを削除しました"
-        redirect_to("/")
-      end
-    else
-      #趣味を削除したことを通知してマイページへリダイレクト
-      flash[:notice] = "#{group_name}を削除しました"
-      redirect_to("/user/mypage/#{user_id}")
-    end
   end
 
   def user_delete
