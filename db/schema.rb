@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_26_063739) do
+ActiveRecord::Schema.define(version: 2019_12_06_065215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2019_11_26_063739) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "dummyuser"
+    t.string "token"
   end
 
   create_table "hobbies", force: :cascade do |t|
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 2019_11_26_063739) do
     t.string "password_digest"
     t.bigint "account_id"
     t.bigint "group_id"
+    t.string "token"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
   end
