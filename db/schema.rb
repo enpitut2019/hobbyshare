@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_040021) do
+ActiveRecord::Schema.define(version: 2019_12_09_125838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2019_12_09_040021) do
     t.bigint "account_id"
     t.bigint "group_id"
     t.string "token"
+    t.string "opentoken"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
   end
