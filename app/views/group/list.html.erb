@@ -26,7 +26,8 @@
       <% @query_guser.each do |user| %>
       <li>
         <%= user.name %>
-        <%= form_tag("/user/#{user.id}/delete") do %>
+        <%= form_tag("/user/delete") do %>
+          <input type="hidden" name="user_id" value="<%= user.id %>">
           <input type="submit" value="削除" class="btn btn-primary btn-sm" type="button" onclick="return subcheck()">
         <% end %>
       </li>

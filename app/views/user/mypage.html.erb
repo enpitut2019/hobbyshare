@@ -135,7 +135,8 @@
 
         <!--ユーザーの削除 -->
         <h4>グループから抜ける</h4>
-        <%= form_tag("/user/#{@user_id}/delete") do %>
+        <%= form_tag("/user/delete") do %>
+        <input type="hidden" name="user_id" value="<%= @user_id %>">
         <input class="btn btn-primary btn-bg" type="submit" value="脱退">
         <% end %>
       </div>
