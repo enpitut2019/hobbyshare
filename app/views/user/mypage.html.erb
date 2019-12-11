@@ -119,6 +119,21 @@
 
         <hr>
 
+          <h4>ユーザー情報の登録</h4>
+          <p>趣味を共有したメンバーに公開する情報を追加できます</p>
+
+          <div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;"><%= simple_format(html_escape(@user_intro)) %></div>
+
+          <%= form_tag("/user/userintro") do %>
+          <textarea name="user_intro" class="form-control" placeholder="TwitterIDなどの情報を自由に入力" required></textarea>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <input class="btn btn-primary btn-bg" type="submit" value="登録">
+          <% end %>
+
+
+          <hr>
+
+
         <!-- ユーザー名の変更 -->
         <h4>名前の設定</h4>
         <p>
@@ -130,6 +145,7 @@
         <input type="hidden" name="user_id" value="<%= @user_id %>">
         <input class="btn btn-primary btn-bg" type="submit" value="変更">
         <% end %>
+
 
         <hr>
 
