@@ -16,12 +16,12 @@
 <% end %>
 <br>
 <h3><strong><%= @target_name %></strong>さんの情報</h3>
-<p><%= @target_intro %></p>
+<p><%= simple_format(html_escape(@target_intro) %></p>
 
 <hr>
 <input type="button" class="btn btn-link" value="趣味の共有結果へ戻る" onclick="location.href='/user/show/<%=@user_id%>/<%=@group_id%>'">
-<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
-<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
+<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@group_id%>/list'">
+<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@user_id%>'">
 </div>
 
 </div>

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   post '/user/dummyhobby_delete' => 'user#dummyhobby_delete'
   post '/user/hobby_delete' => 'user#hobby_delete'
   post '/user/account_hobby_delete' => 'user#account_hobby_delete'
+  post '/user/similar_hobby' => 'user#similar_hobby'
+  post '/user/similar_hobby_add' => 'user#similar_hobby_add'
+  post '/user/similar_hobby_delete' => 'user#similar_hobby_delete'
 
   get '/' => 'group#top'
   get '/top' => 'group#top'
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
 
   post 'user/newhobby' => 'user#newhobby'
   post 'user/account_newhobby' => 'user#account_newhobby'
+  post 'user/ac_newhobbies' => 'user#ac_newhobbies'
   post 'user/dummy_newhobby' => 'user#dummy_newhobby'
   post 'user/userintro' => 'user/userintro'
   post 'user/name_change' => 'user#name_change'
