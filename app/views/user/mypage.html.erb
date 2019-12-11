@@ -46,7 +46,7 @@
               <%= form_tag("/user/hobby_delete") do %>
               <input type="hidden" name="user_id" value="<%= @user_id %>">
               <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-              <button type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
+              <button class="btn btn-primary btn-sm" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
               |
               <% end %>
             </li>
@@ -93,7 +93,7 @@
                   <%= form_tag("/user/similar_hobby_delete") do %>
                   <input type="hidden" name="user_id" value="<%= @user_id %>">
                   <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
-                  <button type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
+                  <button class="btn btn-primary btn-sm" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
                   |
                   <% end %>
                 </li>
