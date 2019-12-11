@@ -86,8 +86,8 @@ class GroupController < ApplicationController
     end
 
     #グループを新規作成
-    dummy = User.create()
-    new_group = Group.create(group_name: params[:group_name], dummyuser: dummy.id)
+    dummy = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
+    new_group = Group.create(group_name: params[:group_name], dummyuser: dummy.id, token:SecureRandom.urlsafe_base64)
 
     redirect_to("/group/#{new_group.id}/list") #グループ内メンバー一覧ページへリダイレクト
   end

@@ -51,7 +51,7 @@ class AccountController < ApplicationController
       # アカウントを作成
      ac = Account.create(name: params[:name], password: params[:password])
       # dummy_userを設定
-     dummy_user = User.create()
+     dummy_user = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
      ac.update(user_id: dummy_user.id)
      # セッションを書き換え
      session[:login_account_id] = ac.id
@@ -70,7 +70,7 @@ class AccountController < ApplicationController
         @login_account.name = params[:name]
         @login_account.password = params[:password]
         # dummy_userの作成
-        dummy_user = User.create()
+        dummy_user = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
         @login_account.user_id = dummy_user.id
         # 仮アカウントから本アカウント扱いに変更
         @login_account.is_temp = false

@@ -97,7 +97,7 @@ class UserController < ApplicationController
       #Accountモデルの作成
       new_account = Account.create(password: "password", is_temp: true)
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, account_id: new_account.id)
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: new_account.id, token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
       #セッションのaccount_idを作成したAccountのIDにする
       session[:login_account_id] = new_account.id
       #グループメンバー一覧へリダイレクト
@@ -114,7 +114,7 @@ class UserController < ApplicationController
       end
 
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, account_id: @session_id)
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: @session_id, token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
       redirect_to("/group/#{group_id}/list")
     end
