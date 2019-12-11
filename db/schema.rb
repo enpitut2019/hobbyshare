@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_065227) do
     t.string "password_digest"
     t.bigint "account_id"
     t.bigint "group_id"
-    t.string "status"
+    t.string "info"
     t.text "intro"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
