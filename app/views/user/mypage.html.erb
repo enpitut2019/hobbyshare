@@ -14,6 +14,8 @@
     </div>
   </header>
 
+
+
   <div class="container main">
 
     <div class="row">
@@ -29,14 +31,14 @@
         <%= form_tag("/user/newhobby") do %>
           <input name="hobby_name" required>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <input type="submit" value="趣味を登録">
+        <input type="submit" value="趣味を登録">
         <% end %>
         <br>
 
         <!-- ここにユーザが登録してある趣味を全て表示する -->
         <ul class="list-inline mt-2">
         <% @users_hobbies.each_with_index {|hobby,i| %>
-
+          <div class="box8">
           <li>
             <!-- 趣味の削除ボタン -->
             <li class="list-inline-item">
@@ -54,6 +56,7 @@
 
 
           <!-- 趣味の表記揺れ対策登録ボタン -->
+
           <li class="list-inline-item" onclick="<%="entrySimilarHobby(#{i})"%>">
             <button class="btn btn-primary btn-sm">別名の登録</button>
           </li>
@@ -109,6 +112,7 @@
           <% end %>
 
           </li>
+          </div>
         <% } %>
 
         </ul>
