@@ -86,7 +86,7 @@ class UserController < ApplicationController
     new_user_name = params[:user_name]
     group_id = params[:group_id].to_i
     group_token = Group.find_by(id: group_id)&.token
-    if @group_token == nil
+    if group_token == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
@@ -494,7 +494,7 @@ class UserController < ApplicationController
     group_token = Group.find_by(id: params[:group_id].to_i)&.token
     user_id = params[:user_id]
     hobby_id = params[:hobby_id]
-    if @group_token == nil
+    if group_token == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
