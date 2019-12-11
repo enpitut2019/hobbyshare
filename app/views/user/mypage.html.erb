@@ -18,7 +18,7 @@
       <div class="col-md-8 mb-5">
 
         <h3>所属グループ:<%= @group_name %></h3>
-        <button class="btn btn-primary btn" type="button" onclick="location.href='/group/<%= @gid %>/list'">グループメンバーリスト</button>
+        <button class="btn btn-primary btn" type="button" onclick="location.href='/group/list/<%= @group_token %>'">グループメンバーリスト</button>
         <button class="btn btn-primary btn" type="button" onclick="location.href='/user/show/<%=@user_id%>/<%=@gid%>'">趣味の共有</button>
 
         <hr>

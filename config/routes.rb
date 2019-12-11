@@ -15,11 +15,11 @@ Rails.application.routes.draw do
   get 'group/enter' => 'group#enter'
   get 'group/search' => 'group#enter'
   post 'group/search' => 'group#search'
-  get 'group/:group_id/list' => 'group#list'
+  get 'group/list/:group_token' => 'group#list'
   get 'group/make' => 'group#make'
   get 'group/new' => 'group#make'
   post 'group/new' => 'group#new'
-  get 'group/:group_id/add_member' => 'group#add_member'
+  get 'group/add_member/:group_token' => 'group#add_member'
 
   post 'user/newhobby' => 'user#newhobby'
   post 'user/account_newhobby' => 'user#account_newhobby'
