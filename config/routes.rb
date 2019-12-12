@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get 'user/show/:user_id/:group_id' => 'user#show'
   get 'user/match/:user_id/:target_id' => 'user#match'
-  get 'user/mypage/:user_id' => 'user#mypage'
+  get 'user/mypage/:user_token' => 'user#mypage'
   post '/user/dummyhobby_delete' => 'user#dummyhobby_delete'
   post '/user/hobby_delete' => 'user#hobby_delete'
   post '/user/account_hobby_delete' => 'user#account_hobby_delete'

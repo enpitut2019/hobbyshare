@@ -63,6 +63,7 @@ class GroupController < ApplicationController
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
       @login_uid = account_user&.id
       @login_uname = account_user&.name
+      @login_user_token = account_user&.token
     end
   end
 
