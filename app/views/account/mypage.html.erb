@@ -29,10 +29,10 @@
           <% group = Group.find_by(id:user.group_id) %>
           <tr>
             <td>
-              <a href="/group/<%=group.id%>/list"><%=group.group_name%></a>
+              <a href="/group/list/<%=group.token%>"><%=group.group_name%></a>
             </td>
             <td>
-              <a href="/user/mypage/<%=user.id%>"><%=user.name%></a>
+              <a href="/user/mypage/<%=user.token%>"><%=user.name%></a>
             </td>
             <td>
               <%= form_tag("/user/ac_newhobbies") do %>

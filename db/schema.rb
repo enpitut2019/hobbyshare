@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_065227) do
+ActiveRecord::Schema.define(version: 2019_12_09_125838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,20 +26,12 @@ ActiveRecord::Schema.define(version: 2019_12_06_065227) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
-  create_table "group_belongs", force: :cascade do |t|
-    t.bigint "group_id"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_group_belongs_on_group_id"
-    t.index ["user_id"], name: "index_group_belongs_on_user_id"
-  end
-
   create_table "groups", force: :cascade do |t|
     t.string "group_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "dummyuser"
+    t.string "token"
   end
 
   create_table "hobbies", force: :cascade do |t|
@@ -73,9 +65,10 @@ ActiveRecord::Schema.define(version: 2019_12_06_065227) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "password_digest"
     t.bigint "account_id"
     t.bigint "group_id"
+    t.string "token"
+    t.string "opentoken"
     t.string "info"
     t.text "intro"
     t.index ["account_id"], name: "index_users_on_account_id"
@@ -83,8 +76,6 @@ ActiveRecord::Schema.define(version: 2019_12_06_065227) do
   end
 
   add_foreign_key "accounts", "users"
-  add_foreign_key "group_belongs", "groups"
-  add_foreign_key "group_belongs", "users"
   add_foreign_key "similar_hobbies", "hobbies"
   add_foreign_key "similar_hobbies", "users"
   add_foreign_key "user_hobbies", "hobbies"

@@ -32,12 +32,12 @@
   <hr>
   <h3>趣味の一致したメンバー</h3>
   <% @match_users_list.each do |match_user| %>
-  <%= link_to match_user.name, "/user/match/#{@id}/#{match_user.id}" %><br>
+  <%= link_to match_user.name, "/user/match/#{@user_token}?target_token=#{match_user.opentoken}" %><br>
   <% end %>
   <br>
 
 <hr>
-<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
-<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
+<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/list/<%=@group_token%>'">
+<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@user_token%>'">
 
 </div>
