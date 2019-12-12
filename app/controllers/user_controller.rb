@@ -217,12 +217,17 @@ class UserController < ApplicationController
 
   def userintro
     #userIDを受け取る
-    user_id = params[:user_id]
-    #userIDから対応するレコードを取り出す
+    user_id = params[:user_id].to_i
     user = User.find_by(id: user_id)
+    user_token = user&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    #userIDから対応するレコードを取り出す
     user.intro = params[:user_intro]
     user.save
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
   end
 
   def similar_hobby

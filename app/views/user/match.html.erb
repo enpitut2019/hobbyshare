@@ -9,19 +9,17 @@
 </header>
 
 <div class="container main">
-<h2><strong><%= @target_name %></strong>さんと一致した趣味</h2>
+  <h2><strong><%= @target_name %></strong>さんと一致した趣味</h2>
 
-<% @match_hobbies.each do |hobby| %>
-<%= hobby.hobby_name %><br>
-<% end %>
-<br>
-<h3><strong><%= @target_name %></strong>さんの情報</h3>
-<p><%= simple_format(html_escape(@target_intro) %></p>
+  <% @match_hobbies.each do |hobby| %>
+    <%= hobby.hobby_name %><br>
+  <% end %>
+  <br>
+  <h3><strong><%= @target_name %></strong>さんの情報</h3>
+  <p><%= simple_format(html_escape(@target_intro)) %></p>
 
-<hr>
-<input type="button" class="btn btn-link" value="趣味の共有結果へ戻る" onclick="location.href='/user/show/<%=@user_token%>'">
-<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/list/<%=@group_token%>'">
-<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@user_token%>'">
-</div>
-
+  <hr>
+  <input type="button" class="btn btn-link" value="趣味の共有結果へ戻る" onclick="location.href='/user/show/<%=@user_token%>'">
+  <input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/list/<%=@group_token%>'">
+  <input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@user_token%>'">
 </div>
