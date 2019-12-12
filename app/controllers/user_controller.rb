@@ -402,21 +402,22 @@ class UserController < ApplicationController
   end
 
   def match
-    @user_id = params[:user_id].to_i
-    user = User.find_by(id: @user_id)
-    @user_token = user&.token
-    if @user_token == nil
+    @user_token = params[:user_token]
+    target_user_open_token = params[:target_token]
+    user = User.find_by(token: @user_token)
+    target_user = User.find_by(opentoken: target_user_open_token)
+    if (user == nil || target_user == nil)
       render plain: "404エラー\nお探しのページは存在しません", status: 404
       return
     end
 
-    @target_id = params[:target_id].to_i
-    @target_name = User.find_by(id:@target_id).name
+    @user_id = user.id
+    @target_id = target_user.id
+    @target_name = target_user.name
     @group_id = user.group_id
     group = Group.find_by(id: @group_id)
     @group_name = group.group_name
     @group_token = group.token
-    @match_hobbies = nil
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合
@@ -438,6 +439,7 @@ class UserController < ApplicationController
       return
     end
 
+    @match_hobbies = nil
     # matchしたhobbyのID
     match_hobbies_id = []
     # targetのhobbyIDの配列

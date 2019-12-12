@@ -32,7 +32,7 @@
   <hr>
   <h3>趣味の一致したメンバー</h3>
   <% @match_users_list.each do |match_user| %>
-  <%= link_to match_user.name, "/user/match/#{@id}/#{match_user.id}" %><br>
+  <%= link_to match_user.name, "/user/match/#{@user_token}?target_token=#{match_user.opentoken}" %><br>
   <% end %>
   <br>
 
