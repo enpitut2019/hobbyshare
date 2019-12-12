@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   get 'account/sign_up' => 'account#sign_up'
   get 'account/login' => 'account#login'
   get 'account/logout' => 'account#logout'
-  get 'account/:account_id' => 'account#mypage'
+  get 'account/mypage' => 'account#mypage'
   post 'account/new_account' => 'account#new_account'
   get 'account/new_account' => 'account#sign_up'
   post 'account/login_process' => 'account#login_process'

@@ -187,7 +187,7 @@ class UserController < ApplicationController
       end
     end
     flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
-    redirect_to("/account/#{params[:account_id].to_i}")
+    redirect_to("/account/mypage")
   end
 
   def account_newhobby
@@ -210,7 +210,7 @@ class UserController < ApplicationController
       tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
       flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
-    redirect_to("/account/login_process")
+    redirect_to("/account/mypage")
   end
 
   def similar_hobby
@@ -539,7 +539,7 @@ class UserController < ApplicationController
     target.delete
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
-    redirect_to("/account/#{params[:account_id]}")
+    redirect_to("/account/mypage")
   end
 
   def dummyhobby_delete
