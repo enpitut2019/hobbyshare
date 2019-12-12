@@ -71,6 +71,8 @@ class UserController < ApplicationController
       @alias_names_queue.push(alias_names)
     end
 
+    @user_intro = User.find_by(id: @user_id).intro
+
     #グループおすすめ趣味の処理
     #dummyuserの情報を格納
     @dummy_user = Group.find(@gid).dummyuser
@@ -211,6 +213,16 @@ class UserController < ApplicationController
       flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
     redirect_to("/account/mypage")
+  end
+
+  def userintro
+    #userIDを受け取る
+    user_id = params[:user_id]
+    #userIDから対応するレコードを取り出す
+    user = User.find_by(id: user_id)
+    user.intro = params[:user_intro]
+    user.save
+    redirect_to("/user/mypage/#{user_id}")
   end
 
   def similar_hobby
@@ -418,6 +430,7 @@ class UserController < ApplicationController
     group = Group.find_by(id: @group_id)
     @group_name = group.group_name
     @group_token = group.token
+    @target_intro = target_user.intro
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合

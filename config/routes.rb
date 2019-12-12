@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post 'user/account_newhobby' => 'user#account_newhobby'
   post 'user/ac_newhobbies' => 'user#ac_newhobbies'
   post 'user/dummy_newhobby' => 'user#dummy_newhobby'
+  post 'user/userintro' => 'user/userintro'
   post 'user/name_change' => 'user#name_change'
   post 'user/new_member' => 'user#new_member'
   post 'user/delete' => 'user#user_delete'
