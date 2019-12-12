@@ -15,7 +15,7 @@
     <%= @login_uname %>としてこのグループに参加しています
     <br>
     <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">マイページ</button>
-    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/user/show/<%=@login_uid%>/<%=@gid%>'">趣味を共有</button>
+    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">趣味を共有</button>
     <% end %>
     <hr>
   <div class="row">

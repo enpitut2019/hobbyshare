@@ -1,12 +1,14 @@
 class UserController < ApplicationController
 
   def mypage
-    #ユーザIDを変数に入れる
-    @user_id = User.find_by(token: params[:user_token])&.id
-    if @user_id == nil
+    user = User.find_by(token: params[:user_token])
+    if user == nil
       render plain: "404エラー\nお探しのページは存在しません", status: 404
       return
     end
+    #ユーザIDを変数に入れる
+    @user_id = user.id
+    @user_token = user.token
     #セッションが存在かつ正しいユーザーの場合のみ通す
     if @session_status == "no_session" #セッションが存在しない場合
       flash[:notice] = "このページにアクセスする権限がありません"
@@ -26,12 +28,12 @@ class UserController < ApplicationController
       end
     end
 
-    @gid = User.find(@user_id).group_id
+    @gid = user.group_id
     group = Group.find(@gid)
     @group_name = group.group_name
     @group_token = group.token
     #ユーザ名を変数に入れる
-    @user_name = User.find_by(id: @user_id).name
+    @user_name = user.name
 
     #ユーザの趣味を取得して変数に入れる
     @uhobby_record = UserHobby.where(user_id: @user_id)
@@ -306,16 +308,16 @@ class UserController < ApplicationController
   end
 
   def show
-    @id = params[:user_id].to_i
-    user = User.find_by(id: @id)
-    @user_token = user&.token
-    if @user_token == nil
+    user = User.find_by(token: params[:user_token])
+    if user == nil
       render plain: "404エラー\nお探しのページは存在しません", status: 404
       return
     end
 
-    @gid = user.group_id #URLのパラメータから取り出していたのを変更
-    group = Group.find(@gid)
+    @id = user.id
+    @user_token = user.token
+    group = Group.find_by(id: user.group_id)
+    @gid = group.id
     @group_name = group.group_name
     @group_token = group.token
 

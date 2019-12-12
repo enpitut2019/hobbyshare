@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'user/show/:user_id/:group_id' => 'user#show'
+  get 'user/show/:user_token' => 'user#show'
   get 'user/match/:user_id/:target_id' => 'user#match'
   get 'user/mypage/:user_token' => 'user#mypage'
   post '/user/dummyhobby_delete' => 'user#dummyhobby_delete'
