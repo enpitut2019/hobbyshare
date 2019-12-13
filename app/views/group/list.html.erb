@@ -24,13 +24,15 @@
       <h4><%= @group_name %>の所属メンバー</h4>
     <ol>
       <% @query_guser.each do |user| %>
-      <li>
+      <div style="display:inline-flex">
         <%= user.name %>
         <%= form_tag("/user/delete") do %>
           <input type="hidden" name="user_id" value="<%= user.id %>">
-          <input type="submit" value="削除" class="btn btn-primary btn-sm" type="button" onclick="return subcheck()">
+          <button type="submit" class="btn btn-primary btn-sm" type="button" onclick='return subcheck_name("<%= user.name %>")'><i class="far fa-trash-alt"></i></button>
         <% end %>
-      </li>
+        <%= user.name %>
+      </div>
+      <br>
       <% end %>
     </ol>
     </div>
