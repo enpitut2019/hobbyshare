@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_125838) do
+ActiveRecord::Schema.define(version: 2019_12_13_064945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_12_09_125838) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "similar_hobbies_id"
+    t.integer "order", default: 0
     t.index ["hobby_id"], name: "index_user_hobbies_on_hobby_id"
     t.index ["similar_hobbies_id"], name: "index_user_hobbies_on_similar_hobbies_id"
     t.index ["user_id"], name: "index_user_hobbies_on_user_id"
@@ -69,7 +70,6 @@ ActiveRecord::Schema.define(version: 2019_12_09_125838) do
     t.bigint "group_id"
     t.string "token"
     t.string "opentoken"
-    t.string "info"
     t.text "intro"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
