@@ -22,6 +22,7 @@
     <div class="col-md-8">
       <% if @query_guser.size > 0 %>
       <h4><%= @group_name %>の所属メンバー</h4>
+    <ol>
       <% @query_guser.each do |user| %>
       <div style="display:inline-flex">
         <%= form_tag("/user/delete") do %>
@@ -32,6 +33,7 @@
       </div>
       <br>
       <% end %>
+    </ol>
     </div>
   </div>
   <hr>
