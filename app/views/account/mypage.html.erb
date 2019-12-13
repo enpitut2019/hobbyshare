@@ -50,9 +50,9 @@
             <h4>お気に入り趣味の登録</h4>
             <p>一括登録したい趣味を登録できます</p>
             <%= form_tag("/user/account_newhobby") do %>
-            <input name="hobby_name" required>
+            <input name="hobby_name" class="form-control" style="max-width: 350px;" required>
             <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
-            <input class="btn btn-primary btn-sm" type="submit" value="登録する">
+            <input class="btn btn-primary btn-bg" type="submit" value="登録">
             <% end %>
             <br>
             <% if @users_hobbies.size > 0 %>

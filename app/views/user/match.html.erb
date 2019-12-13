@@ -15,8 +15,13 @@
     <%= hobby.hobby_name %><br>
   <% end %>
   <br>
+  <% if @target_intro %>
   <h3><strong><%= @target_name %></strong>さんの情報</h3>
-  <p><%= simple_format(html_escape(@target_intro)) %></p>
+  <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+    <div class="card-body"><%= simple_format(html_escape(@target_intro)) %><ul style="list-style: none; padding-left: 0;">
+    </ul></div>
+  </div>
+  <% end %>
 
   <hr>
   <input type="button" class="btn btn-link" value="趣味の共有結果へ戻る" onclick="location.href='/user/show/<%=@user_token%>'">
