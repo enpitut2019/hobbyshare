@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 2019_12_13_064945) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "group_belongs", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_belongs_on_group_id"
+    t.index ["user_id"], name: "index_group_belongs_on_user_id"
+  end
+
   create_table "groups", force: :cascade do |t|
     t.string "group_name"
     t.datetime "created_at", null: false
@@ -68,14 +77,16 @@ ActiveRecord::Schema.define(version: 2019_12_13_064945) do
     t.datetime "updated_at", null: false
     t.bigint "account_id"
     t.bigint "group_id"
+    t.text "intro"
     t.string "token"
     t.string "opentoken"
-    t.text "intro"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "group_belongs", "groups"
+  add_foreign_key "group_belongs", "users"
   add_foreign_key "similar_hobbies", "hobbies"
   add_foreign_key "similar_hobbies", "users"
   add_foreign_key "user_hobbies", "hobbies"

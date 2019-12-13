@@ -22,10 +22,9 @@
     <div class="col-md-8">
       <% if @query_guser.size > 0 %>
       <h4><%= @group_name %>の所属メンバー</h4>
-    <ol>
+
       <% @query_guser.each do |user| %>
       <div style="display:inline-flex">
-        <%= user.name %>
         <%= form_tag("/user/delete") do %>
           <input type="hidden" name="user_id" value="<%= user.id %>">
           <button type="submit" class="btn btn-primary btn-sm" type="button" onclick='return subcheck_name("<%= user.name %>")'><i class="far fa-trash-alt"></i></button>
@@ -34,7 +33,7 @@
       </div>
       <br>
       <% end %>
-    </ol>
+
     </div>
   </div>
   <hr>
@@ -53,16 +52,16 @@
   <% @dummy_hobbies.reverse_each do |hname| %>
   <tr>
     <td>
-      <%= "#{hname.hobby_name}" %>
-    </td>
-    <!-- 趣味の削除ボタン -->
-    <td>
+      <div style="display:inline-flex">
       <%= form_tag("/user/dummyhobby_delete") do %>
       <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
       <input type="hidden" name="hobby_id" value="<%= hname.id %>">
       <input type="hidden" name="group_id" value="<%= @gid %>">
-      <input class="btn btn-primary btn-sm" type="submit" value="削除" onclick="return subcheck()">
+      <button class="btn btn-primary btn-sm" type="submit" value="削除" onclick='return subcheck_name("<%= hname.hobby_name %>")'><i class="far fa-trash-alt"></i></button>
       <% end %>
+      <%= "#{hname.hobby_name}" %>
+      </div>
+      <br>
     </td>
   </tr>
   <% end %>
