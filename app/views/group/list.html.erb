@@ -79,8 +79,8 @@
   <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
   <div><p></p></div>
+  <%= form_tag("/group/qrcode") do %>
+  <input type="hidden" name="url" value="<%= request.url %>">
+  <input class="btn btn-primary btn-bg" type="submit" value="QRコードを発行する">
+  <% end %>
 </div>
-<%= form_tag("/group/qrcode") do %>
-<input type="hidden" name="url" value="<%= request.url %>">
-<input class="button" type="submit" value="QRコードを発行する">
-<% end %>
