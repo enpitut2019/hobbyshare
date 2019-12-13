@@ -19,7 +19,10 @@ Rails.application.routes.draw do
   get 'group/make' => 'group#make'
   get 'group/new' => 'group#make'
   post 'group/new' => 'group#new'
+  get 'group/:group_id/add_member' => 'group#add_member'
+  get 'group/how_to' => 'group#how_to'
   get 'group/add_member/:group_token' => 'group#add_member'
+
 
   post 'user/newhobby' => 'user#newhobby'
   post 'user/account_newhobby' => 'user#account_newhobby'
