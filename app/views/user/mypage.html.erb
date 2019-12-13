@@ -7,8 +7,8 @@
     <div class="container h-100">
       <div class="h-100 align-items-center">
         <div class="col-lg-12">
-          <h1 class="display-5 text-white mt-1 mb-1">ここは<%= @user_name %>さんのマイページです</h1>
-          <p class="text-white">ここではこのグループで使用する趣味や名前の設定ができます。</p>
+          <h1 class="display-5 text-white mt-1 mb-1">ここは<%= @user_name %>さんの詳細設定画面です</h1>
+          <p class="text-white">グループで使用する趣味や名前の設定ができます。</p>
         </div>
       </div>
     </div>
@@ -23,16 +23,16 @@
       <div class="col-md-8 mb-5">
 
         <h3>所属グループ:<%= @group_name %></h3>
-        <button class="btn btn-primary btn" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
-        <button class="btn btn-primary btn" type="button" onclick="location.href='/user/show/<%=@user_token%>'">趣味の共有</button>
+        <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す</button>
+        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
 
         <hr>
         <h4>趣味の登録</h4>
         <p>ここで共有したい趣味を登録することができます。</p>
         <%= form_tag("/user/newhobby") do %>
-          <input name="hobby_name" required>
+          <input name="hobby_name" class="form-control" style="max-width: 350px;" required>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <button type="submit">登録</button>
+          <button class="btn btn-primary btn-bg" type="submit">登録</button>
         <% end %>
         <br>
 
@@ -138,7 +138,6 @@
 
           <h4>ユーザー情報の登録</h4>
           <p>趣味が一致したメンバーに公開する情報を追加できます</p>
-
           <div class="card border-info bg-light mb-3" style="max-width: 20rem; min-width: 12rem;">
             <div class="card-header">登録中の情報</div>
             <div class="card-body"><%= simple_format(html_escape(@user_intro)) %><ul style="list-style: none; padding-left: 0;">
