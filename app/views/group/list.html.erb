@@ -80,5 +80,7 @@
   <!-- おすすめ趣味一覧の下にスペースを入れるための空のタグ -->
   <div><p></p></div>
 </div>
-
-<%= image_tag qrcode_tag request.url%>
+<%= form_tag("/group/qrcode") do %>
+<input type="hidden" name="url" value="<%= request.url %>">
+<input class="button" type="submit" value="QRコードを発行する">
+<% end %>

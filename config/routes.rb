@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'group/:group_id/add_member' => 'group#add_member'
   get 'group/how_to' => 'group#how_to'
   get 'group/add_member/:group_token' => 'group#add_member'
+  post 'group/qrcode' => 'group#qrcode'
 
 
   post 'user/newhobby' => 'user#newhobby'

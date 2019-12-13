@@ -105,7 +105,9 @@ class GroupController < ApplicationController
       return
     end
   end
-
+  def qrcode
+    @url = params[:url]
+  end
 
 
 end
