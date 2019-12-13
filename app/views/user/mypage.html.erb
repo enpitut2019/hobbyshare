@@ -29,7 +29,7 @@
         <%= form_tag("/user/newhobby") do %>
           <input name="hobby_name" required>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <button type="submit">登録</button>
+          <button class="btn btn-primary btn-sm" type="submit">登録</button>
         <% end %>
         <br>
 
