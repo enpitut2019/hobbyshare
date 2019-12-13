@@ -51,13 +51,13 @@ class AccountController < ApplicationController
       # アカウントを作成
      ac = Account.create(name: params[:name], password: params[:password])
       # dummy_userを設定
-     dummy_user = User.create()
+     dummy_user = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
      ac.update(user_id: dummy_user.id)
      # セッションを書き換え
      session[:login_account_id] = ac.id
      # マイページへ飛ばす
      flash[:notice] = "アカウントを作成しました！"
-     redirect_to("/account/#{ac.id}")
+     redirect_to("/account/mypage")
     # セッションがある場合
     else
       # 既に別のアカウントでログインしている場合
@@ -70,7 +70,7 @@ class AccountController < ApplicationController
         @login_account.name = params[:name]
         @login_account.password = params[:password]
         # dummy_userの作成
-        dummy_user = User.create()
+        dummy_user = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
         @login_account.user_id = dummy_user.id
         # 仮アカウントから本アカウント扱いに変更
         @login_account.is_temp = false
@@ -78,7 +78,7 @@ class AccountController < ApplicationController
         @login_account.save
         # マイページへリダイレクト
         flash[:notice] = "アカウントを作成しました！"
-        redirect_to("/account/#{@login_account.id}")
+        redirect_to("/account/mypage")
       end
     end
   end
@@ -98,7 +98,7 @@ class AccountController < ApplicationController
       if @session_status == "no_session"
         session[:login_account_id] = target_account.id
         flash[:notice] = "ログインしました！"
-        redirect_to("/account/#{target_account.id}")
+        redirect_to("/account/mypage")
         return
       else
         # 別の本アカウントでログインしている場合
@@ -134,7 +134,7 @@ class AccountController < ApplicationController
             flash[:notice] = "グループ#{dup_group_names}で複数のユーザーを登録しています！不要なユーザを削除してください"
           end
           # アカウントのマイページに飛ばす
-          redirect_to("/account/#{target_account.id}")
+          redirect_to("/account/mypage")
         end
       end
     end

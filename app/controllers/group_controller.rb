@@ -18,9 +18,9 @@ class GroupController < ApplicationController
   end
 
   def search
-    if @gid = Group.find_by(group_name: params[:group_name])&.id
+    if @gtoken = Group.find_by(group_name: params[:group_name])&.token
       #入力されたグループが存在するならばメンバー一覧ページへ飛ばす
-      redirect_to("/group/#{@gid}/list")
+      redirect_to("/group/list/#{@gtoken}")
     else
       #存在しないグループ名が入力された場合はやり直させる
       flash.now[:notice] = "入力された名前のグループは存在しません"
@@ -31,7 +31,12 @@ class GroupController < ApplicationController
 
   def list
     #gidにグループidを格納する
-    @gid = params[:group_id].to_i
+    @group_token = params[:group_token]
+    @gid = Group.find_by(token: @group_token)&.id
+    if @gid == nil
+      render plain: "404エラー\nお探しのページは存在しません", status: 404
+      return
+    end
     #dummyuserの情報を格納
     @group_name = Group.find(@gid).group_name
     @dummy_user = Group.find(@gid).dummyuser
@@ -58,6 +63,7 @@ class GroupController < ApplicationController
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
       @login_uid = account_user&.id
       @login_uname = account_user&.name
+      @login_user_token = account_user&.token
     end
   end
 
@@ -86,14 +92,18 @@ class GroupController < ApplicationController
     end
 
     #グループを新規作成
-    dummy = User.create()
-    new_group = Group.create(group_name: params[:group_name], dummyuser: dummy.id)
+    dummy = User.create(token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
+    new_group = Group.create(group_name: params[:group_name], dummyuser: dummy.id, token:SecureRandom.urlsafe_base64)
 
-    redirect_to("/group/#{new_group.id}/list") #グループ内メンバー一覧ページへリダイレクト
+    redirect_to("/group/list/#{new_group.token}") #グループ内メンバー一覧ページへリダイレクト
   end
 
   def add_member
-    @group_id = params[:group_id].to_i
+    @group_id = Group.find_by(token: params[:group_token])&.id
+    if @group_id == nil
+      render plain: "404エラー\nお探しのページは存在しません", status: 404
+      return
+    end
   end
 
 

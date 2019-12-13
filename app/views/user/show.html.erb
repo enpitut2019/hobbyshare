@@ -1,8 +1,8 @@
 <header class="bg-info py-5 mb-5">
   <div class="container h-100">
-    <div class="row h-100 align-items-center">
+    <div class="h-100 align-items-center">
       <div class="col-lg-12">
-        <h1 class="display-4 text-white mt-5 mb-2">趣味の共有結果</h1>
+        <h1 class="display-5 text-white mt-1 mb-1">趣味の共有結果</h1>
       </div>
     </div>
   </div>
@@ -32,12 +32,12 @@
   <hr>
   <h3>趣味の一致したメンバー</h3>
   <% @match_users_list.each do |match_user| %>
-  <%= link_to match_user.name, "/user/match/#{@id}/#{match_user.id}" %><br>
+  <%= link_to match_user.name, "/user/match/#{@user_token}?target_token=#{match_user.opentoken}" %><br>
   <% end %>
   <br>
 
 <hr>
-<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/<%=@gid%>/list'">
-<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@id%>'">
+<input type="button" class="btn btn-link" value="メンバー一覧へ戻る" onclick="location.href='/group/list/<%=@group_token%>'">
+<input type="button" class="btn btn-link" value="マイページへ戻る" onclick="location.href='/user/mypage/<%=@user_token%>'">
 
 </div>

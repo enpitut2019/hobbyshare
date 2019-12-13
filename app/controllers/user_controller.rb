@@ -1,15 +1,14 @@
 class UserController < ApplicationController
-  def select
-    @users = User.all
-  end
-
-  def login
-    @users = User.all
-  end
 
   def mypage
+    user = User.find_by(token: params[:user_token])
+    if user == nil
+      render plain: "404エラー\nお探しのページは存在しません", status: 404
+      return
+    end
     #ユーザIDを変数に入れる
-    @user_id = params[:user_id].to_i
+    @user_id = user.id
+    @user_token = user.token
     #セッションが存在かつ正しいユーザーの場合のみ通す
     if @session_status == "no_session" #セッションが存在しない場合
       flash[:notice] = "このページにアクセスする権限がありません"
@@ -29,10 +28,12 @@ class UserController < ApplicationController
       end
     end
 
-    @gid = User.find(@user_id).group_id
-    @group_name = Group.find(@gid).group_name
+    @gid = user.group_id
+    group = Group.find(@gid)
+    @group_name = group.group_name
+    @group_token = group.token
     #ユーザ名を変数に入れる
-    @user_name = User.find_by(id: @user_id).name
+    @user_name = user.name
 
     #ユーザの趣味を取得して変数に入れる
     @uhobby_record = UserHobby.where(user_id: @user_id)
@@ -70,6 +71,8 @@ class UserController < ApplicationController
       @alias_names_queue.push(alias_names)
     end
 
+    @user_intro = User.find_by(id: @user_id).intro
+
     #グループおすすめ趣味の処理
     #dummyuserの情報を格納
     @dummy_user = Group.find(@gid).dummyuser
@@ -89,11 +92,16 @@ class UserController < ApplicationController
   def new_member
     #グループ内でユーザー名が被るなら弾く
     new_user_name = params[:user_name]
-    group_id = params[:group_id]
+    group_id = params[:group_id].to_i
+    group_token = Group.find_by(id: group_id)&.token
+    if group_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     User.where(group_id: group_id).each do |u|
       if u.name == new_user_name
         flash[:notice] = "そのユーザー名は既に使用されています！"
-        redirect_to("/group/#{group_id}/add_member")
+        redirect_to("/group/add_member/#{group_token}")
         return
       end
     end
@@ -104,32 +112,37 @@ class UserController < ApplicationController
       #Accountモデルの作成
       new_account = Account.create(password: "password", is_temp: true)
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, account_id: new_account.id)
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: new_account.id, token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
       #セッションのaccount_idを作成したAccountのIDにする
       session[:login_account_id] = new_account.id
       #グループメンバー一覧へリダイレクト
-      redirect_to("/group/#{group_id}/list")
+      redirect_to("/group/list/#{group_token}")
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
     else
       #Userモデルからaccout_idに対応するuserを検索、見つかればgroup_idを取り出す。そのgroup_idがメンバー追加しようとしているgroup_idなら既にユーザーがあるのでメンバー一覧ページへ戻す。
       User.where(account_id: @session_id).each do |u|
         if u.group_id == group_id
           flash[:notice] = "このグループ内で既にユーザーを作成しています！"
-          redirect_to("/group/#{group_id}/add_member")
+          redirect_to("/group/add_member/#{group_token}")
           return
         end
       end
 
       #Userモデルの作成
-      new_user = User.create(name: new_user_name, group_id: group_id, account_id: @session_id)
+      new_user = User.create(name: new_user_name, group_id: group_id, account_id: @session_id, token:SecureRandom.urlsafe_base64, opentoken:SecureRandom.urlsafe_base64)
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
-      redirect_to("/group/#{group_id}/list")
+      redirect_to("/group/list/#{group_token}")
     end
   end
 
   def newhobby
     #Hobbyの主キーを保存する変数hobby_idの初期化
-    user_id_tmp = params[:user_id]
+    user_id_tmp = params[:user_id].to_i
+    user_token = User.find_by(id: user_id_tmp)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     hobby_id = 0
     #既に登録された趣味であった場合
     if Hobby.find_by(hobby_name: params[:hobby_name])
@@ -146,7 +159,7 @@ class UserController < ApplicationController
       #UserHobbyへの格納
       UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
     end
-    redirect_to("/user/mypage/#{user_id_tmp}")
+    redirect_to("/user/mypage/#{user_token}")
   end
 
 
@@ -176,7 +189,7 @@ class UserController < ApplicationController
       end
     end
     flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
-    redirect_to("/account/#{params[:account_id].to_i}")
+    redirect_to("/account/mypage")
   end
 
   def account_newhobby
@@ -199,14 +212,34 @@ class UserController < ApplicationController
       tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
       flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
-    redirect_to("/account/login_process")
+    redirect_to("/account/mypage")
+  end
+
+  def userintro
+    #userIDを受け取る
+    user_id = params[:user_id].to_i
+    user = User.find_by(id: user_id)
+    user_token = user&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    #userIDから対応するレコードを取り出す
+    user.intro = params[:user_intro]
+    user.save
+    redirect_to("/user/mypage/#{user_token}")
   end
 
   def similar_hobby
-    user_id = params[:user_id]
-    hobby_id = params[:hobby_id]
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
     similar_hobby_name = params[:similar_hobby_name]
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
 
     similar_hobby_id = 0
     #既に登録された趣味であった場合
@@ -220,7 +253,7 @@ class UserController < ApplicationController
     #重複するレコードがあったら登録しない
     if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
       flash[:notice] = "#{similar_hobby_name}は既に登録されています"
-      redirect_to("/user/mypage/#{user_id}")
+      redirect_to("/user/mypage/#{user_token}")
       return
     end
 
@@ -228,14 +261,20 @@ class UserController < ApplicationController
     user_hobby.update(similar_hobbies_id: sh.id)
 
     flash[:notice] = "趣味の別名を登録しました！"
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
 
   end
 
   def similar_hobby_add
-    user_id = params[:user_id]
-    hobby_id = params[:hobby_id]
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
     similar_hobby_name = params[:similar_hobby_name]
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
     similar_hobby_first = SimilarHobby.find_by(id: user_hobby.similar_hobbies_id)
     similar_hobby_last = similar_hobby_first
@@ -255,7 +294,7 @@ class UserController < ApplicationController
     #重複するレコードがあったら登録しない
     if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
       flash[:notice] = "#{similar_hobby_name}は既に登録されています"
-      redirect_to("/user/mypage/#{user_id}")
+      redirect_to("/user/mypage/#{user_token}")
       return
     end
 
@@ -263,13 +302,18 @@ class UserController < ApplicationController
     similar_hobby_last.update(next: similar_hobby.id)
 
     flash[:notice] = "趣味の別名を追加しました！"
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
 
   end
 
   def name_change
     #userIDを受け取る
-    user_id = params[:user_id]
+    user_id = params[:user_id].to_i
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     #userIDから対応するレコードを取り出す
     user = User.find_by(id: user_id)
     #userの名前を変更
@@ -277,13 +321,22 @@ class UserController < ApplicationController
     #userの名前の変更を確定
     user.save
     #mypageへリダイレクト
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
   end
 
   def show
-    @id = params[:user_id].to_i
-    @gid = params[:group_id].to_i
-    @group_name = Group.find(@gid).group_name
+    user = User.find_by(token: params[:user_token])
+    if user == nil
+      render plain: "404エラー\nお探しのページは存在しません", status: 404
+      return
+    end
+
+    @id = user.id
+    @user_token = user.token
+    group = Group.find_by(id: user.group_id)
+    @gid = group.id
+    @group_name = group.group_name
+    @group_token = group.token
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合
@@ -366,12 +419,23 @@ class UserController < ApplicationController
   end
 
   def match
-    @user_id = params[:user_id].to_i
-    @target_id = params[:target_id].to_i
-    @target_name = User.find_by(id:@target_id).name
-    @group_id = User.find_by(id: @user_id).group_id
-    @group_name = Group.find_by(id: @group_id).group_name
-    @match_hobbies = nil
+    @user_token = params[:user_token]
+    target_user_open_token = params[:target_token]
+    user = User.find_by(token: @user_token)
+    target_user = User.find_by(opentoken: target_user_open_token)
+    if (user == nil || target_user == nil)
+      render plain: "404エラー\nお探しのページは存在しません", status: 404
+      return
+    end
+
+    @user_id = user.id
+    @target_id = target_user.id
+    @target_name = target_user.name
+    @group_id = user.group_id
+    group = Group.find_by(id: @group_id)
+    @group_name = group.group_name
+    @group_token = group.token
+    @target_intro = target_user.intro
 
     # セッションのチェック
     if @session_status == "no_session" #セッションが存在しない場合
@@ -393,6 +457,7 @@ class UserController < ApplicationController
       return
     end
 
+    @match_hobbies = nil
     # matchしたhobbyのID
     match_hobbies_id = []
     # targetのhobbyIDの配列
@@ -426,8 +491,13 @@ class UserController < ApplicationController
 
   def hobby_delete
     #各種値を変数に入れる
-    user_id = params[:user_id]
-    hobby_id = params[:hobby_id]
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     #データベースからレコードを取り出す
     hobby = Hobby.find_by(id: hobby_id)
     #Userhobbyの削除
@@ -442,13 +512,18 @@ class UserController < ApplicationController
     end
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
   end
 
   def similar_hobby_delete
     #各種値を変数に入れる
-    user_id = params[:user_id]
-    similar_hobby_id = params[:similar_hobby_id]
+    user_id = params[:user_id].to_i
+    similar_hobby_id = params[:similar_hobby_id].to_i
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     #データベースからレコードを取り出す
     similar_hobby = SimilarHobby.find_by(id: similar_hobby_id)
     similar_hobby_name = Hobby.find_by(id: similar_hobby.hobby_id).hobby_name
@@ -459,7 +534,7 @@ class UserController < ApplicationController
       sh.update(next: similar_hobby.next)
     else
       flash[:notice] = "エラーが起きました"
-      redirect_to("/user/mypage/#{user_id}")
+      redirect_to("/user/mypage/#{user_token}")
       return
     end
 
@@ -467,7 +542,7 @@ class UserController < ApplicationController
 
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{similar_hobby_name}を削除しました"
-    redirect_to("/user/mypage/#{user_id}")
+    redirect_to("/user/mypage/#{user_token}")
   end
 
   def account_hobby_delete
@@ -482,13 +557,18 @@ class UserController < ApplicationController
     target.delete
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
-    redirect_to("/account/#{params[:account_id]}")
+    redirect_to("/account/mypage")
   end
 
   def dummyhobby_delete
     #各種値を変数に入れる
+    group_token = Group.find_by(id: params[:group_id].to_i)&.token
     user_id = params[:user_id]
     hobby_id = params[:hobby_id]
+    if group_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     #データベースからレコードを取り出す
     hobby = Hobby.find_by(id: hobby_id)
     #Userhobbyの削除
@@ -496,49 +576,19 @@ class UserController < ApplicationController
     target.delete
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
-    redirect_to("/group/#{params[:group_id]}/list")
-  end
-
-
-
-  def group_delete
-    #各種値を変数に入れる
-    user_id = params[:user_id]
-    group_id = params[:group_id]
-    #データベースからレコードを取り出す
-    group_name = Group.find_by(id: group_id).group_name
-    #Userhobbyの削除
-    target = GroupBelong.find_by(user_id: user_id, group_id: group_id)
-    target.delete
-
-    if GroupBelong.where(user_id: user_id).count < 1
-      UserHobby.where(user_id: user_id).delete_all
-      User.find_by(id: user_id).destroy
-      if GroupBelong.where(group_id: group_id).count < 1
-        Group.find_by(id: group_id).destroy
-        flash[:notice] = "グループとユーザーを削除しました"
-        redirect_to("/")
-      else
-        flash[:notice] = "所属グループが0になったためユーザーを削除しました"
-        redirect_to("/")
-      end
-    else
-      #趣味を削除したことを通知してマイページへリダイレクト
-      flash[:notice] = "#{group_name}を削除しました"
-      redirect_to("/user/mypage/#{user_id}")
-    end
+    redirect_to("/group/list/#{group_token}")
   end
 
   def user_delete
     user_id = params[:user_id]
     user = User.find_by(id: user_id)
-    group_id = user.group_id
+    group_token = Group.find_by(id: user.group_id).token
     # ユーザーの趣味情報を削除
     UserHobby.where(user_id: user_id).delete_all
     # ユーザーの削除
     user.destroy
     flash[:notice] = "ユーザーを削除しました"
-    redirect_to("/group/#{group_id}/list")
+    redirect_to("/group/list/#{group_token}")
   end
 
 
@@ -547,6 +597,7 @@ class UserController < ApplicationController
   #================================================
   #DummyUser用（リダイレクト先が違うため）
   def dummy_newhobby
+    group_token = Group.find_by(id: params[:group_id].to_i).token
     #Hobbyの主キーを保存する変数hobby_idの初期化
     user_id_tmp = params[:user_id]
     hobby_id = 0
@@ -566,7 +617,7 @@ class UserController < ApplicationController
       tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
       flash[:notice] = "#{params[:hobby_name]}を登録しました！"
     end
-    redirect_to("/group/#{params[:group_id]}/list")
+    redirect_to("/group/list/#{group_token}")
   end
 
 
