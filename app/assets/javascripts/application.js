@@ -66,6 +66,14 @@ function subcheck() {
     return false; // 送信を中止
   }
 }
+function subcheck_name(a) {
+  if (window.confirm(a + 'を本当に削除しますか')) {
+    return true;
+  } else {
+    //window.alert('キャンセルされました'); // 警告ダイアログの表示は要らなそう
+    return false; // 送信を中止
+  }
+}
 
 function subcheck_regist() {
   if (window.confirm('本当に登録しますか')) {
