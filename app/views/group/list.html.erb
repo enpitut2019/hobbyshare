@@ -14,8 +14,13 @@
     <% else %>
     <strong><%= @login_uname %></strong>としてこのグループに参加しています
     <br>
-    <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
-    <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+      <% if @hobby_haven == 'true'%>
+      <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
+      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+      <% else %>
+      <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+      <% end %>
     <% end %>
     <hr>
   <div class="row">
@@ -93,6 +98,8 @@
   <div><p></p></div>
   <%= form_tag("/group/qrcode") do %>
   <input type="hidden" name="url" value="<%= request.url %>">
-  <input class="btn btn-primary btn-bg" type="submit" value="QRコードを発行する">
+  <%= button_tag :type => "submit", :class =>"btn btn-primary btn-sm", formtarget: "_blank" do %>
+    <i class="fas fa-qrcode"></i>QR
   <% end %>
+<% end %>
 </div>
