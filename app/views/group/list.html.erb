@@ -85,6 +85,6 @@
   <div><p></p></div>
   <%= form_tag("/group/qrcode") do %>
   <input type="hidden" name="url" value="<%= request.url %>">
-  <input class="btn btn-primary btn-bg" type="submit" value="QRコードを発行する">
+  <%= submit_tag 'QRコードを発行する' , formtarget: "_blank", :class=>"btn btn-primary btn-bg" %>
   <% end %>
 </div>
