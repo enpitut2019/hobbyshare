@@ -100,7 +100,7 @@
   <%= form_tag("/group/qrcode") do %>
   <input type="hidden" name="url" value="<%= request.url %>">
   <%= button_tag :type => "submit", :class =>"btn btn-primary btn-sm", formtarget: "_blank" do %>
-    <i class="fas fa-qrcode"></i>QR
+    <i class="fas fa-qrcode"></i> QRコードを発行
   <% end %>
 <% end %>
 </div>
