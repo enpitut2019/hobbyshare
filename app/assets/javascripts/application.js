@@ -110,3 +110,12 @@ function textarea_select(){
     //テキストエリアを全選択する
     document.form.textarea.select();
 }
+
+// listのuser_intro隠しフォーム
+function entryUserIntro(index){
+  if(document.getElementById('intro_hidden'+index).style.display == "none") {
+    document.getElementById('intro_hidden'+index).style.display = "";
+  }else{
+    document.getElementById('intro_hidden'+index).style.display = "none";
+  }
+}

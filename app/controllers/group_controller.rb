@@ -55,15 +55,31 @@ class GroupController < ApplicationController
     #query_guser_idにグループに所属するユーザのUIDを格納する
     @query_guser = []
     #Userにて指定グループのgidを持つユーザを抽出
-    @login_uid == nil
     User.where(group_id: @gid).each do |u|
       @query_guser.push(u)
     end
+
     if @session_status != "no_session"
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
       @login_uid = account_user&.id
       @login_uname = account_user&.name
       @login_user_token = account_user&.token
+    else
+      @login_uid = nil
+    end
+    @users_hobbies = []
+    @uhobby_record = UserHobby.where(user_id: @login_uid)
+    @hobbies_id = []
+    @uhobby_record.each do |record|
+      @hobbies_id.push(record.hobby_id)
+    end
+    @hobbies_id.each do |hid|
+      @users_hobbies.push(Hobby.find_by(id: hid))
+    end
+    if @users_hobbies.empty?
+      @hobby_haven = 'false'
+    else
+      @hobby_haven = 'true'
     end
   end
 
@@ -107,6 +123,7 @@ class GroupController < ApplicationController
   end
   def qrcode
     @url = params[:url]
+    render :layout => nil
   end
 
 
