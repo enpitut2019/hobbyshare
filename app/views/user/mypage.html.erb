@@ -18,11 +18,16 @@
 
     <div class="row">
       <div class="col-md-8 mb-5">
-
         <h3>所属グループ:<%= @group_name %></h3>
-        <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す</button>
+        <% if @users_hobbies.empty? %>
+        <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
+        <% else %>
+
+        <button class="btn btn-success btn-bg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す</button>
         <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
 
+        <% end %>
         <hr>
         <h4>趣味の登録</h4>
         <p>ここで共有したい趣味を登録することができます。</p>

@@ -65,6 +65,20 @@ class GroupController < ApplicationController
       @login_uname = account_user&.name
       @login_user_token = account_user&.token
     end
+    @users_hobbies = []
+    @uhobby_record = UserHobby.where(user_id: @login_uid)
+    @hobbies_id = []
+    @uhobby_record.each do |record|
+      @hobbies_id.push(record.hobby_id)
+    end
+    @hobbies_id.each do |hid|
+      @users_hobbies.push(Hobby.find_by(id: hid))
+    end
+    if @users_hobbies.empty?
+      @hobby_haven == 'false'
+    else
+      @hobby_haven == 'true'
+    end
   end
 
   def make
