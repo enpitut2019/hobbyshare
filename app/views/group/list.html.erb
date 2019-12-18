@@ -22,17 +22,25 @@
     <div class="col-md-8">
       <% if @query_guser.size > 0 %>
 
-      <strong>所属メンバー</strong>
-    <ol>
-      <% @query_guser.each do |user| %>
+      <p><strong>所属メンバー</strong></p>
+      <% @query_guser.each_with_index do |user,i| %>
       <div style="display:inline-flex">
-        <%= form_tag("/user/delete") do %>
-          <input type="hidden" name="user_id" value="<%= user.id %>">
-          <button type="submit" class="btn btn-secondary btn-sm" type="button" onclick='return subcheck_name("<%= user.name %>")'><i class="far fa-trash-alt"></i></button>
-        <% end %>
-        <%= user.name %>
+        <input type="button" class="btn btn-link" value="<%= user.name %>" onclick="<%="entryUserIntro(#{i})"%>">
       </div>
-      <br>
+      <div id="<%="intro_hidden#{i}"%>" style="display: none; margin-left:0.75rem;">
+        <% if user.intro %>
+          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+            <div class="card-body"><%= simple_format(html_escape(user.intro)) %><ul style="list-style: none; padding-left: 0;">
+          </ul></div>
+        </div>
+        <% else %>
+          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+            <div class="card-body">詳細情報が設定されていません<ul style="list-style: none; padding-left: 0;">
+          </ul></div>
+        </div>
+        <% end %>
+      </div>
+      <div style="float:none;"></div>
       <% end %>
 
     </div>

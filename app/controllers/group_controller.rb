@@ -55,15 +55,17 @@ class GroupController < ApplicationController
     #query_guser_idにグループに所属するユーザのUIDを格納する
     @query_guser = []
     #Userにて指定グループのgidを持つユーザを抽出
-    @login_uid == nil
     User.where(group_id: @gid).each do |u|
       @query_guser.push(u)
     end
+
     if @session_status != "no_session"
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
       @login_uid = account_user&.id
       @login_uname = account_user&.name
       @login_user_token = account_user&.token
+    else
+      @login_uid = nil
     end
   end
 
