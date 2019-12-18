@@ -9,6 +9,7 @@ class UserController < ApplicationController
     #ユーザIDを変数に入れる
     @user_id = user.id
     @user_token = user.token
+    @user_name = user.name
     #セッションが存在かつ正しいユーザーの場合のみ通す
     if @session_status == "no_session" #セッションが存在しない場合
       flash[:notice] = "このページにアクセスする権限がありません"

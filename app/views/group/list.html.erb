@@ -25,9 +25,8 @@
     <hr>
   <div class="row">
     <div class="col-md-8">
-      <% if @query_guser.size > 0 %>
-
       <p><strong>所属メンバー</strong></p>
+    <% if @query_guser.size > 0 %>
       <% @query_guser.each_with_index do |user,i| %>
       <div style="display:inline-flex">
         <input type="button" class="btn btn-link" value="<%= user.name %>" onclick="<%="entryUserIntro(#{i})"%>">
@@ -47,11 +46,13 @@
       </div>
       <div style="float:none;"></div>
       <% end %>
-
+    <% else %>
+      <p style="color: gray;">まだメンバーがいません</p>
+      <p style="color: gray;">グループにメンバーを誘いましょう！</p>
+    <% end %>
     </div>
   </div>
   <hr>
-  <% end %>
   <strong>グループのおすすめ趣味</strong>
   <br>
   ここで登録された趣味は、「詳細設定」の「おすすめ趣味一覧」の候補に追加されます
