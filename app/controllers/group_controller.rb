@@ -75,9 +75,9 @@ class GroupController < ApplicationController
       @users_hobbies.push(Hobby.find_by(id: hid))
     end
     if @users_hobbies.empty?
-      @hobby_haven == 'false'
+      @hobby_haven = 'false'
     else
-      @hobby_haven == 'true'
+      @hobby_haven = 'true'
     end
   end
 
