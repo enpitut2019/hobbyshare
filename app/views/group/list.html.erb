@@ -16,10 +16,10 @@
     <br>
       <% if @hobby_haven == 'true'%>
       <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
-      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定</button>
       <% else %>
       <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
-      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+      <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定</button>
       <% end %>
     <% end %>
     <hr>
@@ -53,9 +53,13 @@
     </div>
   </div>
   <hr>
+  <% end %>
+
   <strong>グループのおすすめ趣味</strong>
+
   <br>
-  ここで登録された趣味は、「詳細設定」の「おすすめ趣味一覧」の候補に追加されます
+  グループ内の人にも登録してほしい趣味をここで登録することができます<br>
+  ここで登録された趣味は、「趣味の登録・設定」の「おすすめ趣味一覧」の候補に追加されます
   <%= form_tag("/user/dummy_newhobby") do %>
   <input name="hobby_name" class="form-control" style="max-width:450px;" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
