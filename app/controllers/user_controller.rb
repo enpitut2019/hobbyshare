@@ -37,7 +37,7 @@ class UserController < ApplicationController
     @user_name = user.name
 
     #ユーザの趣味を取得して変数に入れる
-    @uhobby_record = UserHobby.where(user_id: @user_id)
+    @uhobby_record = UserHobby.where(user_id: @user_id).order(:id)
     #uhobby_recordからhobbyIDだけを取り出して配列にする
     @hobbies_id = []
     @has_alias = []
