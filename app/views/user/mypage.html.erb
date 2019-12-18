@@ -55,23 +55,15 @@
           <li class="list-inline-item">
             <%= "#{hobby.hobby_name}" %>
           </li>
-
-
-
-
           <!-- 趣味の表記揺れ対策登録ボタン -->
 
           <li class="list-inline-item" onclick="<%="entrySimilarHobby(#{i})"%>">
             <button class="btn btn-primary btn-sm">別名の登録</button>
           </li>
 
-
-
-
           <% if !@has_alias[i] #趣味の別名が無い場合 %>
           <!-- 趣味の表記揺れ対策登録隠しフォーム -->
           <div id="<%="regist_hidden#{i}"%>" style="display: none;">
-            </li>
             <li class="pl-5">
               <%= form_tag("/user/similar_hobby") do %>
               <input type="hidden" name="user_id" value="<%= @user_id %>">
@@ -82,7 +74,6 @@
           </div>
 
           <% else #趣味の別名がある場合 %>
-            </li>
             <li>
               <% alias_names = @alias_names_queue.shift %>
               <% alias_ids = @alias_ids_queue.shift %>
@@ -107,7 +98,6 @@
 
                 <% end %>
           <div id="<%="regist_hidden#{i}"%>" style="display: none;">
-          </li>
           <li class="pl-5">
               <%= form_tag("/user/similar_hobby_add") do %>
               <input type="hidden" name="user_id" value="<%= @user_id %>">
@@ -118,7 +108,6 @@
           </div>
           <% end %>
 
-          </li>
           </div>
         <% } %>
 
