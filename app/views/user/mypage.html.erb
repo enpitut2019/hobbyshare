@@ -46,7 +46,6 @@
         <ul class="list-inline mt-2">
         <% @users_hobbies.each_with_index {|hobby,i| %>
           <div class="box8">
-          <li>
             <!-- 趣味の削除ボタン -->
             <li class="list-inline-item">
               <%= form_tag("/user/hobby_delete") do %>
