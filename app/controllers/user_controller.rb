@@ -307,6 +307,30 @@ class UserController < ApplicationController
 
   end
 
+  def hobby_open
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
+    if params[:options] == "open"
+      do_open = true
+    else
+      do_open = false
+    end
+    user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+
+    if do_open
+      flash[:notice] = "趣味の公開オプションを設定しました！公開"
+    else
+      flash[:notice] = "趣味の公開オプションを設定しました！非公開"
+    end
+    redirect_to("/user/mypage/#{user_token}")
+
+  end
+
   def name_change
     #userIDを受け取る
     user_id = params[:user_id].to_i

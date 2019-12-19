@@ -90,6 +90,32 @@
                   </div>
                   <% end %>
                 </div>
+                <!-- 趣味の公開設定ボタン -->
+                <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
+                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+                  <%= form_tag("/user/hobby_open") do %>
+                  <div class="input-group" style=" flex: 0 0 auto;">
+                    <!--チェックボックス型ボタン部分 -->
+                    <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
+                      <label class="btn btn-open btn-sm active btn-group" style="margin-right:0;">
+                        <input type="radio" name="options" value="open" checked>
+                        <span style="width:5rem;">公開する</span>
+                      </label>
+                      <label class="btn btn-noopen btn-sm btn-group" style="margin-right: 3px;">
+                        <input type="radio" name="options" value="no_open">
+                        <span style="width:5rem;">公開しない</span>
+                      </label>
+                    </div>
+                    <!-- 送信部分 -->
+                    <input type="hidden" name="user_id" value="<%= @user_id %>">
+                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                    <span class="input-group-btn" style="padding-right: 3px;"></span>
+                    <span class="input-group-btn">
+                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
+                    </span>
+                  </div>
+                  <% end %>
+                </div>
               </div>
 
               <% else #趣味の別名がある場合 %>
@@ -131,6 +157,32 @@
                     <span class="input-group-btn" style="padding-right: 3px;"></span>
                     <span class="input-group-btn">
                       <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">別名の追加</button>
+                    </span>
+                  </div>
+                  <% end %>
+                </div>
+                <!-- 趣味の公開設定ボタン -->
+                <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
+                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+                  <%= form_tag("/user/hobby_open") do %>
+                  <div class="input-group" style=" flex: 0 0 auto;">
+                    <!--チェックボックス型ボタン部分 -->
+                    <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
+                      <label class="btn btn-open btn-sm active btn-group" style="margin-right:0;">
+                        <input type="radio" name="options" value="open" checked>
+                        <span style="width:5rem;">公開する</span>
+                      </label>
+                      <label class="btn btn-noopen btn-sm btn-group" style="margin-right: 3px;">
+                        <input type="radio" name="options" value="no_open">
+                        <span style="width:5rem;">公開しない</span>
+                      </label>
+                    </div>
+                    <!-- 送信部分 -->
+                    <input type="hidden" name="user_id" value="<%= @user_id %>">
+                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                    <span class="input-group-btn" style="padding-right: 3px;"></span>
+                    <span class="input-group-btn">
+                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
                     </span>
                   </div>
                   <% end %>
