@@ -32,9 +32,13 @@
         <h4>趣味の登録</h4>
         <p>ここで共有したい趣味を登録することができます。</p>
         <%= form_tag("/user/newhobby") do %>
-          <input name="hobby_name" class="form-control" style="max-width: 350px;" required>
+        <div class="input-group" style="max-width:400px;">
+          <input name="hobby_name" class="form-control" required>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <button class="btn btn-primary btn-bg" type="submit">登録</button>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">登録</button>
+          </span>
+        </div>
         <% end %>
         <br>
 
@@ -139,10 +143,7 @@
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input class="btn btn-primary btn-bg" type="submit" value="登録">
           <% end %>
-
-
           <hr>
-
 
         <!-- ユーザー名の変更 -->
         <h4>名前の設定</h4>
@@ -151,12 +152,14 @@
           （アカウントの名前を変更するわけではありません）
         </p>
         <%= form_tag("/user/name_change") do %>
-        <input name="user_name" class="form-control" required>
-        <input type="hidden" name="user_id" value="<%= @user_id %>">
-        <input class="btn btn-primary btn-bg" type="submit" value="変更">
+        <div class="input-group" style="max-width:400px;">
+          <input name="user_name" class="form-control" required>
+          <input type="hidden" name="user_id" value="<%= @user_id %>">
+          <span class="input-group-btn">
+            <button class="btn btn-primary btn-bg" type="submit">変更</button>
+          </span>
+        </div>
         <% end %>
-
-
         <hr>
 
         <!--ユーザーの削除 -->

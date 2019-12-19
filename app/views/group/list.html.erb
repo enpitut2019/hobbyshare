@@ -58,10 +58,14 @@
   グループ内の人にも登録してほしい趣味をここで登録することができます<br>
   ここで登録された趣味は、「趣味の登録・設定」の「おすすめ趣味一覧」の候補に追加されます
   <%= form_tag("/user/dummy_newhobby") do %>
-  <input name="hobby_name" class="form-control" style="max-width:450px;" required>
+  <div class="input-group" style="max-width:450px;">
+  <input name="hobby_name" class="form-control" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
   <input type="hidden" name="group_id" value="<%= @gid %>">
-  <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
+  <span class="input-group-btn">
+    <button class="btn btn-primary" type="submit">登録</button>
+  </span>
+  </div>
   <% end %>
 
   <hr>
