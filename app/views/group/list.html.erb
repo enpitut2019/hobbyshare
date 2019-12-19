@@ -53,11 +53,8 @@
     </div>
   </div>
   <hr>
-  <% end %>
 
-  <strong>グループのおすすめ趣味</strong>
-
-  <br>
+  <p><strong>グループのおすすめ趣味</strong></p>
   グループ内の人にも登録してほしい趣味をここで登録することができます<br>
   ここで登録された趣味は、「趣味の登録・設定」の「おすすめ趣味一覧」の候補に追加されます
   <%= form_tag("/user/dummy_newhobby") do %>
@@ -68,7 +65,7 @@
   <% end %>
 
   <hr>
-  <summary><strong>おすすめ趣味一覧</strong></summary>
+  <p><strong>おすすめ趣味一覧</strong></p>
   <%if @dummy_hobbies.size > 0%>
   <table style="border-style: none; max-width:100%;">
   <% @dummy_hobbies.reverse_each do |hname| %>
