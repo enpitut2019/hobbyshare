@@ -3,9 +3,9 @@
 
 body { padding-top: 56px; }
 
-.btn{
+/*.btn{
   margin-right: 10px;
-}
+}*/
 
 .form-control{
   margin-bottom: 10px;
@@ -41,6 +41,16 @@ body { padding-top: 56px; }
     margin: 0.5em 0;
     width: 21em;
     background: rgba(155, 201, 223, 0.6);
+    border-radius: 10px;
+    max-width:100%;
+    box-sizing: border-box;
+}
+
+.box8_noopen {
+    padding: 0.5em 0.75em 0.5em 1em;
+    margin: 0.5em 0;
+    width: 21em;
+    background: rgba(162, 170, 173, 0.6);
     border-radius: 10px;
     max-width:100%;
     box-sizing: border-box;

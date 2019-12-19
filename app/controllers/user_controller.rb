@@ -40,10 +40,12 @@ class UserController < ApplicationController
     @uhobby_record = UserHobby.where(user_id: @user_id).order(:id)
     #uhobby_recordからhobbyIDだけを取り出して配列にする
     @hobbies_id = []
+    @hobbies_option = []
     @has_alias = []
     has_alias_id = [] #別名を持つ趣味
     @uhobby_record.each do |record|
       @hobbies_id.push(record.hobby_id)
+      @hobbies_option.push(record.open)
       if record.similar_hobbies_id != nil
         @has_alias.push(true)
         has_alias_id.push(record.similar_hobbies_id)
@@ -144,6 +146,11 @@ class UserController < ApplicationController
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
+    if params[:open_option] == "open"
+      open_option = true
+    else
+      open_option = false
+    end
     hobby_id = 0
     #既に登録された趣味であった場合
     if Hobby.find_by(hobby_name: params[:hobby_name])
@@ -158,7 +165,7 @@ class UserController < ApplicationController
       flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
     else
       #UserHobbyへの格納
-      UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id)
+      UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id, open: open_option)
     end
     redirect_to("/user/mypage/#{user_token}")
   end
@@ -317,15 +324,17 @@ class UserController < ApplicationController
     end
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
     user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    if user_hobby == nil || user_token == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
 
     if do_open
-      flash[:notice] = "趣味の公開オプションを設定しました！公開"
+      user_hobby.update(open: true)
+      flash[:notice] = "趣味の公開オプションを公開に設定しました！"
     else
-      flash[:notice] = "趣味の公開オプションを設定しました！非公開"
+      user_hobby.update(open: false)
+      flash[:notice] = "趣味の公開オプションを非公開に設定しました！"
     end
     redirect_to("/user/mypage/#{user_token}")
 
