@@ -21,11 +21,11 @@
         <h3>所属グループ:<%= @group_name %></h3>
         <% if @users_hobbies.empty? %>
         <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
-        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
+        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
         <% else %>
 
-        <button class="btn btn-success btn-bg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す</button>
-        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users"></i></button>
+        <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
+        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
 
         <% end %>
         <hr>
