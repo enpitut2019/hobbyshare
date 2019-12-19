@@ -131,7 +131,7 @@
         <hr>
 
           <h4>ユーザー情報の登録</h4>
-          <p>趣味が一致したメンバーに公開する情報を追加できます</p>
+          <p>他のメンバーに自分を見つけてもらうための自己紹介を登録できます</p>
           <% if @user_intro %>
           <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
             <div class="card-body"><%= simple_format(html_escape(@user_intro)) %><ul style="list-style: none; padding-left: 0;">
@@ -139,7 +139,7 @@
           </div>
           <% end %>
           <%= form_tag("/user/userintro") do %>
-          <textarea name="user_intro" class="form-control" placeholder="趣味用のTwitterIDなどの情報を自由に入力"></textarea>
+          <textarea name="user_intro" class="form-control" placeholder="服の色や髪型など相手から見つけてもらえる情報を入力しましょう" style="max-width: 30rem;"></textarea>
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input class="btn btn-primary btn-bg" type="submit" value="登録">
           <% end %>
