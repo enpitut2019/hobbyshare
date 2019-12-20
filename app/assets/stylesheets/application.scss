@@ -35,6 +35,20 @@ body { padding-top: 56px; }
     border-left: solid 5px #7db4e6;/*左線*/
   }
 }
+.top{
+
+  h4 {
+    padding: 0.25em 0.5em;/*上下 左右の余白*/
+    color: #494949;/*文字色*/
+    background: transparent;/*背景透明に*/
+    border-left: solid 5px #7db4e6;/*左線*/
+  }
+}
+
+.w-100_h-60px{
+  width: 100% !important;
+  height: 60px !important;
+}
 
 .box8 {
     padding: 0.5em 0.75em 0.5em 1em;
