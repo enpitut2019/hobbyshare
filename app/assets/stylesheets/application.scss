@@ -3,9 +3,9 @@
 
 body { padding-top: 56px; }
 
-.btn{
+/*.btn{
   margin-right: 10px;
-}
+}*/
 
 .form-control{
   margin-bottom: 10px;
@@ -59,3 +59,77 @@ body { padding-top: 56px; }
     max-width:100%;
     box-sizing: border-box;
 }
+
+.box8_noopen {
+    padding: 0.5em 0.75em 0.5em 1em;
+    margin: 0.5em 0;
+    width: 21em;
+    background: rgba(162, 170, 173, 0.6);
+    border-radius: 10px;
+    max-width:100%;
+    box-sizing: border-box;
+}
+
+/*カスタマイズボタン公開用*/
+/* 通常のボタン色 */
+.btn-open,
+.btn-open.disabled, .btn-open:disabled {
+  color: #fff;
+  background-color: rgba(132, 195, 224, 0.8);
+  border-color: rgba(132, 195, 224, 0.8);
+}
+
+/* focusされた時の枠線の色 */
+.btn-open:focus, .btn-open.focus,
+.btn-open:not(:disabled):not(.disabled):active:focus, .btn-open:not(:disabled):not(.disabled).active:focus,
+.show > .btn-open.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(81, 160, 205, 0.8);
+}
+
+/* hover時（マウスカーソルを重ねた時）の色（通常より濃いor暗めの色を指定） */
+.btn-open:hover {
+  color: #fff;
+  background-color: rgba(37, 134, 189, 1);
+  border-color: rgba(37, 134, 189, 1);
+}
+
+/* active時の色（hover時と同等かさらに濃いor暗めの色を指定） */
+.btn-open:not(:disabled):not(.disabled):active, .btn-open:not(:disabled):not(.disabled).active,
+.show > .btn-open.dropdown-toggle {
+  color: #fff;
+  background-color: rgba(37, 134, 189, 1);
+  border-color: rgba(37, 134, 189, 1);
+}
+
+
+/*カスタマイズボタン非公開用*/
+/* 通常のボタン色 */
+.btn-noopen,
+.btn-noopen.disabled, .btn-noopen:disabled {
+  color: #fff;
+  background-color: #c1bebe;
+  border-color: #c1bebe;
+}
+
+/* focusされた時の枠線の色 */
+.btn-noopen:focus, .btn-noopen.focus,
+.btn-noopen:not(:disabled):not(.disabled):active:focus, .btn-noopen:not(:disabled):not(.disabled).active:focus,
+.show > .btn-noopen.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem #8c8c8c;
+}
+
+/* hover時（マウスカーソルを重ねた時）の色（通常より濃いor暗めの色を指定） */
+.btn-noopen:hover {
+  color: #fff;
+  background-color: #696868;
+  border-color: #696868;
+}
+
+/* active時の色（hover時と同等かさらに濃いor暗めの色を指定） */
+.btn-noopen:not(:disabled):not(.disabled):active, .btn-noopen:not(:disabled):not(.disabled).active,
+.show > .btn-noopen.dropdown-toggle {
+  color: #fff;
+  background-color: #696868;
+  border-color: #696868;
+}
+/*カスタマイズボタンここまで*/
