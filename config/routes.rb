@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   post 'user/similar_hobby_add' => 'user#similar_hobby_add'
   post 'user/similar_hobby_delete' => 'user#similar_hobby_delete'
   post 'user/hobby_open' => 'user#hobby_open'
+  post 'user/ac_similar_hobby_add' => 'user#ac_similar_hobby_add'
+  post 'user/ac_similar_hobby_delete' => 'user#ac_similar_hobby_delete'
+  post 'user/ac_similar_hobby' => 'user#ac_similar_hobby'
 
   get '/' => 'group#top'
   get 'top' => 'group#top'
