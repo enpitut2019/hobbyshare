@@ -165,9 +165,7 @@ class UserController < ApplicationController
 
 
   def ac_newhobbies
-    #Hobbyの主キーを保存する変数hobby_idの初期化
     user_id_tmp = params[:user_id]
-    #既に登録された趣味であった場合
     @account_name = @login_account.name
     @dummy_user_id = @login_account.user_id
     @users = User.where(account_id: @login_account.id)
@@ -183,12 +181,14 @@ class UserController < ApplicationController
 
     @hobbies_id.each do |hid|
       #重複するレコードがあるかどうか
-      if UserHobby.find_by(hobby_id: hid, user_id: user_id_tmp)
-      else
-        #UserHobbyへの格納
-        tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hid)
+      #if ここ別名あったらよしなにするif文を書きたい
+        if UserHobby.find_by(hobby_id: hid, user_id: user_id_tmp)
+        else
+          #UserHobbyへの格納
+          tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hid)
+        end
       end
-    end
+    #end
     flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
     redirect_to("/account/mypage")
   end
@@ -266,6 +266,41 @@ class UserController < ApplicationController
 
   end
 
+  def ac_similar_hobby
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
+    similar_hobby_name = params[:similar_hobby_name]
+    user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+
+    similar_hobby_id = 0
+    #既に登録された趣味であった場合
+    if tmp = Hobby.find_by(hobby_name: similar_hobby_name)
+      similar_hobby_id = tmp.id
+    else
+      #新規にHobbyに登録する趣味の場合
+      similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
+    end
+
+    #重複するレコードがあったら登録しない
+    if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
+      flash[:notice] = "#{similar_hobby_name}は既に登録されています"
+      redirect_to("/account/mypage")
+      return
+    end
+
+    sh = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
+    user_hobby.update(similar_hobbies_id: sh.id)
+
+    flash[:notice] = "趣味の別名を登録しました！"
+    redirect_to("/account/mypage")
+
+  end
+
   def similar_hobby_add
     user_id = params[:user_id].to_i
     hobby_id = params[:hobby_id].to_i
@@ -305,6 +340,46 @@ class UserController < ApplicationController
     flash[:notice] = "趣味の別名を追加しました！"
     redirect_to("/user/mypage/#{user_token}")
 
+  end
+
+  def ac_similar_hobby_add
+    user_id = params[:user_id].to_i
+    hobby_id = params[:hobby_id].to_i
+    similar_hobby_name = params[:similar_hobby_name]
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+
+    user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    similar_hobby_first = SimilarHobby.find_by(id: user_hobby.similar_hobbies_id)
+    similar_hobby_last = similar_hobby_first
+    while similar_hobby_last.next != nil do
+      similar_hobby_last = SimilarHobby.find_by(id: similar_hobby_last.next)
+    end
+
+    similar_hobby_id = 0
+    #既に登録された趣味であった場合
+    if tmp = Hobby.find_by(hobby_name: similar_hobby_name)
+      similar_hobby_id = tmp.id
+    else
+      #新規にHobbyに登録する趣味の場合
+      similar_hobby_id = Hobby.create(hobby_name: similar_hobby_name).id
+    end
+
+    #重複するレコードがあったら登録しない
+    if UserHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id) || SimilarHobby.find_by(hobby_id: similar_hobby_id, user_id: user_id)
+      flash[:notice] = "#{similar_hobby_name}は既に登録されています"
+      redirect_to("/account/mypage")
+      return
+    end
+
+    similar_hobby = SimilarHobby.create(hobby_id: similar_hobby_id, user_id: user_id)
+    similar_hobby_last.update(next: similar_hobby.id)
+
+    flash[:notice] = "趣味の別名を追加しました！"
+    redirect_to("/account/mypage")
   end
 
   def name_change
@@ -546,6 +621,36 @@ class UserController < ApplicationController
     redirect_to("/user/mypage/#{user_token}")
   end
 
+  def ac_similar_hobby_delete
+    #各種値を変数に入れる
+    user_id = params[:user_id].to_i
+    similar_hobby_id = params[:similar_hobby_id].to_i
+    user_token = User.find_by(id:user_id)&.token
+    if user_token == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    #データベースからレコードを取り出す
+    similar_hobby = SimilarHobby.find_by(id: similar_hobby_id)
+    similar_hobby_name = Hobby.find_by(id: similar_hobby.hobby_id).hobby_name
+
+    if uh = UserHobby.find_by(similar_hobbies_id: similar_hobby.id)
+      uh.update(similar_hobbies_id: similar_hobby.next)
+    elsif sh = SimilarHobby.find_by(next: similar_hobby.id)
+      sh.update(next: similar_hobby.next)
+    else
+      flash[:notice] = "エラーが起きました"
+      redirect_to("/account/mypage")
+      return
+    end
+
+    similar_hobby.destroy
+
+    #趣味を削除したことを通知してマイページへリダイレクト
+    flash[:notice] = "#{similar_hobby_name}を削除しました"
+    redirect_to("/account/mypage")
+  end
+
   def account_hobby_delete
     #各種値を変数に入れる
     user_id = params[:user_id]
@@ -555,7 +660,15 @@ class UserController < ApplicationController
     hobby = Hobby.find_by(id: hobby_id)
     #Userhobbyの削除
     target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    target_similar_hobby_id = target.similar_hobbies_id
     target.delete
+    #趣味の別名があった場合それも全て削除
+    while target_similar_hobby_id != nil
+      target_similar_hobby = SimilarHobby.find_by(id: target_similar_hobby_id)
+      target_similar_hobby_id = target_similar_hobby.next
+      target_similar_hobby.destroy
+    end
+
     #趣味を削除したことを通知してマイページへリダイレクト
     flash[:notice] = "#{hobby.hobby_name}を削除しました"
     redirect_to("/account/mypage")
