@@ -12,7 +12,9 @@
     <% if @login_uid == nil %>
     <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/add_member/<%=@group_token%>'">このグループに参加する</button>
     <% else %>
-    <strong><%= @login_uname %></strong>としてこのグループに参加しています
+    <div style="font-size: 1.5em;">
+      <strong><%= @login_uname %></strong>としてこのグループに参加しています
+    </div>
     <br>
       <% if @hobby_haven == 'true'%>
       <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
@@ -26,8 +28,8 @@
   <div class="row">
     <div class="col-md-8">
       <p><strong>所属メンバー</strong></p>
-    <% if @query_guser.size > 0 %>
-      <% @query_guser.each_with_index do |user,i| %>
+    <% if @group_users.size > 0 %>
+      <% @group_users.each_with_index do |user,i| %>
       <div style="display:inline-flex">
         <input type="button" class="btn btn-link" value="<%= user.name %>" onclick="<%="entryUserIntro(#{i})"%>">
       </div>
@@ -52,44 +54,26 @@
     <% end %>
     </div>
   </div>
-  <hr>
 
-  <p><strong>グループのおすすめ趣味</strong></p>
-  グループ内の人にも登録してほしい趣味をここで登録することができます<br>
-  ここで登録された趣味は、「趣味の登録・設定」の「おすすめ趣味一覧」の候補に追加されます
-  <%= form_tag("/user/dummy_newhobby") do %>
-  <div class="input-group" style="max-width:450px;">
-  <input name="hobby_name" class="form-control" required>
-  <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
-  <input type="hidden" name="group_id" value="<%= @gid %>">
-  <span class="input-group-btn" style="padding-right: 5px;"></span>
-  <span class="input-group-btn">
-    <button class="btn btn-primary" type="submit">登録</button>
-  </span>
+
+  <hr>
+  <div><strong>メンバーの登録している趣味一覧</strong></div>
+  <div style="font-size: 0.8rem;">
+    グループ内のメンバーの「公開する」に設定されている趣味の一覧です。<br>
+    「公開しない」に設定されている趣味は表示されません。
   </div>
+  <div style="margin-top: 5px;"></div>
+  <%if @group_open_hobbies.size > 0%>
+  <ul style="max-width:100%;">
+  <% @group_open_hobbies.each do |hobby| %>
+  <li style="max-width:500px;">
+    <%= "#{hobby.hobby_name}" %>
+  </li>
   <% end %>
-
-  <hr>
-  <p><strong>おすすめ趣味一覧</strong></p>
-  <%if @dummy_hobbies.size > 0%>
-  <table style="border-style: none; max-width:100%;">
-  <% @dummy_hobbies.reverse_each do |hname| %>
-  <tr>
-    <td style="max-width:500px;"><%= "#{hname.hobby_name}" %></td>
-    <td style="padding-left:1rem; padding-right:1rem;">
-      <%= form_tag("/user/dummyhobby_delete") do %>
-      <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
-      <input type="hidden" name="hobby_id" value="<%= hname.id %>">
-      <input type="hidden" name="group_id" value="<%= @gid %>">
-      <button class="btn btn-light btn-sm" type="submit" value="削除" onclick='return subcheck_name("<%= hname.hobby_name %>")'><i class="far fa-trash-alt"></i></button>
-      <% end %>
-    </td>
-  </tr>
-  <% end %>
-  </table>
+  </ul>
   <% else %>
-  おすすめ趣味はまだ設定されていません<br>
-  共通の趣味を持っている人がいそうなお題を設定してみましょう
+  グループ内で公開されている趣味はまだありません<br>
+  趣味を公開すると同じ趣味を持っている人が気づいてくれるかもしれません
   <% end %>
   <hr>
 

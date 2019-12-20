@@ -52,12 +52,8 @@ class GroupController < ApplicationController
       @dummy_hobbies.push(Hobby.find_by(id: hid))
     end
 
-    #query_guser_idにグループに所属するユーザのUIDを格納する
-    @query_guser = []
-    #Userにて指定グループのgidを持つユーザを抽出
-    User.where(group_id: @gid).each do |u|
-      @query_guser.push(u)
-    end
+    #group_usersにグループに所属するユーザを格納する
+    @group_users = User.where(group_id: @gid)
 
     if @session_status != "no_session"
       account_user = User.where(account_id: @session_id)&.find_by(group_id: @gid)
@@ -81,6 +77,12 @@ class GroupController < ApplicationController
     else
       @hobby_haven = 'true'
     end
+    #グループ内のユーザーの公開にしている趣味の一覧を取得
+    group_users_id = @group_users.pluck(:id)
+    group_open_userhobbies = UserHobby.where(user_id: group_users_id, open:true)
+    group_open_hobbies_id = group_open_userhobbies.pluck(:hobby_id)
+    @group_open_hobbies = Hobby.where(id: group_open_hobbies_id)
+
   end
 
   def make
