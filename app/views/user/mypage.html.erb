@@ -208,20 +208,24 @@
           </div>
 
           <div style="padding-top: 20px;"></div>
-
-          <p>共有したい趣味が思いつかない場合は、下のメニューから自分の趣味と合うものを選んでください。</p>
-
+          <p>グループメンバーの公開している趣味の中に一致する趣味はありませんか？</p>
           <%= form_tag("/user/newhobby") do %>
-          <select name="hobby_name" style="max-width:80%;" required>
-            <option value="">おすすめ趣味一覧</option>
-            <% @dummy_hobbies.each do |hobby| %>
+          <div style="max-width: 450px; display:flex; flex-flow:row wrap;">
+          <div style=" flex: 0 1 auto; margin-right:15px;">
+          <select name="hobby_name" style="width:200px;" required>
+            <option value="">グループメンバーの趣味</option>
+            <% @group_open_hobbies.each do |hobby| %>
             <option value="<%= "#{hobby.hobby_name}" %>"><%= "#{hobby.hobby_name}" %></option>
             <% end %>
           </select>
+          </div>
+          <div style=" flex: 0 0 auto;">
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" data-size="sm" name="open_option" value="open">
           <span class="input-group-btn" style="padding-right: 2px;"></span>
           <input class="btn btn-primary btn-sm" type="submit" value="登録">
+          </div>
+          </div>
           <% end %>
 
           <div style="padding-top: 15px;"></div>

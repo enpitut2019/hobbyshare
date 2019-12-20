@@ -64,9 +64,9 @@
   </div>
   <div style="margin-top: 5px;"></div>
   <%if @group_open_hobbies.size > 0%>
-  <ul style="max-width:100%;">
+  <ul class="list-group" style="max-width: 400px;">
   <% @group_open_hobbies.each do |hobby| %>
-  <li style="max-width:500px;">
+  <li class="list-group-item" style="max-width:100%;">
     <%= "#{hobby.hobby_name}" %>
   </li>
   <% end %>

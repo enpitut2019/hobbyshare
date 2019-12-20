@@ -90,6 +90,13 @@ class UserController < ApplicationController
     @dummies_id.each do |hid|
       @dummy_hobbies.push(Hobby.find_by(id: hid))
     end
+
+    #グループメンバーの公開趣味を取ってくる
+    @group_users = User.where(group_id: @gid)
+    group_users_id = @group_users.pluck(:id)
+    group_open_userhobbies = UserHobby.where(user_id: group_users_id, open:true)
+    group_open_hobbies_id = group_open_userhobbies.pluck(:hobby_id)
+    @group_open_hobbies = Hobby.where(id: group_open_hobbies_id)
   end
 
   def new_member
