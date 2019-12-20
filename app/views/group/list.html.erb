@@ -14,8 +14,20 @@
     <% else %>
     <strong><%= @login_uname %></strong>としてこのグループに参加しています
     <br>
-    <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
-    <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-6">
+              <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-primary btn-lg" type="button" onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <% end %>
     <hr>
   <div class="row">
