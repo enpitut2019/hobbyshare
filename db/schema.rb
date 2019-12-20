@@ -77,8 +77,8 @@ ActiveRecord::Schema.define(version: 2019_12_13_064945) do
     t.datetime "updated_at", null: false
     t.bigint "account_id"
     t.bigint "group_id"
-    t.text "intro"
     t.string "token"
+    t.text "intro"
     t.string "opentoken"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["group_id"], name: "index_users_on_group_id"

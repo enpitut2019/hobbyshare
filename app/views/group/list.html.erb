@@ -14,6 +14,8 @@
     <% else %>
     <strong><%= @login_uname %></strong>としてこのグループに参加しています
     <br>
+    
+    <% if @hobby_haven == 'true'%>
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
@@ -22,69 +24,100 @@
               <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す</button>
             </div>
             <div class="col-xs-6">
-              <button class="btn btn-primary btn-lg" type="button" onclick="location.href='/user/mypage/<%=@login_user_token%>'">詳細設定</button>
+              <button class="btn btn-primary btn-lg" type="button" onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <% else %>
+      <div class="container-fluid">
+        <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-6">
+              <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-primary btn-lg" type="button" onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    <% end %>
+
     <% end %>
     <hr>
   <div class="row">
     <div class="col-md-8">
-      <% if @query_guser.size > 0 %>
-
-      <strong>所属メンバー</strong>
-    <ol>
-      <% @query_guser.each do |user| %>
+      <p><strong>所属メンバー</strong></p>
+    <% if @query_guser.size > 0 %>
+      <% @query_guser.each_with_index do |user,i| %>
       <div style="display:inline-flex">
-        <%= form_tag("/user/delete") do %>
-          <input type="hidden" name="user_id" value="<%= user.id %>">
-          <button type="submit" class="btn btn-secondary btn-sm" type="button" onclick='return subcheck_name("<%= user.name %>")'><i class="far fa-trash-alt"></i></button>
-        <% end %>
-        <%= user.name %>
+        <input type="button" class="btn btn-link" value="<%= user.name %>" onclick="<%="entryUserIntro(#{i})"%>">
       </div>
-      <br>
+      <div id="<%="intro_hidden#{i}"%>" style="display: none; margin-left:0.75rem;">
+        <% if user.intro %>
+          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+            <div class="card-body"><%= simple_format(html_escape(user.intro)) %><ul style="list-style: none; padding-left: 0;">
+          </ul></div>
+        </div>
+        <% else %>
+          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+            <div class="card-body">詳細情報が設定されていません<ul style="list-style: none; padding-left: 0;">
+          </ul></div>
+        </div>
+        <% end %>
+      </div>
+      <div style="float:none;"></div>
       <% end %>
-
+    <% else %>
+      <p style="color: gray;">まだメンバーがいません</p>
+      <p style="color: gray;">グループにメンバーを誘いましょう！</p>
+    <% end %>
     </div>
   </div>
   <hr>
-  <% end %>
-  <strong>グループのおすすめ趣味</strong>
-  <br>
-  ここで登録された趣味は、「詳細設定」の「おすすめ趣味一覧」の候補に追加されます
+
+  <p><strong>グループのおすすめ趣味</strong></p>
+  グループ内の人にも登録してほしい趣味をここで登録することができます<br>
+  ここで登録された趣味は、「趣味の登録・設定」の「おすすめ趣味一覧」の候補に追加されます
   <%= form_tag("/user/dummy_newhobby") do %>
+  <div class="input-group" style="max-width:450px;">
   <input name="hobby_name" class="form-control" required>
   <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
   <input type="hidden" name="group_id" value="<%= @gid %>">
-  <input class="btn btn-primary btn-bg" type="submit" value="趣味を登録">
+  <span class="input-group-btn">
+    <button class="btn btn-primary" type="submit">登録</button>
+  </span>
+  </div>
   <% end %>
-  <%if @dummy_hobbies.size > 0%>
+
   <hr>
-  <summary><strong>登録済みのおすすめ趣味一覧</strong></summary>
+  <p><strong>おすすめ趣味一覧</strong></p>
+  <%if @dummy_hobbies.size > 0%>
+  <table style="border-style: none; max-width:100%;">
   <% @dummy_hobbies.reverse_each do |hname| %>
   <tr>
-    <td>
-      <div style="display:inline-flex">
+    <td style="max-width:500px;"><%= "#{hname.hobby_name}" %></td>
+    <td style="padding-left:1rem; padding-right:1rem;">
       <%= form_tag("/user/dummyhobby_delete") do %>
       <input type="hidden" name="user_id" value="<%= Group.find(@gid).dummyuser %>">
       <input type="hidden" name="hobby_id" value="<%= hname.id %>">
       <input type="hidden" name="group_id" value="<%= @gid %>">
-      <button class="btn btn-secondary btn-sm" type="submit" value="削除" onclick='return subcheck_name("<%= hname.hobby_name %>")'><i class="far fa-trash-alt"></i></button>
+      <button class="btn btn-light btn-sm" type="submit" value="削除" onclick='return subcheck_name("<%= hname.hobby_name %>")'><i class="far fa-trash-alt"></i></button>
       <% end %>
-      <%= "#{hname.hobby_name}" %>
-      </div>
-      <br>
     </td>
   </tr>
   <% end %>
-  <%end%>
+  </table>
+  <% else %>
+  おすすめ趣味はまだ設定されていません<br>
+  共通の趣味を持っている人がいそうなお題を設定してみましょう
+  <% end %>
   <hr>
 
-  <br>
-
-  <br>
   <%= @group_name %>への参加リンクを共有する<br>
   <textarea readonly id="fe_text" name="" rows="1" cols="20"><%= request.url %></textarea><br>
 
@@ -97,6 +130,8 @@
   <div><p></p></div>
   <%= form_tag("/group/qrcode") do %>
   <input type="hidden" name="url" value="<%= request.url %>">
-  <input class="btn btn-primary btn-bg" type="submit" value="QRコードを発行する">
+  <%= button_tag :type => "submit", :class =>"btn btn-primary btn-sm", formtarget: "_blank" do %>
+    <i class="fas fa-qrcode"></i> QRコードを発行
   <% end %>
+<% end %>
 </div>

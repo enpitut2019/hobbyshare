@@ -9,6 +9,7 @@ class UserController < ApplicationController
     #ユーザIDを変数に入れる
     @user_id = user.id
     @user_token = user.token
+    @user_name = user.name
     #セッションが存在かつ正しいユーザーの場合のみ通す
     if @session_status == "no_session" #セッションが存在しない場合
       flash[:notice] = "このページにアクセスする権限がありません"
@@ -36,7 +37,7 @@ class UserController < ApplicationController
     @user_name = user.name
 
     #ユーザの趣味を取得して変数に入れる
-    @uhobby_record = UserHobby.where(user_id: @user_id)
+    @uhobby_record = UserHobby.where(user_id: @user_id).order(:id)
     #uhobby_recordからhobbyIDだけを取り出して配列にする
     @hobbies_id = []
     @has_alias = []
