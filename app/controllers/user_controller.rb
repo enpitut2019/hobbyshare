@@ -180,29 +180,37 @@ class UserController < ApplicationController
 
   def ac_newhobbies
     user_id_tmp = params[:user_id]
-    @account_name = @login_account.name
     @dummy_user_id = @login_account.user_id
-    @users = User.where(account_id: @login_account.id)
-    @account_id = @login_account.id
     #ユーザの趣味を取得して変数に入れる
     @uhobby_record = UserHobby.where(user_id: @dummy_user_id)
 
-    #uhobby_recordからhobbyIDだけを取り出して配列にする
-    @hobbies_id = []
     @uhobby_record.each do |record|
-      @hobbies_id.push(record.hobby_id)
-    end
-
-    @hobbies_id.each do |hid|
+      hid =
       #重複するレコードがあるかどうか
-      #if ここ別名あったらよしなにするif文を書きたい
-        if UserHobby.find_by(hobby_id: hid, user_id: user_id_tmp)
-        else
+      if UserHobby.find_by(user_id: user_id_tmp, hobby_id: record.hobby_id)
+      else
           #UserHobbyへの格納
-          tmp = UserHobby.create(user_id: user_id_tmp, hobby_id: hid)
-        end
+          new_hobby = UserHobby.create(user_id: user_id_tmp, hobby_id: record.hobby_id, open: record.open)
+          if record.similar_hobbies_id != nil
+            target = new_hobby
+            target_is_user_hobby = true
+            next_shid = record.similar_hobbies_id
+            while next_shid != nil
+              sh = SimilarHobby.find_by(id: next_shid)
+              tmp = SimilarHobby.create(user_id: user_id_tmp, hobby_id: sh.hobby_id)
+              if target_is_user_hobby
+                target.similar_hobbies_id = tmp.id
+              else
+                target.next = tmp.id
+              end
+              target.save
+              next_shid = sh.next
+              target = tmp
+              target_is_user_hobby = false
+            end
+          end
       end
-    #end
+    end
     flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
     redirect_to("/account/mypage")
   end

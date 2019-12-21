@@ -19,8 +19,8 @@
         <thead>
           <tr>
             <th>所属グループ</th>
-            <th>グループ内で使用している名前</th>
-            <th>お気に入り趣味を一括登録する</th>
+            <th>グループ内の名前</th>
+            <th>趣味を一括登録する</th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
             <td>
               <a href="/user/mypage/<%=user.token%>"><%=user.name%></a>
             </td>
-            <td>
+            <td style="text-align: center;">
               <%= form_tag("/user/ac_newhobbies") do %>
               <input type="hidden" name="user_id" value="<%= user.id %>">
               <input type="hidden" name="group_name" value="<%=group.group_name%>">
@@ -47,20 +47,25 @@
           </tbody>
           </table>
 
-            <h4>お気に入り趣味の登録</h4>
-            <p>一括登録したい趣味を登録できます</p>
+            <h4>趣味の登録</h4>
+            <p>
+              複数のグループで使いたい趣味を登録しましょう。<br>
+              グループに参加した際、趣味をまとめて登録できます。
+            </p>
             <%= form_tag("/user/account_newhobby") do %>
-            <input name="hobby_name" class="form-control" style="max-width: 350px;" required>
+            <div class="input-group" style="max-width:400px;">
+            <input name="hobby_name" class="form-control" required>
             <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+            <span style="padding-right: 5px;"></span>
             <input class="btn btn-primary btn-bg" type="submit" value="登録">
+          </div>
             <% end %>
-            <br>
             <% if @users_hobbies.size > 0 %>
             <hr>
             <!-- ここにユーザが登録してある趣味を表示する -->
             <div>
               <% @users_hobbies.each_with_index {|hobby,i| %>
-                <div class="box8">
+                <div class="box8_noopen">
 
                   <div class="appear-contents" style="display:flex; flex-flow:row nowrap;">
 
@@ -156,7 +161,7 @@
                 <% } %>
 
               </div>
-            
+
 
           <% end %>
         </div>
