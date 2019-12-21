@@ -8,62 +8,62 @@
   </div>
 </header>
 <div class="container main">
-    <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
-    <% if @login_uid == nil %>
-    <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/add_member/<%=@group_token%>'">このグループに参加する</button>
-    <% else %>
-    <div style="font-size: 1.5em;">
-      <strong><%= @login_uname %></strong>としてこのグループに参加しています
-    </div>
-    <br>
-      <% if @hobby_haven == 'true'%>
-      <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-        <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
+  <!-- セッションのアカウントIDを確認して、あるかないかで分岐 -->
+  <% if @login_uid == nil %>
+  <button class="btn btn-primary btn-lg" type="button"onclick="location.href='/group/add_member/<%=@group_token%>'">このグループに参加する</button>
+  <% else %>
+  <div style="font-size: 1.5em;">
+    <strong><%= @login_uname %></strong>としてこのグループに参加しています
+  </div>
+  <br>
+  <% if @hobby_haven == 'true'%>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+    <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
       <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
     </div>
     <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
       <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定<i class="fas fa-cog" style="margin-left:2px;"></i></button>
     </div>
   </div>
-      <% else %>
-      <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-        <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
+  <% else %>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+    <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
       <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
     </div>
     <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
       <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定<i class="fas fa-cog" style="margin-left:2px;"></i></button>
     </div>
   </div>
-      <% end %>
-    <% end %>
-    <hr>
+  <% end %>
+  <% end %>
+  <hr>
   <div class="row">
     <div class="col-md-8">
       <p><strong>所属メンバー</strong></p>
-    <% if @group_users.size > 0 %>
+      <% if @group_users.size > 0 %>
       <% @group_users.each_with_index do |user,i| %>
       <div style="display:inline-flex">
         <input type="button" class="btn btn-link" value="<%= user.name %>" onclick="<%="entryUserIntro(#{i})"%>">
       </div>
       <div id="<%="intro_hidden#{i}"%>" style="display: none; margin-left:0.75rem;">
         <% if user.intro %>
-          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
-            <div class="card-body"><%= simple_format(html_escape(user.intro)) %><ul style="list-style: none; padding-left: 0;">
+        <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+          <div class="card-body"><%= simple_format(html_escape(user.intro)) %><ul style="list-style: none; padding-left: 0;">
           </ul></div>
         </div>
         <% else %>
-          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
-            <div class="card-body">詳細情報が設定されていません<ul style="list-style: none; padding-left: 0;">
+        <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+          <div class="card-body">詳細情報が設定されていません<ul style="list-style: none; padding-left: 0;">
           </ul></div>
         </div>
         <% end %>
       </div>
       <div style="float:none;"></div>
       <% end %>
-    <% else %>
+      <% else %>
       <p style="color: gray;">まだメンバーがいません</p>
       <p style="color: gray;">グループにメンバーを誘いましょう！</p>
-    <% end %>
+      <% end %>
     </div>
   </div>
 
@@ -77,11 +77,11 @@
   <div style="margin-top: 5px;"></div>
   <%if @group_open_hobbies.size > 0%>
   <ul class="list-group" style="max-width: 400px;">
-  <% @group_open_hobbies.each do |hobby| %>
-  <li class="list-group-item" style="max-width:100%;">
-    <%= "#{hobby.hobby_name}" %>
-  </li>
-  <% end %>
+    <% @group_open_hobbies.each do |hobby| %>
+    <li class="list-group-item" style="max-width:100%;">
+      <%= "#{hobby.hobby_name}" %>
+    </li>
+    <% end %>
   </ul>
   <% else %>
   グループ内で公開されている趣味はまだありません<br>
@@ -100,7 +100,7 @@
   <%= form_tag("/group/qrcode") do %>
   <input type="hidden" name="url" value="<%= request.url %>">
   <%= button_tag :type => "submit", :class =>"btn btn-primary btn-sm", formtarget: "_blank" do %>
-    <i class="fas fa-qrcode"></i> QRコードを発行
+  <i class="fas fa-qrcode"></i> QRコードを発行
   <% end %>
-<% end %>
+  <% end %>
 </div>
