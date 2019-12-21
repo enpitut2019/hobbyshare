@@ -14,11 +14,9 @@
 //= require activestorage
 // turbolinksは無効化
 //= require_tree .
-//= require jquery3
+//= require bootstrap
+//= require jquery
 //= require popper
-//= require bootstrap-sprockets
-
-
 
 
 function clearFormAll() {
