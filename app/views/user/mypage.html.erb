@@ -1,274 +1,269 @@
-  <!-- Header -->
-  <header class="bg-info py-5 mb-5">
-    <div class="container h-100">
-      <div class="h-100 align-items-center">
-        <div class="col-lg-12">
-          <h1 class="display-5 text-white mt-1 mb-1">ここは<%= @user_name %>さんの詳細設定画面です</h1>
-          <p class="text-white">グループで使用する趣味や名前の設定ができます。</p>
-        </div>
+<!-- Header -->
+<header class="bg-info py-5 mb-5">
+  <div class="container h-100">
+    <div class="h-100 align-items-center">
+      <div class="col-lg-12">
+        <h1 class="display-5 text-white mt-1 mb-1">ここは<%= @user_name %>さんの詳細設定画面です</h1>
+        <p class="text-white">グループで使用する趣味や名前の設定ができます。</p>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <div class="container main">
+<div class="container main">
+  <div class="row">
+    <div class="col-md-8 mb-5">
+      <h3>所属グループ:<%= @group_name %></h3>
+      <% if @users_hobbies.empty? %>
+      <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+      <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
+      <% else %>
 
-    <div class="row">
-      <div class="col-md-8 mb-5">
-        <h3>所属グループ:<%= @group_name %></h3>
-        <% if @users_hobbies.empty? %>
-        <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
-        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
-        <% else %>
+      <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
+      <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
 
-        <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
-        <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
+      <% end %>
+      <hr>
+      <h4>趣味の登録</h4>
+      <p>
+        ここで共有したい趣味を登録することができます。<br>
+        「公開する」に設定するとグループ一覧ページで他のメンバーに公開されます<br>
+        「公開しない」に設定した趣味も趣味が一致した相手には公開されます
+      </p>
+      <%= form_tag("/user/newhobby") do %>
+      <div class="input-group" style="max-width:400px;">
+        <input name="hobby_name" class="form-control" required>
+        <input type="hidden" name="user_id" value="<%= @user_id %>">
+        <span class="input-group-btn" style="padding-right: 5px;"></span>
 
-        <% end %>
-        <hr>
-        <h4>趣味の登録</h4>
-        <p>
-          ここで共有したい趣味を登録することができます。<br>
-          「公開する」に設定するとグループ一覧ページで他のメンバーに公開されます<br>
-          「公開しない」に設定した趣味も趣味が一致した相手には公開されます
-        </p>
-        <%= form_tag("/user/newhobby") do %>
-        <div class="input-group" style="max-width:400px;">
-          <input name="hobby_name" class="form-control" required>
-          <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <span class="input-group-btn" style="padding-right: 5px;"></span>
+        <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" name="open_option" value="open">
+        <span class="input-group-btn" style="padding-right: 5px;"></span>
 
-          <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" name="open_option" value="open">
-          <span class="input-group-btn" style="padding-right: 5px;"></span>
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit">登録</button>
+        </span>
+      </div>
+      <% end %>
 
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">登録</button>
-          </span>
+      <div style="padding-top: 10px;"></div>
+
+      <!-- ここにユーザが登録してある趣味を表示する -->
+      <div>
+        <% @users_hobbies.each_with_index do |hobby,i| %>
+        <div class="<%= if @hobbies_option[i] then "box8" else "box8_noopen" end %>">
+
+          <div class="appear-contents" style="display:flex; flex-flow:row nowrap;">
+
+            <div class="list-inline-item" style="padding-top:4px; flex:1 1 0; word-break:break-all;">
+              <%= "#{hobby.hobby_name}" %>
+            </div>
+
+            <div class="option-button" style="flex:0 0 auto; align-self: center;">
+              <!-- 趣味の削除ボタン -->
+              <div style="float: right;">
+                <%= form_tag("/user/hobby_delete") do %>
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                <button class="btn btn-light btn-sm" style="margin-right: 0;" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
+                <% end %>
+              </div>
+              <!-- 趣味の表記揺れ対策登録ボタン -->
+              <div class="list-inline-item" style="float: right; margin-right: 0.25em;" >
+                <button class="btn btn-info btn-sm" style="margin-right: 0;" onclick="<%="entrySimilarHobby(#{i})"%>">詳細</button>
+              </div>
+            </div>
+          </div>
+
+
+          <% if !@has_alias[i] #趣味の別名が無い場合 %>
+          <!-- 趣味の表記揺れ対策登録隠しフォーム -->
+          <div id="<%="regist_hidden#{i}"%>" style="display: none;">
+            <!-- 別名の追加ボタン -->
+            <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
+              <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+              <%= form_tag("/user/similar_hobby") do %>
+              <div class="input-group" style=" flex: 0 0 auto;">
+                <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                <span class="input-group-btn" style="padding-right: 3px;"></span>
+                <span class="input-group-btn">
+                  <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">別名の追加</button>
+                </span>
+              </div>
+              <% end %>
+            </div>
+            <!-- 趣味の公開設定ボタン -->
+            <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
+              <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+              <%= form_tag("/user/hobby_open") do %>
+              <div class="input-group" style=" flex: 0 0 auto;">
+                <!--チェックボックス型ボタン部分 -->
+                <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
+                  <label class="btn btn-open btn-sm btn-group <%= if @hobbies_option[i] then "active" end %>" style="margin-right:0;">
+                    <input type="radio" name="options" value="open" <%= if @hobbies_option[i] then "checked" end %>>
+                    <span style="width:5rem;">公開する</span>
+                  </label>
+                  <label class="btn btn-noopen btn-sm btn-group <%= if !@hobbies_option[i] then "active" end %>" style="margin-right: 3px;">
+                    <input type="radio" name="options" value="no_open" <%= if !@hobbies_option[i] then "checked" end %>>
+                    <span style="width:5rem;">公開しない</span>
+                  </label>
+                </div>
+                <!-- 送信部分 -->
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                <span class="input-group-btn" style="padding-right: 3px;"></span>
+                <span class="input-group-btn">
+                  <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
+                </span>
+              </div>
+              <% end %>
+            </div>
+          </div>
+
+          <% else #趣味の別名がある場合 %>
+          <div id="<%="regist_hidden#{i}"%>" style="display: none;">
+            <% alias_names = @alias_names_queue.shift %>
+            <% alias_ids = @alias_ids_queue.shift %>
+            <% alias_names.each_with_index do |alias_name, index| %>
+            <div style="display:flex; flex-flow:row nowrap; margin-top: 5px;">
+              <!-- 別名表示 -->
+              <div style="flex:1 1 0; display:flex; flex-flow:row nowrap; word-break:break-all;">
+                <div class="list-inline-item pl-2" style=" flex: 0 0 auto; align-self: center;">
+                  <u>別名<%= index+1 %></u>
+                </div>
+                <!-- 趣味の別名の表示 -->
+                <div class="list-inline-item pl-1" style="flex:1 1 0; align-self: center;">
+                  <%=  alias_name %>
+                </div>
+              </div>
+              <!-- 趣味の別名の削除ボタン -->
+              <div class="list-inline-item" style=" flex: 0 0 auto; margin-right: 1rem; align-self: center;">
+                <%= form_tag("/user/similar_hobby_delete") do %>
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
+                <button class="btn btn-light btn-sm" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
+                <% end %>
+              </div>
+            </div>
+            <% end %>
+
+
+            <!-- 別名の追加ボタン -->
+            <div style="max-width: 100%; margin-top: 5px; display:flex; flex-flow:row nowrap;">
+              <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+              <%= form_tag("/user/similar_hobby_add") do %>
+              <div class="input-group" style=" flex: 0 0 auto;">
+                <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                <span class="input-group-btn" style="padding-right: 3px;"></span>
+                <span class="input-group-btn">
+                  <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">別名の追加</button>
+                </span>
+              </div>
+              <% end %>
+            </div>
+            <!-- 趣味の公開設定ボタン -->
+            <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
+              <div style="max-width: 2.5rem; flex:1 1 0;"></div>
+              <%= form_tag("/user/hobby_open") do %>
+              <div class="input-group" style=" flex: 0 0 auto;">
+                <!--チェックボックス型ボタン部分 -->
+                <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
+                  <label class="btn btn-open btn-sm btn-group <%= if @hobbies_option[i] then "active" end %>" style="margin-right:0;">
+                    <input type="radio" name="options" value="open" <%= if @hobbies_option[i] then "checked" end %>>
+                    <span style="width:5rem;">公開する</span>
+                  </label>
+                  <label class="btn btn-noopen btn-sm btn-group <%= if !@hobbies_option[i] then "active" end %>" style="margin-right: 3px;">
+                    <input type="radio" name="options" value="no_open" <%= if !@hobbies_option[i] then "checked" end %>>
+                    <span style="width:5rem;">公開しない</span>
+                  </label>
+                </div>
+                <!-- 送信部分 -->
+                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
+                <span class="input-group-btn" style="padding-right: 3px;"></span>
+                <span class="input-group-btn">
+                  <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
+                </span>
+              </div>
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+
         </div>
         <% end %>
 
-        <div style="padding-top: 10px;"></div>
+      </div>
 
-        <!-- ここにユーザが登録してある趣味を表示する -->
-        <div>
-          <% @users_hobbies.each_with_index {|hobby,i| %>
-            <% if @hobbies_option[i] %>
-            <div class="box8">
-            <% else %>
-            <div class="box8_noopen">
-            <% end %>
-
-              <div class="appear-contents" style="display:flex; flex-flow:row nowrap;">
-
-                <div class="list-inline-item" style="padding-top:4px; flex:1 1 0; word-break:break-all;">
-                  <%= "#{hobby.hobby_name}" %>
-                </div>
-
-                <div class="option-button" style="flex:0 0 auto; align-self: center;">
-                  <!-- 趣味の削除ボタン -->
-                  <div style="float: right;">
-                    <%= form_tag("/user/hobby_delete") do %>
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-                    <button class="btn btn-light btn-sm" style="margin-right: 0;" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
-                    <% end %>
-                  </div>
-                  <!-- 趣味の表記揺れ対策登録ボタン -->
-                  <div class="list-inline-item" style="float: right; margin-right: 0.25em;" >
-                    <button class="btn btn-info btn-sm" style="margin-right: 0;" onclick="<%="entrySimilarHobby(#{i})"%>">詳細</button>
-                  </div>
-                </div>
-              </div>
-
-
-              <% if !@has_alias[i] #趣味の別名が無い場合 %>
-              <!-- 趣味の表記揺れ対策登録隠しフォーム -->
-              <div id="<%="regist_hidden#{i}"%>" style="display: none;">
-                <!-- 別名の追加ボタン -->
-                <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
-                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
-                  <%= form_tag("/user/similar_hobby") do %>
-                  <div class="input-group" style=" flex: 0 0 auto;">
-                    <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-                    <span class="input-group-btn" style="padding-right: 3px;"></span>
-                    <span class="input-group-btn">
-                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">別名の追加</button>
-                    </span>
-                  </div>
-                  <% end %>
-                </div>
-                <!-- 趣味の公開設定ボタン -->
-                <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
-                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
-                  <%= form_tag("/user/hobby_open") do %>
-                  <div class="input-group" style=" flex: 0 0 auto;">
-                    <!--チェックボックス型ボタン部分 -->
-                    <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
-                      <label class="btn btn-open btn-sm btn-group <%= if @hobbies_option[i] then "active" end %>" style="margin-right:0;">
-                        <input type="radio" name="options" value="open" <%= if @hobbies_option[i] then "checked" end %>>
-                        <span style="width:5rem;">公開する</span>
-                      </label>
-                      <label class="btn btn-noopen btn-sm btn-group <%= if !@hobbies_option[i] then "active" end %>" style="margin-right: 3px;">
-                        <input type="radio" name="options" value="no_open" <%= if !@hobbies_option[i] then "checked" end %>>
-                        <span style="width:5rem;">公開しない</span>
-                      </label>
-                    </div>
-                    <!-- 送信部分 -->
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-                    <span class="input-group-btn" style="padding-right: 3px;"></span>
-                    <span class="input-group-btn">
-                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
-                    </span>
-                  </div>
-                  <% end %>
-                </div>
-              </div>
-
-              <% else #趣味の別名がある場合 %>
-              <div id="<%="regist_hidden#{i}"%>" style="display: none;">
-                <% alias_names = @alias_names_queue.shift %>
-                <% alias_ids = @alias_ids_queue.shift %>
-                <% alias_names.each_with_index do |alias_name, index| %>
-                <div style="display:flex; flex-flow:row nowrap; margin-top: 5px;">
-                  <!-- 別名表示 -->
-                  <div style="flex:1 1 0; display:flex; flex-flow:row nowrap; word-break:break-all;">
-                    <div class="list-inline-item pl-2" style=" flex: 0 0 auto; align-self: center;">
-                      <u>別名<%= index+1 %></u>
-                    </div>
-                    <!-- 趣味の別名の表示 -->
-                    <div class="list-inline-item pl-1" style="flex:1 1 0; align-self: center;">
-                      <%=  alias_name %>
-                    </div>
-                  </div>
-                  <!-- 趣味の別名の削除ボタン -->
-                  <div class="list-inline-item" style=" flex: 0 0 auto; margin-right: 1rem; align-self: center;">
-                    <%= form_tag("/user/similar_hobby_delete") do %>
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
-                    <button class="btn btn-light btn-sm" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
-                    <% end %>
-                  </div>
-                </div>
-                <% end %>
-
-
-                <!-- 別名の追加ボタン -->
-                <div style="max-width: 100%; margin-top: 5px; display:flex; flex-flow:row nowrap;">
-                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
-                  <%= form_tag("/user/similar_hobby_add") do %>
-                  <div class="input-group" style=" flex: 0 0 auto;">
-                    <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-                    <span class="input-group-btn" style="padding-right: 3px;"></span>
-                    <span class="input-group-btn">
-                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">別名の追加</button>
-                    </span>
-                  </div>
-                  <% end %>
-                </div>
-                <!-- 趣味の公開設定ボタン -->
-                <div style="margin-top: 5px; max-width: 100%; display:flex; flex-flow:row nowrap;">
-                  <div style="max-width: 2.5rem; flex:1 1 0;"></div>
-                  <%= form_tag("/user/hobby_open") do %>
-                  <div class="input-group" style=" flex: 0 0 auto;">
-                    <!--チェックボックス型ボタン部分 -->
-                    <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
-                      <label class="btn btn-open btn-sm btn-group <%= if @hobbies_option[i] then "active" end %>" style="margin-right:0;">
-                        <input type="radio" name="options" value="open" <%= if @hobbies_option[i] then "checked" end %>>
-                        <span style="width:5rem;">公開する</span>
-                      </label>
-                      <label class="btn btn-noopen btn-sm btn-group <%= if !@hobbies_option[i] then "active" end %>" style="margin-right: 3px;">
-                        <input type="radio" name="options" value="no_open" <%= if !@hobbies_option[i] then "checked" end %>>
-                        <span style="width:5rem;">公開しない</span>
-                      </label>
-                    </div>
-                    <!-- 送信部分 -->
-                    <input type="hidden" name="user_id" value="<%= @user_id %>">
-                    <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
-                    <span class="input-group-btn" style="padding-right: 3px;"></span>
-                    <span class="input-group-btn">
-                      <button class="btn btn-info btn-sm" style="margin-right: 0px;" type="submit">決定</button>
-                    </span>
-                  </div>
-                  <% end %>
-                </div>
-              </div>
-              <% end %>
-
-            </div>
-            <% } %>
-
-          </div>
-
-          <div style="padding-top: 20px;"></div>
-          <p>グループメンバーの公開している趣味の中に一致する趣味はありませんか？</p>
-          <%= form_tag("/user/newhobby") do %>
-          <div style="max-width: 450px; display:flex; flex-flow:row wrap;">
-          <div style=" flex: 0 1 auto; margin-right:15px;">
+      <div style="padding-top: 20px;"></div>
+      <p>グループメンバーの公開している趣味の中に一致する趣味はありませんか？</p>
+      <%= form_tag("/user/newhobby") do %>
+      <div style="max-width: 450px; display:flex; flex-flow:row wrap;">
+        <div style=" flex: 0 1 auto; margin-right:15px;">
           <select name="hobby_name" style="width:200px;" required>
             <option value="">グループメンバーの趣味</option>
             <% @group_open_hobbies.each do |hobby| %>
             <option value="<%= "#{hobby.hobby_name}" %>"><%= "#{hobby.hobby_name}" %></option>
             <% end %>
           </select>
-          </div>
-          <div style=" flex: 0 0 auto;">
+        </div>
+        <div style=" flex: 0 0 auto;">
           <input type="hidden" name="user_id" value="<%= @user_id %>">
           <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" data-size="sm" name="open_option" value="open">
           <span class="input-group-btn" style="padding-right: 2px;"></span>
           <input class="btn btn-primary btn-sm" type="submit" value="登録">
-          </div>
-          </div>
-          <% end %>
-
-          <div style="padding-top: 15px;"></div>
-
-          <hr>
-
-          <h4>ユーザー情報の登録</h4>
-          <p>他のメンバーに自分を見つけてもらうための自己紹介を登録できます</p>
-          <% if @user_intro %>
-          <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
-            <div class="card-body"><%= simple_format(html_escape(@user_intro)) %><ul style="list-style: none; padding-left: 0;">
-            </ul></div>
-          </div>
-          <% end %>
-          <%= form_tag("/user/userintro") do %>
-          <textarea name="user_intro" class="form-control" placeholder="服の色や髪型など相手から見つけてもらえる情報を入力しましょう" style="max-width: 30rem;"></textarea>
-          <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <input class="btn btn-primary btn-bg" type="submit" value="登録">
-          <% end %>
-          <hr>
-
-          <!-- ユーザー名の変更 -->
-          <h4>名前の設定</h4>
-          <p>
-            グループ内で使用する名前を変更することができます。<br>
-            （アカウントの名前を変更するわけではありません）
-          </p>
-          <%= form_tag("/user/name_change") do %>
-          <div class="input-group" style="max-width:400px;">
-            <input name="user_name" class="form-control" required>
-            <input type="hidden" name="user_id" value="<%= @user_id %>">
-            <span class="input-group-btn" style="padding-right: 5px;"></span>
-            <span class="input-group-btn">
-              <button class="btn btn-primary btn-bg" type="submit">変更</button>
-            </span>
-          </div>
-          <% end %>
-          <hr>
-
-          <!--ユーザーの削除 -->
-          <h4>このユーザーを削除する</h4>
-          <%= form_tag("/user/delete") do %>
-          <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <input class="btn btn-primary btn-bg" type="submit" value="削除" onclick='return subcheck_name("<%= @user_name %>")'>
-          <% end %>
         </div>
       </div>
+      <% end %>
+
+      <div style="padding-top: 15px;"></div>
+
+      <hr>
+
+      <h4>ユーザー情報の登録</h4>
+      <p>他のメンバーに自分を見つけてもらうための自己紹介を登録できます</p>
+      <% if @user_intro %>
+      <div class="card border-success bg-light mb-3" style="max-width: 30rem; min-width: 12rem;">
+        <div class="card-body"><%= simple_format(html_escape(@user_intro)) %><ul style="list-style: none; padding-left: 0;">
+        </ul></div>
+      </div>
+      <% end %>
+      <%= form_tag("/user/userintro") do %>
+      <textarea name="user_intro" class="form-control" placeholder="服の色や髪型など相手から見つけてもらえる情報を入力しましょう" style="max-width: 30rem;"></textarea>
+      <input type="hidden" name="user_id" value="<%= @user_id %>">
+      <input class="btn btn-primary btn-bg" type="submit" value="登録">
+      <% end %>
+      <hr>
+
+      <!-- ユーザー名の変更 -->
+      <h4>名前の設定</h4>
+      <p>
+        グループ内で使用する名前を変更することができます。<br>
+        （アカウントの名前を変更するわけではありません）
+      </p>
+      <%= form_tag("/user/name_change") do %>
+      <div class="input-group" style="max-width:400px;">
+        <input name="user_name" class="form-control" required>
+        <input type="hidden" name="user_id" value="<%= @user_id %>">
+        <span class="input-group-btn" style="padding-right: 5px;"></span>
+        <span class="input-group-btn">
+          <button class="btn btn-primary btn-bg" type="submit">変更</button>
+        </span>
+      </div>
+      <% end %>
+      <hr>
+
+      <!--ユーザーの削除 -->
+      <h4>このユーザーを削除する</h4>
+      <%= form_tag("/user/delete") do %>
+      <input type="hidden" name="user_id" value="<%= @user_id %>">
+      <input class="btn btn-primary btn-bg" type="submit" value="削除" onclick='return subcheck_name("<%= @user_name %>")'>
+      <% end %>
     </div>
-  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+  </div>
+</div>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
