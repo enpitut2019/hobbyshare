@@ -36,7 +36,12 @@
         <input type="hidden" name="user_id" value="<%= @user_id %>">
         <span class="input-group-btn" style="padding-right: 5px;"></span>
 
-        <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" name="open_option" value="open">
+        <div class="togglarea" id="makeImg">
+          <input type="checkbox" id="togglecheck" name="open_option" value="open">
+          <label for="togglecheck">
+            <span></span>
+          </label>
+        </div>
         <span class="input-group-btn" style="padding-right: 5px;"></span>
 
         <span class="input-group-btn">
