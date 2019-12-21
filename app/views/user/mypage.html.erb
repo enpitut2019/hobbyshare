@@ -218,7 +218,7 @@
       <p>グループメンバーの公開している趣味の中に一致する趣味はありませんか？</p>
       <%= form_tag("/user/newhobby") do %>
       <div style="max-width: 450px; display:flex; flex-flow:row wrap;">
-        <div style=" flex: 0 1 auto; margin-right:15px;">
+        <div style=" flex: 0 1 auto; margin-right:10px; align-self: center;">
           <select name="hobby_name" style="width:200px;" required>
             <option value="">グループメンバーの趣味</option>
             <% @group_open_hobbies.each do |hobby| %>
@@ -226,11 +226,20 @@
             <% end %>
           </select>
         </div>
-        <div style=" flex: 0 0 auto;">
+        <div style="flex: 0 0 auto; display:flex; flex-flow:row nowrap;">
           <input type="hidden" name="user_id" value="<%= @user_id %>">
-          <input type="checkbox" data-toggle="toggle" checked data-on="公開" data-off="非公開" data-onstyle="outline-primary" data-offstyle="outline-secondary" data-size="sm" name="open_option" value="open">
-          <span class="input-group-btn" style="padding-right: 2px;"></span>
-          <input class="btn btn-primary btn-sm" type="submit" value="登録">
+          <div style="align-self: center;">
+            <div class="togglarea2" id="makeImg2" style="margin-right: 4px;">
+              <input type="checkbox" id="togglecheck2" name="open_option" value="open">
+              <label for="togglecheck2" style="margin-bottom: 0px;">
+                <span></span>
+              </label>
+            </div>
+          </div>
+          <div style="padding-right: 2px; align-self: center;">
+            <span class="input-group-btn"></span>
+            <input class="btn btn-primary btn-sm" type="submit" value="登録">
+          </div>
         </div>
       </div>
       <% end %>
