@@ -17,11 +17,23 @@
     </div>
     <br>
       <% if @hobby_haven == 'true'%>
+      <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+        <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
       <button class="btn btn-success btn-lg" type="button"onclick="location.href='/user/show/<%=@login_user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
+    </div>
+    <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
       <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定<i class="fas fa-cog" style="margin-left:2px;"></i></button>
+    </div>
+  </div>
       <% else %>
+      <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+        <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
       <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+    </div>
+    <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
       <button class="btn btn-primary btn-bg" type="button"onclick="location.href='/user/mypage/<%=@login_user_token%>'">趣味の登録・設定<i class="fas fa-cog" style="margin-left:2px;"></i></button>
+    </div>
+  </div>
       <% end %>
     <% end %>
     <hr>
