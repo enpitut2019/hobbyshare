@@ -17,21 +17,21 @@
       <% if @users_hobbies.empty? %>
       <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
         <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
-      <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
-    </div>
-    <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
-      <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
-      </div>
+          <button class="btn btn-secondary btn-bg" type="button" onclick="">まだ趣味が登録されていません</button>
+        </div>
+        <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
+          <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
+        </div>
       </div>
 
       <% else %>
       <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
         <div style="flex:0 0 auto; align-self: center; margin-right: 5px;">
-      <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
-    </div>
-    <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
-      <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
-      </div>
+          <button class="btn btn-success btn-lg" type="button" onclick="location.href='/user/show/<%=@user_token%>'">同じ趣味を持つ人を探す<i class="fas fa-search" style="margin-left:3px;"></i></button>
+        </div>
+        <div style="flex:0 0 auto; align-self: center; margin:5px 0px 5px 0px;">
+          <button class="btn btn-primary btn-bg" type="button" onclick="location.href='/group/list/<%= @group_token %>'">メンバーリスト<i class="fas fa-users" style="margin-left:2px;"></i></button>
+        </div>
       </div>
       <% end %>
       <hr>
