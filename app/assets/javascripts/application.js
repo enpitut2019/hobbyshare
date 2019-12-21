@@ -14,8 +14,8 @@
 //= require activestorage
 // turbolinksは無効化
 //= require_tree .
-//= require bootstrap-sprockets
-//= require jquery3
+//= require bootstrap
+//= require jquery
 //= require popper
 
 
