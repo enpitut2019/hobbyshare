@@ -11,7 +11,7 @@
 <div class="container main">
 <p><strong>名前を入力</strong></p>
 <%= form_tag("/user/new_member") do %>
-  <input type="hidden" name="group_id" value="<%= @group_id %>">
+  <input type="hidden" name="group_token" value="<%= @group_token %>">
   <input  name="user_name" class="form-control" required>
   <input type="submit" value="グループに参加！" class="btn btn-primary btn-bg">
 <% end %>

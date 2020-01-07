@@ -78,7 +78,7 @@
               <!-- 趣味の削除ボタン -->
               <div style="float: right;">
                 <%= form_tag("/user/hobby_delete") do %>
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <button class="btn btn-light btn-sm" style="margin-right: 0;" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
                 <% end %>
@@ -100,7 +100,7 @@
               <%= form_tag("/user/similar_hobby") do %>
               <div class="input-group" style=" flex: 0 0 auto;">
                 <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <span class="input-group-btn" style="padding-right: 3px;"></span>
                 <span class="input-group-btn">
@@ -126,7 +126,7 @@
                   </label>
                 </div>
                 <!-- 送信部分 -->
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <span class="input-group-btn" style="padding-right: 3px;"></span>
                 <span class="input-group-btn">
@@ -156,7 +156,7 @@
               <!-- 趣味の別名の削除ボタン -->
               <div class="list-inline-item" style=" flex: 0 0 auto; margin-right: 1rem; align-self: center;">
                 <%= form_tag("/user/similar_hobby_delete") do %>
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="similar_hobby_id" value="<%= alias_ids[index] %>">
                 <button class="btn btn-light btn-sm" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
                 <% end %>
@@ -171,7 +171,7 @@
               <%= form_tag("/user/similar_hobby_add") do %>
               <div class="input-group" style=" flex: 0 0 auto;">
                 <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <span class="input-group-btn" style="padding-right: 3px;"></span>
                 <span class="input-group-btn">
@@ -197,7 +197,7 @@
                   </label>
                 </div>
                 <!-- 送信部分 -->
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <span class="input-group-btn" style="padding-right: 3px;"></span>
                 <span class="input-group-btn">
@@ -258,7 +258,7 @@
       <% end %>
       <%= form_tag("/user/userintro") do %>
       <textarea name="user_intro" class="form-control" placeholder="服の色や髪型など相手から見つけてもらえる情報を入力しましょう" style="max-width: 30rem;"></textarea>
-      <input type="hidden" name="user_id" value="<%= @user_id %>">
+      <input type="hidden" name="user_token" value="<%= @user_token %>">
       <input class="btn btn-primary btn-bg" type="submit" value="登録">
       <% end %>
       <hr>
@@ -272,7 +272,7 @@
       <%= form_tag("/user/name_change") do %>
       <div class="input-group" style="max-width:400px;">
         <input name="user_name" class="form-control" required>
-        <input type="hidden" name="user_id" value="<%= @user_id %>">
+        <input type="hidden" name="user_token" value="<%= @user_token %>">
         <span class="input-group-btn" style="padding-right: 5px;"></span>
         <span class="input-group-btn">
           <button class="btn btn-primary btn-bg" type="submit">変更</button>
@@ -284,7 +284,7 @@
       <!--ユーザーの削除 -->
       <h4>このユーザーを削除する</h4>
       <%= form_tag("/user/delete") do %>
-      <input type="hidden" name="user_id" value="<%= @user_id %>">
+      <input type="hidden" name="user_token" value="<%= @user_token %>">
       <input class="btn btn-primary btn-bg" type="submit" value="削除" onclick='return subcheck_name("<%= @user_name %>")'>
       <% end %>
     </div>
