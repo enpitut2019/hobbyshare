@@ -36,9 +36,8 @@
             </td>
             <td style="text-align: center;">
               <%= form_tag("/user/ac_newhobbies") do %>
-              <input type="hidden" name="user_id" value="<%= user.id %>">
+              <input type="hidden" name="user_token" value="<%= user.token %>">
               <input type="hidden" name="group_name" value="<%=group.group_name%>">
-              <input type="hidden" name="account_id" value="<%= @account_id %>">
               <input class="btn btn-primary btn-sm" type="submit" value="登録" onclick='return ac_subcheck("<%=group.group_name%>","<%=user.name%>")'>
               <% end %>
             </td>

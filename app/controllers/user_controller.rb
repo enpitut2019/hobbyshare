@@ -182,15 +182,24 @@ class UserController < ApplicationController
 
 
   def ac_newhobbies
-    user_id_tmp = params[:user_id]
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id_tmp = user.id
+    user_name = user.name
+    group_name = params[:group_name]
+
     @dummy_user_id = @login_account.user_id
     #ユーザの趣味を取得して変数に入れる
     @uhobby_record = UserHobby.where(user_id: @dummy_user_id)
 
     @uhobby_record.each do |record|
-      hid =
       #重複するレコードがあるかどうか
       if UserHobby.find_by(user_id: user_id_tmp, hobby_id: record.hobby_id)
+        # 重複したら何もしない
       else
           #UserHobbyへの格納
           new_hobby = UserHobby.create(user_id: user_id_tmp, hobby_id: record.hobby_id, open: record.open)
@@ -214,7 +223,7 @@ class UserController < ApplicationController
           end
       end
     end
-    flash[:notice] = "#{params[:group_name]}:#{User.find_by(id: user_id_tmp).name}に趣味一覧を登録しました！"
+    flash[:notice] = "#{group_name}:#{user_name}に趣味一覧を登録しました！"
     redirect_to("/account/mypage")
   end
 
