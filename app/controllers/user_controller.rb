@@ -372,7 +372,13 @@ class UserController < ApplicationController
 
 
   def hobby_open
-    user_id = params[:user_id].to_i
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id = user.id
     hobby_id = params[:hobby_id].to_i
     if params[:options] == "open"
       do_open = true
@@ -380,12 +386,10 @@ class UserController < ApplicationController
       do_open = false
     end
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
-    user_token = User.find_by(id:user_id)&.token
-    if user_hobby == nil || user_token == nil
+    if user_hobby == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
-
 
     if do_open
       user_hobby.update(open: true)
