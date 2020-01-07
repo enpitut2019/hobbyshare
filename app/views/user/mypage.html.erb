@@ -284,7 +284,7 @@
       <!--ユーザーの削除 -->
       <h4>このユーザーを削除する</h4>
       <%= form_tag("/user/delete") do %>
-      <input type="hidden" name="user_id" value="<%= @user_id %>">
+      <input type="hidden" name="user_token" value="<%= @user_token %>">
       <input class="btn btn-primary btn-bg" type="submit" value="削除" onclick='return subcheck_name("<%= @user_name %>")'>
       <% end %>
     </div>

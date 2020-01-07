@@ -764,11 +764,17 @@ class UserController < ApplicationController
   end
 
   def user_delete
-    user_id = params[:user_id]
-    user = User.find_by(id: user_id)
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id = user.id
     group_token = Group.find_by(id: user.group_id).token
     # ユーザーの趣味情報を削除
     UserHobby.where(user_id: user_id).delete_all
+    SimilarHobby.where(user_id: user_id).delete_all
     # ユーザーの削除
     user.destroy
     flash[:notice] = "ユーザーを削除しました"
