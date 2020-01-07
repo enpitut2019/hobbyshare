@@ -739,14 +739,23 @@ class UserController < ApplicationController
   end
 
   def account_hobby_delete
-    #各種値を変数に入れる
-    user_id = params[:user_id]
-    hobby_id = params[:hobby_id]
-    account_id = params[:account_id]
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id = user.id
+    hobby_id = params[:hobby_id].to_i
+
     #データベースからレコードを取り出す
     hobby = Hobby.find_by(id: hobby_id)
     #Userhobbyの削除
     target = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    if target == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     target_similar_hobby_id = target.similar_hobbies_id
     target.delete
     #趣味の別名があった場合それも全て削除

@@ -76,8 +76,7 @@
                       <!-- 趣味の削除ボタン -->
                       <div style="float: right;">
                         <%= form_tag("/user/account_hobby_delete") do %>
-                        <input type="hidden" name="account_id" value="<%= @account_id %>">
-                        <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+                        <input type="hidden" name="user_token" value="<%= @dummy_user_token %>">
                         <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                         <button class="btn btn-light btn-sm" style="margin-right: 0;" type="submit" onclick="return subcheck()"><i class="far fa-trash-alt"></i></button>
                         <% end %>
