@@ -445,20 +445,18 @@ class UserController < ApplicationController
   end
 
   def name_change
-    #userIDを受け取る
-    user_id = params[:user_id].to_i
-    user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
-    #userIDから対応するレコードを取り出す
-    user = User.find_by(id: user_id)
+
     #userの名前を変更
     user.name = params[:user_name]
-    #userの名前の変更を確定
     user.save
     #mypageへリダイレクト
+    flash[:notice] = "名前を変更しました！"
     redirect_to("/user/mypage/#{user_token}")
   end
 
