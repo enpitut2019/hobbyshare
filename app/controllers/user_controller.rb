@@ -428,15 +428,21 @@ class UserController < ApplicationController
 
 
   def ac_similar_hobby_add
-    user_id = params[:user_id].to_i
-    hobby_id = params[:hobby_id].to_i
-    similar_hobby_name = params[:similar_hobby_name]
-    user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
+    user_id = user.id
+    hobby_id = params[:hobby_id].to_i
+    similar_hobby_name = params[:similar_hobby_name]
+
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    if user_hobby == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     similar_hobby_first = SimilarHobby.find_by(id: user_hobby.similar_hobbies_id)
     similar_hobby_last = similar_hobby_first
     while similar_hobby_last.next != nil do
@@ -714,16 +720,21 @@ class UserController < ApplicationController
   end
 
   def ac_similar_hobby_delete
-    #各種値を変数に入れる
-    user_id = params[:user_id].to_i
-    similar_hobby_id = params[:similar_hobby_id].to_i
-    user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
+    user_id = user.id
+    similar_hobby_id = params[:similar_hobby_id].to_i
+
     #データベースからレコードを取り出す
-    similar_hobby = SimilarHobby.find_by(id: similar_hobby_id)
+    similar_hobby = SimilarHobby.find_by(id: similar_hobby_id, user_id: user_id)
+    if similar_hobby == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     similar_hobby_name = Hobby.find_by(id: similar_hobby.hobby_id).hobby_name
 
     if uh = UserHobby.find_by(similar_hobbies_id: similar_hobby.id)
