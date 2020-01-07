@@ -310,12 +310,17 @@ class UserController < ApplicationController
   end
 
   def ac_similar_hobby
-    user_id = params[:user_id].to_i
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id = user.id
     hobby_id = params[:hobby_id].to_i
     similar_hobby_name = params[:similar_hobby_name]
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
-    user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    if user_hobby == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
