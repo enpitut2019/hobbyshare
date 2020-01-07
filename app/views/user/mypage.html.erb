@@ -100,7 +100,7 @@
               <%= form_tag("/user/similar_hobby") do %>
               <div class="input-group" style=" flex: 0 0 auto;">
                 <input name="similar_hobby_name" class="form-control-sm" style="border: 1px solid #ccc;"required>
-                <input type="hidden" name="user_id" value="<%= @user_id %>">
+                <input type="hidden" name="user_token" value="<%= @user_token %>">
                 <input type="hidden" name="hobby_id" value="<%= hobby.id %>">
                 <span class="input-group-btn" style="padding-right: 3px;"></span>
                 <span class="input-group-btn">
