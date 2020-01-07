@@ -14,8 +14,8 @@ class AccountController < ApplicationController
     end
 
     @account_name = @login_account.name
-    @dummy_user_id = @login_account.user_id
-    dummy_user = User.find_by(id: @dummy_user_id)
+    dummy_user_id = @login_account.user_id
+    dummy_user = User.find_by(id: dummy_user_id)
     @dummy_user_token = dummy_user.token
     @users = User.where(account_id: @login_account.id)
     @account_id = @login_account.id
@@ -23,7 +23,7 @@ class AccountController < ApplicationController
 
 
     #ユーザの趣味を取得して変数に入れる
-    @uhobby_record = UserHobby.where(user_id: @dummy_user_id).order(:id)
+    @uhobby_record = UserHobby.where(user_id: dummy_user_id).order(:id)
     #uhobby_recordからhobbyIDだけを取り出して配列にする
     @hobbies_id = []
     @has_alias = []
