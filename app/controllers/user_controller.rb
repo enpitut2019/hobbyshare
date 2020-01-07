@@ -240,15 +240,13 @@ class UserController < ApplicationController
   end
 
   def userintro
-    #userIDを受け取る
-    user_id = params[:user_id].to_i
-    user = User.find_by(id: user_id)
-    user_token = user&.token
-    if user_token == nil
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
-    #userIDから対応するレコードを取り出す
+
     user.intro = params[:user_intro]
     user.save
     redirect_to("/user/mypage/#{user_token}")
@@ -330,16 +328,21 @@ class UserController < ApplicationController
   end
 
   def similar_hobby_add
-    user_id = params[:user_id].to_i
-    hobby_id = params[:hobby_id].to_i
-    similar_hobby_name = params[:similar_hobby_name]
-    user_token = User.find_by(id:user_id)&.token
-    if user_token == nil
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
+    user_id = user.id
+    hobby_id = params[:hobby_id].to_i
+    similar_hobby_name = params[:similar_hobby_name]
 
     user_hobby = UserHobby.find_by(user_id: user_id, hobby_id: hobby_id)
+    if user_hobby == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
     similar_hobby_first = SimilarHobby.find_by(id: user_hobby.similar_hobbies_id)
     similar_hobby_last = similar_hobby_first
     while similar_hobby_last.next != nil do
