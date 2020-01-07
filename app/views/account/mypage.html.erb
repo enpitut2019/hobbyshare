@@ -54,7 +54,7 @@
             <%= form_tag("/user/account_newhobby") do %>
             <div class="input-group" style="max-width:400px;">
             <input name="hobby_name" class="form-control" required>
-            <input type="hidden" name="user_id" value="<%= @dummy_user_id %>">
+            <input type="hidden" name="user_token" value="<%= @dummy_user_token %>">
             <span style="padding-right: 5px;"></span>
             <input class="btn btn-primary btn-bg" type="submit" value="登録">
           </div>

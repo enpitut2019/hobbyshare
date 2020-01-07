@@ -15,6 +15,8 @@ class AccountController < ApplicationController
 
     @account_name = @login_account.name
     @dummy_user_id = @login_account.user_id
+    dummy_user = User.find_by(id: @dummy_user_id)
+    @dummy_user_token = dummy_user.token
     @users = User.where(account_id: @login_account.id)
     @account_id = @login_account.id
 
@@ -55,7 +57,7 @@ class AccountController < ApplicationController
       @alias_ids_queue.push(alias_ids)
       @alias_names_queue.push(alias_names)
     end
-    
+
   end
 
   def new_account

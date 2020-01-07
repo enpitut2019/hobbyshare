@@ -228,8 +228,14 @@ class UserController < ApplicationController
   end
 
   def account_newhobby
-    #Hobbyの主キーを保存する変数hobby_idの初期化
-    user_id_tmp = params[:user_id]
+    user_token = params[:user_token]
+    user = User.find_by(token: user_token)
+    if user == nil
+      render plain: "500エラー\nデータの整合が取れません", status: 500
+      return
+    end
+    user_id_tmp = user.id
+
     hobby_id = 0
     #既に登録された趣味であった場合
     if Hobby.find_by(hobby_name: params[:hobby_name])
