@@ -117,12 +117,14 @@ class GroupController < ApplicationController
   end
 
   def add_member
-    @group_id = Group.find_by(token: params[:group_token])&.id
-    if @group_id == nil
+    @group_token = params[:group_token]
+    group = Group.find_by(token: @group_token)
+    if group == nil
       render plain: "404エラー\nお探しのページは存在しません", status: 404
       return
     end
   end
+
   def qrcode
     @url = params[:url]
     render :layout => nil

@@ -100,14 +100,16 @@ class UserController < ApplicationController
   end
 
   def new_member
-    #グループ内でユーザー名が被るなら弾く
-    new_user_name = params[:user_name]
-    group_id = params[:group_id].to_i
-    group_token = Group.find_by(id: group_id)&.token
-    if group_token == nil
+    group_token = params[:group_token]
+    group = Group.find_by(token: group_token)
+    if group == nil
       render plain: "500エラー\nデータの整合が取れません", status: 500
       return
     end
+    group_id = group.id
+    new_user_name = params[:user_name]
+
+    #グループ内でユーザー名が被るなら弾く
     User.where(group_id: group_id).each do |u|
       if u.name == new_user_name
         flash[:notice] = "そのユーザー名は既に使用されています！"
