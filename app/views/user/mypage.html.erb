@@ -38,8 +38,8 @@
 
       <h4>趣味の登録</h4>
       <p>
-        「公開する」に設定するとグループ一覧ページで他のメンバーに公開されます<br>
-        「公開しない」に設定した趣味も趣味が一致した相手には公開されます<br>
+        「公開」に設定するとグループ一覧ページで他のメンバーに公開されます<br>
+        「非公開」に設定した趣味も趣味が一致した相手には公開されます
         コンマ(,)で区切ることで、複数の趣味を一括で登録できます
       </p>
       <%= form_tag("/user/newhobby") do %>
@@ -119,11 +119,11 @@
                 <div class="btn-group btn-group-toggle btn-group-justified" data-toggle="buttons">
                   <label class="btn btn-open btn-sm btn-group <%= if @hobbies_option[i] then "active" end %>" style="margin-right:0;">
                     <input type="radio" name="options" value="open" <%= if @hobbies_option[i] then "checked" end %>>
-                    <span style="width:5rem;">公開する</span>
+                    <span style="width:5rem;">公開</span>
                   </label>
                   <label class="btn btn-noopen btn-sm btn-group <%= if !@hobbies_option[i] then "active" end %>" style="margin-right: 3px;">
                     <input type="radio" name="options" value="no_open" <%= if !@hobbies_option[i] then "checked" end %>>
-                    <span style="width:5rem;">公開しない</span>
+                    <span style="width:5rem;">非公開</span>
                   </label>
                 </div>
                 <!-- 送信部分 -->
