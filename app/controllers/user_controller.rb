@@ -162,20 +162,41 @@ class UserController < ApplicationController
     end
 
     hobby_id = 0
+    registered_hobby = []
     #既に登録された趣味であった場合
-    if Hobby.find_by(hobby_name: params[:hobby_name])
-      hobby_id = Hobby.find_by(hobby_name: params[:hobby_name]).id
-    else
-      #新規にHobbyに登録する趣味の場合
-      hobby_tmp = Hobby.create(hobby_name: params[:hobby_name])
-      hobby_id = hobby_tmp.id
+    hobbyname = params[:hobby_name].split(",")
+    hobbyname.each do |name|
+      if name == ""
+      else
+        if Hobby.find_by(hobby_name: name)
+          hobby_id = Hobby.find_by(hobby_name: name).id
+        else
+          #新規にHobbyに登録する趣味の場合
+          hobby_tmp = Hobby.create(hobby_name: name)
+          hobby_id = hobby_tmp.id
+        end
+        #重複するレコードがあるかどうか
+        if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id_tmp)
+          registered_hobby.push(name)
+        else
+          #UserHobbyへの格納
+          UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id, open: open_option)
+        end
+      end
     end
-    #重複するレコードがあるかどうか
-    if UserHobby.find_by(hobby_id: hobby_id, user_id: user_id_tmp)
-      flash[:notice] = "#{params[:hobby_name]}は既に登録されています"
+    if registered_hobby.empty?
     else
-      #UserHobbyへの格納
-      UserHobby.create(user_id: user_id_tmp, hobby_id: hobby_id, open: open_option)
+      rh_names = ""
+      count = 1
+      registered_hobby.each do |rh|
+        if count == 1
+          rh_names = rh
+          count += 1
+        else
+          rh_names = rh_names + ',' + rh
+        end
+      end
+        flash[:notice] = "#{rh_names}は既に登録されています"
     end
     redirect_to("/user/mypage/#{user_token}")
   end
