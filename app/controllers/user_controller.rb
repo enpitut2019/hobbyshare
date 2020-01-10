@@ -110,16 +110,14 @@ class UserController < ApplicationController
     new_user_name = params[:user_name]
 
     #グループ内でユーザー名が被るなら弾く
-    User.where(group_id: group_id).each do |u|
-      if u.name == new_user_name
-        flash[:notice] = "そのユーザー名は既に使用されています！"
-        redirect_to("/group/add_member/#{group_token}")
-        return
-      end
+    group_users_names = User.where(group_id: group_id).pluck(:name)
+    if group_users_names.include?(new_user_name)
+      flash[:notice] = "そのユーザー名は既に使用されています！"
+      redirect_to("/group/add_member/#{group_token}")
+      return
     end
 
     #セッションのアカウントIDを確認して、あるかないかで分岐
-
     if @session_status == "no_session" #セッションがない場合
       #Accountモデルの作成
       new_account = Account.create(password: "password", is_temp: true)
@@ -128,16 +126,15 @@ class UserController < ApplicationController
       #セッションのaccount_idを作成したAccountのIDにする
       session[:login_account_id] = new_account.id
       #グループメンバー一覧へリダイレクト
-      redirect_to("/group/list/#{group_token}")
       flash[:notice] = "#{params[:user_name]}をグループに追加しました！"
+      redirect_to("/group/list/#{group_token}")
     else
       #Userモデルからaccout_idに対応するuserを検索、見つかればgroup_idを取り出す。そのgroup_idがメンバー追加しようとしているgroup_idなら既にユーザーがあるのでメンバー一覧ページへ戻す。
-      User.where(account_id: @session_id).each do |u|
-        if u.group_id == group_id
-          flash[:notice] = "このグループ内で既にユーザーを作成しています！"
-          redirect_to("/group/add_member/#{group_token}")
-          return
-        end
+      account_users_group_ids = User.where(account_id: @session_id).pluck(:group_id)
+      if account_users_group_ids.include?(group_id)
+        flash[:notice] = "このグループ内で既にユーザーを作成しています！"
+        redirect_to("/group/add_member/#{group_token}")
+        return
       end
 
       #Userモデルの作成
